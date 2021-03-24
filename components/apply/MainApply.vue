@@ -3,25 +3,26 @@
     <v-dialog
       width="500"
       v-model="dialog"
+      v-if="dialog"
+      @click:outside="cancel"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Click Me
-        </v-btn>
-      </template>
-
       <v-card>
         <v-card-title class="headline grey lighten-2">
-          Privacy Policy
+          Apply the Job
+          <v-spacer></v-spacer>
+          <v-btn
+            elevation="2"
+            @click="cancel"
+          >
+            <v-icon>
+              mdi-close-box-outline
+            </v-icon>
+          </v-btn>
         </v-card-title>
 
         <v-divider></v-divider>
-<upload-cv/>
+        <upload-cv />
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -38,7 +39,8 @@
 </template>
 
 <script>
-  import UploadCv from "~/components/apply/UploadCv";
+    import UploadCv from "~/components/apply/UploadCv";
+
     export default {
         name: "MainApply",
         components: {UploadCv},
@@ -47,8 +49,13 @@
                 type: Boolean,
                 default: false
             },
-            components:{
+            components: {
                 UploadCv
+            }
+        },
+        methods: {
+            cancel() {
+             this.$emit('cancel4')
             }
         },
     }

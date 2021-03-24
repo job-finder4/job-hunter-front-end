@@ -40,16 +40,19 @@
         </v-col>
       </v-row>
     </v-card-text>
-
     <v-card-text>
-      <MainApply :dialog="dialog"/>
+      requirements
+    </v-card-text>
+    <v-card-text>
+      <MainApply @cancel4="dialog=false" :dialog="dialog"/>
     </v-card-text>
 
     <v-card-actions>
+      {{dialog}}
       <v-btn color="orange" text>
         Save
       </v-btn>
-      <v-btn color="orange" text>
+      <v-btn color="orange" text @click="dialog=true">
         Apply
       </v-btn>
     </v-card-actions>
@@ -67,7 +70,7 @@
         data() {
             return {
                 loadedJobad: null,
-                dialog:true
+                dialog:false
             }
         },
         methods: {},
