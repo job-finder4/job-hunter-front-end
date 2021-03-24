@@ -5,7 +5,7 @@
       <v-card
         flat
         tile
-        class="grey lighten-1 black--text text-center"
+        class="blue-grey lighten-4 black--text text-center"
       >
         <v-card-text>
           <v-btn
@@ -25,6 +25,34 @@
         </v-card-text>
 
         <v-divider></v-divider>
+
+        <v-row>
+          <v-col>
+            For JobSeeker
+            <v-list>
+              <v-list-item >
+                <v-list-item-title>
+
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-col>
+          <v-col>
+            For Employer
+            <v-list>
+              <v-list-item to="/pricing">
+                <v-list-item-title>
+                    pricing
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item to="/pricing">
+                <v-list-item-title>
+                  pricing
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
 
         <v-card-text>
           {{ new Date().getFullYear() }} — <strong>Job Hunter</strong>

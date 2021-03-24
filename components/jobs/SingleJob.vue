@@ -16,10 +16,30 @@
           <v-list-item class="subtitle-2">
             <p><v-icon>mdi-map-marker</v-icon>{{jobad.data.attributes.location}}</p>
             <p class="ml-2"><v-icon>mdi-calendar-month</v-icon>{{jobad.data.attributes.approved_at}}</p>
+            <p class="ml-2"><v-icon>mdi-clock-time-four-outline</v-icon>
+              job time {{ jobad.data.attributes.job_time}}
+            </p>
+            <p class="ml-2">
+              <v-icon>
+                mdi-briefcase
+              </v-icon>
+              job type
+              {{jobad.data.attributes.job_type}}
+            </p>
           </v-list-item>
 
           <v-list-item>
+            <v-icon>
+              mdi-cash-multiple
+            </v-icon>
+            from
             {{jobad.data.attributes.min_salary}}
+            to
+            {{jobad.data.attributes.max_salary}}
+          </v-list-item>
+
+          <v-list-item>
+
           </v-list-item>
         </v-list>
       </v-card-title>
@@ -43,6 +63,7 @@
 </template>
 
 <script>
+
     export default {
         name: "SingleJob",
         props: {
@@ -51,6 +72,7 @@
                 required: true
             },
         },
+
         methods: {
             apply() {
 

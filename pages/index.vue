@@ -4,14 +4,10 @@
       <v-card
         flat
       >
-        <v-card-title class="headline lighten-3">
-          Search for your next job
+        <v-card-title class="headline blue-grey--text">
+          Search for your next job<br>
+          Find the right fit.
         </v-card-title>
-
-        <v-card-text class="">
-          Don't search for jobs.
-          Find the right fit instead.
-        </v-card-text>
 
         <v-card-text>
           <v-row width="80%" class="d-flex justify-start">
@@ -78,7 +74,11 @@
 <v-col md="5">
   <v-img src=""></v-img>
 </v-col>
+    <v-row>
+      <p>popular searches</p>
+    </v-row>
   </v-row>
+
 </template>
 
 <script>
