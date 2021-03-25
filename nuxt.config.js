@@ -142,6 +142,7 @@ export default {
         clientSecret: process.env.PASSPORT_CLIENT_SECRET,
         grantType: 'password',
       },
+
     },
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

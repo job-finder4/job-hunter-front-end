@@ -84,7 +84,7 @@
                 this.error = null
 
                 await this.$axios
-                    .$post('/backend/api/v1/register', {
+                    .$post('/backend/api/register', {
                         ...this.form,
                         password_confirmation: this.form.password,
                     })

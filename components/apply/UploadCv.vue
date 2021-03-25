@@ -35,7 +35,7 @@
                 // See https://rowanwins.github.io/vue-dropzone/docs/dist/index.html#/props
                 options: {
                     // important : set autoProcessQueue on false
-                    url: '/backensd/api/cvs',
+                    url: '/backend/api/cvs',
                     maxFilesize: 4,
                     acceptedFiles: 'application/pdf',
                     paramName: "cv_file",

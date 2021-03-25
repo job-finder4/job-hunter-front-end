@@ -4,7 +4,7 @@
       <v-card-title class="font-weight-medium ">
 
         <v-list>
-          <v-list-item :to="'/'+jobad.links.self">
+          <v-list-item :to="/jobs/+jobad.data.id">
             <v-list-item-title>
               <p class="blue--text headline">
                 {{jobad.data.attributes.title}}
