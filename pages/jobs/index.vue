@@ -1,33 +1,51 @@
 <template>
   <div>
-    <v-btn @click="fetchJobs" color="orange" text>Share</v-btn>
-    <div v-if="jobs.length!==0">
-      <single-job v-for="(jobad) in jobs.data.data" class="mt-2" :jobad="jobad"/>
+    <div v-if="jobads.length!==0">
+      <single-job v-for="(jobad,index) in jobads" class="mt-2" :key="jobad.id" :jobad="jobad"/>
     </div>
   </div>
 </template>
 
 <script>
-  import SingleJob from "~/components/jobs/SingleJob";
+    import SingleJob from "~/components/jobs/SingleJob";
+
     export default {
-        components:{
-          SingleJob
+        components: {
+            SingleJob
+        },
+        computed: {
+            jobads() {
+                let res = this.$store.getters.getAllJobads
+                return res
+            },
+        },
+        created() {
+            this.$store.dispatch('getJobads')
         },
         data() {
             return {
-                jobs: []
+                jobs: [],
+                applyDialog: false
             }
         },
-        methods: {
-            fetchJobs() {
-                this.$axios.get('/backend/api/jobads')
-                    .then((data) => {
-                        this.jobs = data
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            }
+        asyncData(context) {
+            return context.app.$axios
+                .$get('backend/api/jobads')
+                .then(data => {
+                    return {
+                        jobs: data
+                    };
+                })
+                .catch(e => context.error());
         },
+        async fetch() {
+            this.$axios.$get('/backend/api/jobads')
+                .then((data) => {
+                    this.jobs = data
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
     }
 </script>

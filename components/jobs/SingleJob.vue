@@ -2,7 +2,6 @@
   <div>
     <v-card rounded shaped>
       <v-card-title class="font-weight-medium ">
-
         <v-list>
           <v-list-item :to="/jobs/+jobad.data.id">
             <v-list-item-title>
@@ -50,11 +49,15 @@
           {{jobad.data.attributes.description}}
         </p>
       </v-card-text>
+      <v-card-text>
+        <MainApply v-if="applyDialog" @cancel4="applyDialog=false" :jobad="jobad" :dialog="applyDialog"/>
+      </v-card-text>
 
       <v-card-actions>
         <div v-if="this.$auth.loggedIn">
           <v-btn color="blue" rounded outlined>Save</v-btn>
-          <v-btn color="blue" rounded outlined>Apply</v-btn>
+          <v-btn v-if="!jobad.data.attributes.applied_at" @click="applyDialog=true" color="blue" rounded outlined>Apply</v-btn>
+          <v-btn v-if="jobad.data.attributes.applied_at"  color="blue" text rounded outlined disabled>Already Applied</v-btn>
         </div>
       </v-card-actions>
 
@@ -63,16 +66,24 @@
 </template>
 
 <script>
+    import MainApply from "~/components/apply/MainApply";
 
     export default {
         name: "SingleJob",
+        components:{
+          MainApply
+        },
         props: {
             jobad: {
                 type: Object,
                 required: true
             },
         },
-
+        data() {
+            return {
+                applyDialog: false
+            }
+        },
         methods: {
             apply() {
 

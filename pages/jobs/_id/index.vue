@@ -8,6 +8,11 @@
         <p class="blue--text headline bold--text">
           {{loadedJobad.data.attributes.title}}
         </p>
+        <p class="blue--text  bold--text">
+          <a href="">
+            {{loadedJobad.data.attributes.company.data.attributes.name}}
+          </a>
+        </p>
       </v-list-item-title>
     </v-list-item>
     <v-divider></v-divider>
@@ -23,6 +28,7 @@
           </v-card-subtitle>
         </v-col>
       </v-row>
+
       <v-row>
         <v-col class="ml-2" md="2">
           Job Details
@@ -39,22 +45,38 @@
           </v-row>
         </v-col>
       </v-row>
+
     </v-card-text>
+<v-card flat>
+
+    <v-card-title>
+      Skills Requried For The Job
+    </v-card-title>
     <v-card-text>
-      requirements
+      <v-row v-for="skill in loadedJobad.data.attributes.skills.data">
+        <v-list-item>
+          <v-list-item color="blue-grey">
+            <v-list-item-content>
+              {{skill.data.attributes.name}}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item>
+      </v-row>
     </v-card-text>
+</v-card>
+
     <v-card-text>
-      <MainApply @cancel4="dialog=false" :dialog="dialog"/>
+      <MainApply v-if="dialog" @cancel4="dialog=false" :jobad="loadedJobad" :dialog="dialog"/>
     </v-card-text>
 
     <v-card-actions>
-      {{dialog}}
       <v-btn color="orange" text>
         Save
       </v-btn>
-      <v-btn color="orange" text @click="dialog=true">
+      <v-btn v-if="!loadedJobad.data.attributes.applied_at" color="orange" text @click="dialog=true">
         Apply
       </v-btn>
+      <v-btn v-if="loadedJobad.data.attributes.applied_at"  color="blue" text rounded outlined disabled>Already Applied</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -73,7 +95,9 @@
                 dialog:false
             }
         },
-        methods: {},
+        methods: {
+
+        },
         // asyncData(context) {
         //     console.log('ddddddddddd')
         //     return context.app.$axios
@@ -96,5 +120,3 @@
     }
 </script>
 
-<style scoped>
-</style>

@@ -11,23 +11,26 @@
           <p>click to browse or drag your file here</p>
         </dropzone>
       </div>
+      <v-row justify="center" align-content-md="center">
+        <v-text-field  v-model="options.params.title" placeholder="enter the title of Your cv"></v-text-field>
+      </v-row>
     </v-card-text>
+
     <v-card-actions>
       <v-btn @click="uploadDaniel">proceed upload</v-btn>
       <v-btn @click="reset">reset</v-btn>
     </v-card-actions>
+
   </v-card>
 </template>
 
 <script>
     import Dropzone from 'nuxt-dropzone'
     import 'nuxt-dropzone/dropzone.css'
-    import FileUpload from 'v-file-upload'
 
     export default {
         components: {
             Dropzone,
-            FileUpload
         },
         data() {
             return {
@@ -43,7 +46,7 @@
                     addRemoveLinks: true,
                     maxFiles: 1,
                     params: {
-                        title: 's'
+                        title: 'default Name'
                     },
                     headers: {"Authorization": 'Bearer ' + this.$store.getters.getToken},
                 }
@@ -61,13 +64,16 @@
                     comp.dropzoneError = {'code': xhr.status, 'message': xhr.statusText}
                 }
             });
+            c.on("success", function (cv) {
+                comp.$emit('cancel48')
+            });
         },
         methods: {
             reset() {
                 this.$refs.el.dropzone.removeAllFiles()
             },
             uploadDaniel() {
-                this.$refs.el.dropzone.processQueue();
+                this.$refs.el.dropzone.processQueue()
             },
         },
     }

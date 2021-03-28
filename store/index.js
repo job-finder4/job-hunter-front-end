@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user'
+import jobads from './jobads'
 
 import Cookie from "js-cookie";
 // import axios from 'axios'
@@ -68,11 +69,12 @@ const vuexStore = () => {
           console.log('initssss')
           token = req.headers.cookie.split(";")
             .find(c => c.trim().startsWith("auth._token.laravelPassportPassword"))
-          const c = 'auth._token.laravelPassportPassword=Bearer%'
-          token = token.substring(c.length +3)
           if (!token) {
             return;
           }
+          const c = 'auth._token.laravelPassportPassword=Bearer%'
+          token = token.substring(c.length +3)
+
           expirationDate = req.headers.cookie
             .split(";")
             .find(c => c.trim().startsWith("auth._token_expiration.laravelPassportPassword"))
@@ -90,7 +92,7 @@ const vuexStore = () => {
       }
     },
 
-    modules: {user}
+    modules: {user,jobads}
   })
 }
 
