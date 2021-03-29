@@ -11,12 +11,12 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item nuxt to="/inspire">
+        <v-list-item nuxt to="/jobs">
           <v-list-item-action>
             <v-icon>mdi-airballoon</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Inspire</v-list-item-title>
+            <v-list-item-title>Jobs</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -35,6 +35,12 @@
       </v-toolbar-title>
 
       <v-spacer/>
+      <v-btn
+        text
+        to="/"
+      >
+        Home
+      </v-btn>
 
       <v-btn
         text
@@ -99,6 +105,7 @@
 
 <script>
     export default {
+        middleware: ['check-auth'],
         data() {
             return {
                 drawer: false,

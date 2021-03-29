@@ -1,11 +1,19 @@
 export default {
   state: {
-    user:null
+    user: null,
+    //--------------danie edit---------------
+    myCvs: []
+    //---------------------------------
   },
   getters: {
     user(state) {
       return state.user
     },
+    //--------------danie edit---------------
+    getMyCvs(state) {
+      return state.myCvs
+    }
+    //---------------------------------
   },
   mutations: {
     LOGOUT() {
@@ -13,12 +21,18 @@ export default {
       localStorage.removeItem('refresh_token')
     },
     SET_USER(state) {
-      state.user=$auth.user.data
+      state.user = $auth.user.data
     },
     RETRIEVE_USER(state, user) {
       state.user = user;
     },
 
+    //----------------daniel edit-------------------
+    GET_MY_CVS(state, cvs) {
+      console.log(cvs)
+      state.myCvs = cvs
+    }
+    //------------------------------------------
   },
   actions: {
     logout({commit, state}) {
@@ -56,17 +70,16 @@ export default {
       })
     },
     register({dispatch, commit}, user) {
-
-     let formData = new FormData()
+      let formData = new FormData()
       formData.append('file', user.profileImage)
       formData.append('email', user.email)
-      formData.append('password',user.password )
-      formData.append('first_name',user.first_name )
-      formData.append('last_name',user.last_name )
+      formData.append('password', user.password)
+      formData.append('first_name', user.first_name)
+      formData.append('last_name', user.last_name)
 
       return new Promise((resolve, reject) => {
 
-        apiClient.post( 'register',
+        apiClient.post('register',
           formData,
           {
             headers: {
@@ -92,7 +105,7 @@ export default {
           console.log(error)
         })
     },
-    changeMyPassword ({ commit }, { user, passwordInformations }) {
+    changeMyPassword({commit}, {user, passwordInformations}) {
       apiClient.put('/users/' + user.id + '/change_password', {
         oldPassword: passwordInformations.oldPassword,
         newPassword: passwordInformations.newPassword
@@ -109,6 +122,15 @@ export default {
             type: 'error'
           })
         })
+    },
+
+    //-daniel edit--------------------------
+    getMyCvs({commit}) {
+      this.$axios.$get('backend/api/users/' + this.$auth.user.data.id + '/cvs/')
+        .then(response => {
+          commit('GET_MY_CVS',response.data)
+        })
+      },
     }
-  }
+    //---------------------------------------
 }

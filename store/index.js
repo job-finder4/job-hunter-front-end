@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user'
+import jobads from './jobads'
 
 import Cookie from "js-cookie";
 // import axios from 'axios'
@@ -16,12 +17,15 @@ const vuexStore = () => {
     },
     getters: {
       isAuthenticated(state) {
-        if (process.server){
+        if (process.server) {
           return state.token != null;
         }
-        if(process.client){
+        if (process.client) {
           return state.auth.loggedIn
         }
+      },
+      getToken(state) {
+        return state.token
       }
       // isLoggedIn(state){
       //   return !!state.accessToken
@@ -68,23 +72,27 @@ const vuexStore = () => {
           if (!token) {
             return;
           }
+          const c = 'auth._token.laravelPassportPassword=Bearer%'
+          token = token.substring(c.length +3)
+
           expirationDate = req.headers.cookie
             .split(";")
             .find(c => c.trim().startsWith("auth._token_expiration.laravelPassportPassword"))
         } else {
-          token = localStorage.getItem("token");
-          expirationDate = localStorage.getItem("tokenExpiration");
+          token = localStorage.getItem("auth._token.laravelPassportPassword");
+          expirationDate = localStorage.getItem("auth._token_expiration.laravelPassportPassword");
         }
         if (new Date().getTime() > +expirationDate || !token) {
           console.log("No token or invalid token");
           // vuexContext.dispatch("logout");
           return;
         }
+
         vuexContext.commit("setToken", token);
       }
     },
 
-    modules: {user}
+    modules: {user,jobads}
   })
 }
 
