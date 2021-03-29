@@ -32,7 +32,7 @@
                 <template v-for="(cv,index) in cvs">
                   <v-radio :value="cv.data.id" :label="cv.data.attributes.title"/>
                   <v-btn icon small><a target="_blank" :href="'/backend/api/cvs/'+cv.data.id+'/download'">
-                    <v-icon>mdi-eye</v-icon>
+                    <v-icon>mdi-download</v-icon>
                   </a></v-btn>
                 </template>
               </v-radio-group>
@@ -100,6 +100,7 @@
                 this.$store.dispatch('applyJob', {'job_id': this.jobad.data.id, 'cv_id': this.selectedCv})
                     .then((data) => {
                         this.cancel()
+                      this.$emit('applied')
                     })
             },
             refreshMyCvs() {

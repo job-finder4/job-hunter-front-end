@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" class="light-blue lighten-4">
     <v-navigation-drawer v-if="drawer" v-model="drawer" fixed app light
     >
       <v-list dense>

@@ -1,10 +1,10 @@
-import { extend } from "vee-validate";
-import { required, email, max } from "vee-validate/dist/rules";
+import {extend} from "vee-validate";
+import {required, email, max} from "vee-validate/dist/rules";
 
 extend("name", {
   validate(value, args) {
     //let startsWith=value.match;
-    return    isNaN(parseInt(value[0], 10))
+    return isNaN(parseInt(value[0], 10))
     // return  value=== args.name;
   },
   message: "The name field should not start with number"
@@ -14,7 +14,7 @@ extend("name2", {
     var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
     //let startsWith=value.match;
-    return    !format.test(value)
+    return !format.test(value)
     // return  value=== args.name;
   },
   message: "The name should not contain special characters"
@@ -37,7 +37,7 @@ extend("email", {
 });
 extend("confirmed", {
   validate(value, args) {
-    return  value=== args.password;
+    return value === args.password;
   },
   params: ['password'],
   message: "This {_field_} field confirmation does not match"
@@ -61,4 +61,11 @@ extend('number', {
   validate: value => value.match(/[0-9]/g) !== null
 })
 
+extend('phone', {
+  message: "not valid phone number",
+  validate(value) {
+    var phoneNum = /^\(?([0-0]{1})\)?[-. ]?([9-9]{1})[-. ]?([0-9]{8})$/;
+    return value.match(phoneNum)
+  },
+})
 

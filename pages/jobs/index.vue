@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <div v-if="jobads.length!==0">
-      <single-job v-for="(jobad,index) in jobads" class="mt-2" :key="jobad.id" :jobad="jobad"/>
-    </div>
-  </div>
+  <v-row>
+    <v-col md="5">
+      <div v-if="jobads.length!==0">
+        <single-job v-for="(jobad,index) in jobads" class="mt-2" :key="jobad.id" :jobad="jobad"/>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -19,33 +21,24 @@
                 return res
             },
         },
-        created() {
-            this.$store.dispatch('getJobads')
-        },
         data() {
             return {
                 jobs: [],
                 applyDialog: false
             }
         },
-        asyncData(context) {
-            return context.app.$axios
-                .$get('backend/api/jobads')
-                .then(data => {
-                    return {
-                        jobs: data
-                    };
-                })
-                .catch(e => context.error());
-        },
+        // asyncData(context) {
+        //     return context.app.$axios
+        //         .$get('backend/api/jobads')
+        //         .then(data => {
+        //             return {
+        //                 jobs: data
+        //             };
+        //         })
+        //         .catch(e => context.error());
+        // },
         async fetch() {
-            this.$axios.$get('/backend/api/jobads')
-                .then((data) => {
-                    this.jobs = data
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+          this.$store.dispatch('getJobads')
         }
     }
 </script>

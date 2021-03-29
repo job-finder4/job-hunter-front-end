@@ -5,4 +5,5 @@
   font-weight: 700;
   font-display: swap;
   src: url('~assets/fonts/Chango-Regular.ttf') format('truetype');
+  src: url('~assets/fonts/Nunito/Nunito-Regular.ttf') format('truetype');
 }
