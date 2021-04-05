@@ -83,6 +83,7 @@
 
 <script>
     export default {
+      middleware:['should-not-company'],
         data: () => ({
             descriptionLimit: 60,
             entries: [],

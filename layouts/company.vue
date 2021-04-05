@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire" class="light-blue lighten-4">
+  <v-app id="inspire" class="lighten-2">
     <v-navigation-drawer v-if="drawer" v-model="drawer" fixed app light
     >
       <v-list dense>
@@ -11,41 +11,31 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item nuxt to="/jobs">
-          <v-list-item-action>
-            <v-icon>mdi-airballoon</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Jobs</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar
       fixed
-      color="blue-grey lighten-5" app>
+      color="blue lighten-2" app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
 
       <v-toolbar-title>
-
         <v-btn exact-active-class="b" active-class="no-active" link text to="/">
           Job Hunter
         </v-btn>
-
       </v-toolbar-title>
 
       <v-spacer/>
-      <v-btn
-        text
-        to="/"
-      >
-        Home
+
+      <v-btn text to="/">
+        Home,Yo Company
       </v-btn>
 
-      <v-btn
-        text
-        to="/login"
-      >
+      <v-btn disabled v-if="this.$store.getters.isAuthenticated" text>
+        {{this.$store.getters.getUser.data.attributes.name}}
+      </v-btn>
+
+      <v-btn v-if="!this.$auth.loggedIn" text to="/login">
         Sign In
       </v-btn>
 
@@ -63,6 +53,7 @@
             <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
+
         <v-list v-if="!this.$auth.loggedIn">
           <v-list-item>
             <v-list-item-title>
@@ -105,13 +96,14 @@
 
 <script>
   export default {
-    middleware: [],
+    middleware: [ 'should-company'],
     data() {
       return {
         drawer: false,
         error: '',
         items: [
-          {title: 'Profile', to: '/profile'},
+          {title: 'profile', to: '/company/profile'},
+          {title: 'my jobs', to: '/company/my-jobs'},
         ],
       }
     },
@@ -119,14 +111,13 @@
       async logout() {
         this.error = null
 
-        await this.$auth.logout('laravelPassportPassword')
+        await this.$auth
+          .logout('laravelPassportPassword')
           .then(() => {
             this.$store.dispatch('logout')
-            this.$toast.success('Successfully LoggedOut')
             this.$router.push('/')
-            this.$toast.success('Successfully LoggedOut')
           })
-          .catch((e) => (this.$toast.error('Error while authenticating')))
+          .catch((e) => (this.error = e.response.data))
       },
     },
   }

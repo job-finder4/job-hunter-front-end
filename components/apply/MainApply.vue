@@ -26,7 +26,6 @@
             <v-card-title>
               Choose From Your Cvs
             </v-card-title>
-
             <v-card-text>
               <v-radio-group row v-model="selectedCv" color="error" text>
                 <template v-for="(cv,index) in cvs">
@@ -82,8 +81,7 @@
         },
         computed:{
             cvs(){
-                let res = this.$store.getters.getMyCvs
-                return res
+                return this.$store.getters.myCvs
             },
         },
         data() {
@@ -108,21 +106,11 @@
                     .then(()=>{
                         this.uploadNewCv = false
                     })
-                // this.$axios.$get('backend/api/users/' + this.$nuxt.context.store.$auth.$state.user.data.id + '/cvs/')
-                //     .then(data => {
-                //         this.cvs = data
-                //         this.uploadNewCv = false
-                //     })
             }
         },
         created(){
             this.$store.dispatch('getMyCvs')
         },
-        // async fetch() {
-        //     this.$axios.$get('backend/api/users/' + this.$nuxt.context.store.$auth.$state.user.data.id + '/cvs/')
-        //         .then(data => {
-        //             this.cvs = data
-        //         })
-        // }
+
     }
 </script>

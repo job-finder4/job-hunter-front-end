@@ -63,7 +63,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <div v-if="this.$auth.loggedIn">
+        <div v-if="this.$auth.loggedIn&&this.$store.getters.getUserRole!=='company'">
           <v-btn color="blue" rounded outlined>Save</v-btn>
           <v-btn v-if="!jobad.data.attributes.applied_at" @click="applyDialog=true" color="blue" rounded outlined>Apply</v-btn>
           <v-btn v-if="jobad.data.attributes.applied_at"  color="blue" text rounded outlined disabled>Already Applied</v-btn>

@@ -46,12 +46,20 @@
           <v-card-actions class="px-8">
             <div class="teal--text">
               If Dont Have An Account
-              <nuxt-link style="text-decoration: none"
-                         class="app-link"
-                         :to="{name:'register'}"
-              >SignUp
-              </nuxt-link>
-              Now
+              <v-btn>
+                <nuxt-link style="text-decoration: none"
+                           class="app-link"
+                           to="/auth/register_jobseeker"
+                >SignUp As JobSeeker
+                </nuxt-link>
+              </v-btn>
+              <v-btn>
+                <nuxt-link style="text-decoration: none"
+                           class="app-link"
+                           to="/auth/register_company"
+                >SignUp As Company
+                </nuxt-link>
+              </v-btn>
             </div>
           </v-card-actions>
         </v-card>
@@ -66,53 +74,64 @@ import VTextFieldWithValidation from '~/components/inputs/VTextFieldWithValidati
 import VSelectWithValidation from '~/components/inputs/VSelectWithValidation';
 
 export default {
-    middleware: ['check-auth', 'guest'],
-    layout: 'default',
-    auth: 'guest',
-    created() {
-        console.log(this.$auth.loggedIn)
-    },
-    data() {
-        return {
-            isLoading: false,
-            user: {},
-            isLogin: false,
-            isSignUp: true,
-            password: 'Password',
-            form: {
-                username: '',
-                password: '',
-            },
-            error: null,
-        }
-    },
-    components: {
-        ValidationObserver,
-        ValidationProvider,
-        VTextFieldWithValidation,
-        VSelectWithValidation
-    },
-    methods: {
-        async loginPassport() {
-            this.isLoading=true
-            this.error = null
+  middleware: ['guest'],
+  layout: 'default',
+  auth: 'guest',
+  data() {
+    return {
+      isLoading: false,
+      user: {},
+      isLogin: false,
+      isSignUp: true,
+      password: 'Password',
+      form: {
+        username: '',
+        password: '',
+      },
+      error: null,
+    }
+  },
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+    VTextFieldWithValidation,
+    VSelectWithValidation
+  },
+  methods: {
+    async loginPassport() {
+      this.isLoading = true
+      this.error = null
 
-            await this.$auth
-                .loginWith('laravelPassportPassword', {data: this.form})
-                .then(() => {
-                    this.$store.commit('SET_USER')
-                    this.isLoading=false
-                    this.$router.push('/profile')
-                })
-                .catch((e) => {
-                    this.error = 'Incorrect email or password.'
-                    this.isLoading=false
-                })
-        },
+      await this.$auth
+        .loginWith('laravelPassportPassword', {data: this.form})
+        .then((response) => {
+          // this.$store.commit('SET_USER')
+          this.isLoading = false
+          this.$toast.success('Successfully authenticated')
+
+          this.$axios.defaults.headers.common["Authorization"] = this.$auth.strategy.token.get()
+          this.$axios.$get('backend/api/user').then((res) => {
+            this.$store.commit('setUserData', res);
+
+            if(this.$store.getters.getUserRole==='company'){
+              this.$router.push('/company')
+            }
+            if(this.$store.getters.getUserRole==='jobseeker'){
+              this.$router.push('/')
+            }
+          })
+          .catch((error)=>{
+            this.$toast.error('Error while authenticating')
+          })
+        })
+        .catch((e) => {
+          this.error = 'Incorrect email or password.'
+          this.isLoading = false
+        })
     },
+  },
 }
 </script>
 
 <style>
-
 </style>

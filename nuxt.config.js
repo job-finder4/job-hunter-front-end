@@ -28,7 +28,8 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    "~/plugins/vee-validate.js"
+    "~/plugins/vee-validate.js",
+    "~/plugins/axiosD.js",
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -96,7 +97,7 @@ export default {
     // https://go.nuxtjs.dev/content
     // '@nuxt/content',
     '@nuxtjs/auth-next',
-    // '@nuxtjs/toast',
+    '@nuxtjs/toast',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -104,7 +105,6 @@ export default {
     proxy: true,
     baseURL: process.env.API_URL,
   },
-
   proxy: {
     '/backend': {
       target: process.env.API_URL,
@@ -125,7 +125,7 @@ export default {
   // Auth module configuration (https://dev.auth.nuxtjs.org/)
   auth: {
     redirect: {
-      home: '/profile',
+      home: '/',
     },
     strategies: {
       laravelPassportPasswordGrant: {
@@ -133,16 +133,16 @@ export default {
         provider: 'laravel/passport',
         url: '/backend',
         endpoints: {
-          logout: '/api/v1/logout',
-          user: {
-            url: '/api/v1/user',
-          },
+          logout: '/api/auth/logout',
+          user:false,
+          // user: {
+          //   url: '/api/user',
+          // },
         },
         clientId: process.env.PASSPORT_CLIENT_ID,
         clientSecret: process.env.PASSPORT_CLIENT_SECRET,
         grantType: 'password',
       },
-
     },
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

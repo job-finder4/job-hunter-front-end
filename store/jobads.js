@@ -1,42 +1,79 @@
 export default {
   state: {
-    jobads:[]
+    jobads: []
   },
   getters: {
+    //jobSeeker
     getAllJobads(state) {
       return state.jobads
     },
+    //company
+
   },
   mutations: {
-    APPLY_JOB(state,data) {
-      let oldJob=state.jobads.find((job => job.data.id === data.attributes.jobad.data.id))
+    //jobSeeker
+    APPLY_JOB(state, data) {
+      let oldJob = state.jobads.find((job => job.data.id === data.attributes.jobad.data.id))
       console.log(oldJob)
-      oldJob.data.attributes.applied_at=data.attributes.applied_at
-      // console.log(oldJob)
+      oldJob.data.attributes.applied_at = data.attributes.applied_at
     },
-    GET_ALL_JOBS(state,data){
-      state.jobads=data
+    GET_ALL_JOBS(state, data) {
+      state.jobads = data
     }
+
+    //Company
+
   },
   actions: {
+    //jobSeeker
     applyJob({commit}, data) {
-      console.log(data)
-      this.$axios.post('backend/api/jobads/'+data.job_id+'/applications', {
-        'cv_id':data.cv_id,
+      this.$axios.post('backend/api/jobads/' + data.job_id + '/applications', {
+        'cv_id': data.cv_id,
       })
         .then(response => {
           console.log(response.data.data)
           commit('APPLY_JOB', response.data.data)
         })
-        .catch(error => {})
+        .catch(error => {
+        })
     },
     getJobads({commit}) {
-      this.$axios.get('backend/api/jobads/')
-        .then(response => {
-          console.log(response.data.data)
-          commit('GET_ALL_JOBS',response.data.data)
+      return new Promise((resolve, reject) => {
+        this.$axios.get('backend/api/jobads')
+          .then(response => {
+            console.log(response.data)
+            commit('GET_ALL_JOBS', response.data.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+
+    //company
+    postJob({commit}, {jobData}) {
+      return new Promise((resolve, reject) => {
+        this.$axios.post('backend/api/jobads', {
+          title: jobData.title,
+          min_salary: jobData.range[0],
+          max_salary: jobData.range[1],
+          job_time: jobData.selectedJobTime,
+          location: jobData.location,
+          expiration_date: jobData.expirationDate,
+          description: jobData.description,
+          job_type: jobData.selectedJobType,
+          skills: jobData.skills,
         })
-        .catch(error => {})
+          .then(response => {
+            // commit('POST_JOB', response.data.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     }
+
   },
 }

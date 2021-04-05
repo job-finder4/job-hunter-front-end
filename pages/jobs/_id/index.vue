@@ -85,7 +85,6 @@
       <v-btn v-if="loadedJobad.data.attributes.applied_at" color="blue" text rounded outlined disabled>Already Applied
       </v-btn>
     </v-card-actions>
-
   </v-card>
 </template>
 
@@ -110,22 +109,10 @@ export default {
       this.loadedJobad.data.attributes.applied_at=new Date()
     }
   },
-  // asyncData(context) {
-  //     console.log('ddddddddddd')
-  //     return context.app.$axios
-  //         .$get('backend/api/jobads/' + context.params.id)
-  //         .then(data => {
-  //             return {
-  //                 loadedJobad: {...data, id: context.params.id}
-  //             };
-  //             console.log(data)
-  //         })
-  //         .catch(e => context.error());
-  // },
   async fetch() {
-    this.$axios.$get('backend/api/jobads/' + this.$route.params.id)
-      .then(data => {
-        this.loadedJobad = data
+    return  this.$axios.get('backend/api/jobads/' + this.$route.params.id)
+      .then((res) => {
+        this.loadedJobad = res.data
       })
   }
 }

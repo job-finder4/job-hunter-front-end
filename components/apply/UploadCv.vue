@@ -46,9 +46,9 @@
                     addRemoveLinks: true,
                     maxFiles: 1,
                     params: {
-                        title: 'default Name'
+                        title: 'mycv'
                     },
-                    headers: {"Authorization": 'Bearer ' + this.$store.getters.getToken},
+                    headers: {"Authorization": this.$auth.strategy.token.get()},
                 }
             }
         },
