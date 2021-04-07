@@ -5,28 +5,69 @@
     max-width="400px"
     max-height="400px"
   >
-    <v-row justify="end">
-      <v-menu
-        transition="slide-y-transition"
-        bottom
-      >
+    <v-card-title>
+      <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            color="primary"
-            dark
+            color="teal lighten-4"
             v-bind="attrs"
             v-on="on"
+            v-if="application.data.attributes.status===1"
           >
-            <v-icon>mdi-account-cog-outline </v-icon>
+            <v-icon>mdi-checkbox-marked-circle-outline </v-icon>
+            approved
+          </v-btn>
+          <v-btn
+            color="red lighten-4"
+            v-bind="attrs"
+            v-on="on"
+            v-if="application.data.attributes.status===-1"
+          >
+            <v-icon>mdi-account-off </v-icon>
+            rejected
+          </v-btn>
+          <v-btn
+            color="orange lighten-4"
+            v-bind="attrs"
+            v-on="on"
+            v-if="application.data.attributes.status===0"
+          >
+            <v-icon>mdi-clock-time-eight-outline</v-icon>
+            waiting
           </v-btn>
         </template>
-        <v-list>
-          <v-list-item v-for="(item, i) in items" :key="i">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-row>
+        <span>Application Status</span>
+      </v-tooltip>
+
+
+      <v-row justify="end">
+        <v-menu
+          transition="slide-y-transition"
+          bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-account-cog-outline </v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-icon color="green">mdi-check-bold</v-icon>
+              <v-btn text @click="evaluateJob(1)">approve</v-btn>
+            </v-list-item>
+            <v-list-item>
+              <v-icon color="red">mdi-cancel</v-icon>
+              <v-btn text @click="evaluateJob(-1)">disapprove</v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-row>
+    </v-card-title>
 
     <v-row>
         <v-col md="4">
@@ -54,7 +95,7 @@
             <v-btn x-small outlined color="blue-grey">
               {{application.data.attributes.cv.data.attributes.title}}
               <a target="_blank"
-                 :href="'backend'+application.data.attributes.cv.data.attributes.download_link">
+                 :href="'/backend'+application.data.attributes.cv.data.attributes.download_link">
                 <v-icon>mdi-download</v-icon>
               </a>
             </v-btn>
@@ -64,42 +105,6 @@
         </v-col>
       </v-row>
 
-
-
-<!--    <v-card-title>-->
-<!--      <v-list-item to="/profile/user">-->
-<!--        <v-icon-->
-<!--          large-->
-<!--          left-->
-<!--        >-->
-<!--          mdi-twitter-->
-<!--        </v-icon>-->
-<!--        <span class="title font-weight-bold">-->
-<!--            {{application.data.attributes.user.data.attributes.name}}-->
-<!--          </span>-->
-<!--      </v-list-item>-->
-<!--    </v-card-title>-->
-<!--    <v-card-text class="font-weight-bold">-->
-
-<!--      user email-->
-<!--      <v-list-item>-->
-<!--        {{application.data.attributes.user.data.email}}-->
-<!--      </v-list-item>-->
-
-<!--      <v-row>-->
-<!--        Uploaded Cv-->
-<!--        <v-spacer/>-->
-<!--        <v-btn text exact-active-class="no-active">-->
-<!--          {{application.data.attributes.cv.data.attributes.title}}-->
-<!--          <a target="_blank"-->
-<!--             :href="'backend'+application.data.attributes.cv.data.attributes.download_link">-->
-<!--            <v-icon>mdi-download</v-icon>-->
-<!--          </a>-->
-<!--        </v-btn>-->
-<!--      </v-row>-->
-
-
-<!--    </v-card-text>-->
   </v-card>
 </template>
 
@@ -111,15 +116,17 @@
         type: Object,
         required: true
       },
-      data() {
-        return {
-          items: [
-            { title: 'Click Me' },
-            { title: 'Click Me' },
-            { title: 'Click Me' },
-            { title: 'Click Me 2' },
-          ],
-        }
+    },
+    methods: {
+      evaluateJob(evaluationStatus){
+        this.$store.dispatch('evaluateJob', {
+          jobId:this.application.data.attributes.jobad.data.id,
+          applicationId:this.application.data.id,
+          evaluationStatus:evaluationStatus
+        })
+          .then((res) => {
+
+          })
       },
     },
   }

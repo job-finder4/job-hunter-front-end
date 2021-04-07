@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col md="5">
+    <v-col>
       <div v-if="jobads.length!==0">
         <single-job v-for="(jobad,index) in jobads" class="mt-2" :key="jobad.data.id" :jobad="jobad"/>
       </div>

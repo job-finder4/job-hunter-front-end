@@ -46,19 +46,22 @@
           <v-card-actions class="px-8">
             <div class="teal--text">
               If Dont Have An Account
-              <v-btn>
-                <nuxt-link style="text-decoration: none"
-                           class="app-link"
-                           to="/auth/register_jobseeker"
-                >SignUp As JobSeeker
-                </nuxt-link>
+
+              <v-btn
+                to="/auth/register_jobseeker"
+                text
+                class="text-decoration-underline"
+                color="blue"
+              >
+                SignUp As Company
               </v-btn>
-              <v-btn>
-                <nuxt-link style="text-decoration: none"
-                           class="app-link"
-                           to="/auth/register_company"
-                >SignUp As Company
-                </nuxt-link>
+              <v-btn
+                to="/auth/register_company"
+                class="text-decoration-underline"
+                text
+                color="blue"
+              >
+                SignUp As Company
               </v-btn>
             </div>
           </v-card-actions>
@@ -105,7 +108,6 @@ export default {
       await this.$auth
         .loginWith('laravelPassportPassword', {data: this.form})
         .then((response) => {
-          // this.$store.commit('SET_USER')
           this.isLoading = false
           this.$toast.success('Successfully authenticated')
 

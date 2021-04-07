@@ -65,7 +65,7 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
 import VTextFieldWithValidation from '~/components/inputs/VTextFieldWithValidation';
 
 export default {
-  middleware: ['check-auth', 'guest'],
+  middleware: ['guest'],
   layout: 'default',
   auth: 'guest',
   components: {

@@ -13,6 +13,12 @@ export default {
         }
       }
     },
+
+    //company
+    getMyJobs(state){
+      return state.myJobs
+    }
+
   },
   mutations: {
     //----------------daniel edit-------------------
@@ -43,7 +49,7 @@ export default {
 
 
     //company
-    getMyJobs({commit}) {
+    getMyJobs({commit},jobType) {
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/myjobads')
           .then(response => {

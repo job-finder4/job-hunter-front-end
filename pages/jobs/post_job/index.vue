@@ -21,13 +21,14 @@
           <v-card-text>
             <v-row>
               <v-col md="6">
-                <v-autocomplete
+                <v-combobox
                   :items="jobTitles"
-                  color="white"
                   label="job title"
-                  :value="jobData.title"
-                >
-                </v-autocomplete>
+                  outlined
+                  dense
+                  v-model="jobData.title"
+                ></v-combobox>
+
                 <v-textarea placeholder="description" v-model="jobData.description" outlined/>
                 <v-card
                   class="mx-auto"

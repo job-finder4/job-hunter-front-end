@@ -1,19 +1,24 @@
 <template>
   <div>
-    <v-card rounded>
+    <v-card rounded elevation="2" >
       <v-card-title class="font-weight-medium">
-        <v-list>
-          <v-list-item :to="'my-jobs/'+jobad.data.id">
-            <v-list-item-title class="blue--text headline">
-              {{jobad.data.attributes.title}}
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <v-btn class="apporval-btn" x-small color="red" outlined v-if="!jobad.data.attributes.approved_at">Waiting For
-          Approval
-        </v-btn>
-        <v-btn class="apporval-btn" x-small color="teal" outlined v-if="jobad.data.attributes.approved_at">Approved
-        </v-btn>
+
+          <v-list>
+            <v-list-item :disabled="!jobad.data.attributes.approved_at" :to="'my-jobs/'+jobad.data.id">
+              <v-list-item-title class="blue--text headline">
+                {{jobad.data.attributes.title}}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        <v-row
+          justify="center"
+        >
+          <v-btn class="apporval-btn" x-small color="orange" text v-if="!jobad.data.attributes.approved_at">Waiting For
+            Approval
+          </v-btn>
+          <v-btn class="apporval-btn" x-small color="teal" text v-if="jobad.data.attributes.approved_at">Approved
+          </v-btn>
+        </v-row>
       </v-card-title>
       <v-divider>s</v-divider>
 
@@ -49,20 +54,14 @@
             </p>
           </v-list-item>
 
-          <v-list-item class="text--black text-md-body-1">
-            <v-list-item-content>
-              <v-list-item-title>
+            <v-card-text>
                 Description
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <p>
-              {{jobad.data.attributes.description}}
-            </p>
-          </v-list-item>
-
+              <div class="border-left">
+                <p class=" ml-md-5 mt-md-2 font-weight-light">
+                  {{jobad.data.attributes.description}}
+                </p>
+              </div>
+            </v-card-text>
         </v-list>
 
       </v-card-text>
@@ -86,6 +85,9 @@
 
 <style scoped>
   .apporval-btn {
-    transform: rotate(45deg);
+    transform: rotate(30deg);
+  }
+  .border-left{
+    border-left:grey solid 2px ;
   }
 </style>

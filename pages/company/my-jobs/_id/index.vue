@@ -75,7 +75,7 @@
 
       <v-card-text class="ml-2">
         <ul>
-          <v-row v-for="skill in loadedJobad.data.attributes.skills.data">
+          <v-row  v-for="(skill,index) in loadedJobad.data.attributes.skills.data">
             <li>{{ skill.data.attributes.name }}</li>
           </v-row>
         </ul>
