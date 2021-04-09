@@ -12,7 +12,7 @@
             color="teal lighten-4"
             v-bind="attrs"
             v-on="on"
-            v-if="application.data.attributes.status===1"
+            v-show="application.data.attributes.status===1"
           >
             <v-icon>mdi-checkbox-marked-circle-outline </v-icon>
             approved
@@ -21,7 +21,7 @@
             color="red lighten-4"
             v-bind="attrs"
             v-on="on"
-            v-if="application.data.attributes.status===-1"
+            v-show="application.data.attributes.status===-1"
           >
             <v-icon>mdi-account-off </v-icon>
             rejected
@@ -30,7 +30,7 @@
             color="orange lighten-4"
             v-bind="attrs"
             v-on="on"
-            v-if="application.data.attributes.status===0"
+            v-show="application.data.attributes.status===0"
           >
             <v-icon>mdi-clock-time-eight-outline</v-icon>
             waiting
@@ -92,7 +92,7 @@
           <p><v-icon>mdi-map-marker</v-icon>Latakia</p>
             <strong>
               <v-icon>mdi-file-account</v-icon>Cv</strong>
-            <v-btn x-small outlined color="blue-grey">
+            <v-btn x-small text color="blue-grey">
               {{application.data.attributes.cv.data.attributes.title}}
               <a target="_blank"
                  :href="'/backend'+application.data.attributes.cv.data.attributes.download_link">
@@ -119,13 +119,12 @@
     },
     methods: {
       evaluateJob(evaluationStatus){
-        this.$store.dispatch('evaluateJob', {
+        this.$store.dispatch('evaluateApplication', {
           jobId:this.application.data.attributes.jobad.data.id,
           applicationId:this.application.data.id,
           evaluationStatus:evaluationStatus
         })
           .then((res) => {
-
           })
       },
     },

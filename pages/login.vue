@@ -45,24 +45,26 @@
 
           <v-card-actions class="px-8">
             <div class="teal--text">
-              If Dont Have An Account
+              <v-row class="d-flex ">
+                Dont Have An Account
+                <v-btn
+                  to="/auth/register_jobseeker"
+                  text
+                  class="text-decoration-underline"
+                  color="blue"
+                >
+                  SignUp As JobSeeker
+                </v-btn>
+                <v-btn
+                  to="/auth/register_company"
+                  class="text-decoration-underline"
+                  text
+                  color="blue"
+                >
+                  SignUp As Company
+                </v-btn>
+              </v-row>
 
-              <v-btn
-                to="/auth/register_jobseeker"
-                text
-                class="text-decoration-underline"
-                color="blue"
-              >
-                SignUp As Company
-              </v-btn>
-              <v-btn
-                to="/auth/register_company"
-                class="text-decoration-underline"
-                text
-                color="blue"
-              >
-                SignUp As Company
-              </v-btn>
             </div>
           </v-card-actions>
         </v-card>

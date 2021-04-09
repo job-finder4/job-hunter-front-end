@@ -41,7 +41,6 @@ export default {
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/jobads')
           .then(response => {
-            console.log(response.data)
             commit('GET_ALL_JOBS', response.data.data)
             resolve(response)
           })
@@ -75,20 +74,7 @@ export default {
       })
     },
 
-    evaluateJob({commit}, {jobId, applicationId,evaluationStatus}) {
-      return new Promise((resolve, reject) => {
-        this.$axios.put('backend/api/jobads/' + jobId + '/applications/' + applicationId + '/manage',
-          {
-            'status': evaluationStatus
-          })
-          .then(response => {
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    }
+
 
   },
 }

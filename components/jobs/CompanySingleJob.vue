@@ -10,15 +10,21 @@
               </v-list-item-title>
             </v-list-item>
           </v-list>
+
         <v-row
           justify="center"
         >
           <v-btn class="apporval-btn" x-small color="orange" text v-if="!jobad.data.attributes.approved_at">Waiting For
             Approval
           </v-btn>
-          <v-btn class="apporval-btn" x-small color="teal" text v-if="jobad.data.attributes.approved_at">Approved
-          </v-btn>
+          <template v-if="jobad.data.attributes.approved_at">
+            <v-btn v-if="jobStatus==='expired'" class="apporval-btn" x-small color="red" text >Expired
+            </v-btn>
+            <v-btn v-else class="apporval-btn" x-small color="teal" text >Approved
+            </v-btn>
+          </template>
         </v-row>
+
       </v-card-title>
       <v-divider>s</v-divider>
 
@@ -78,6 +84,10 @@
         type: Object,
         required: true
       },
+      jobStatus: {
+        type: String,
+        required: true
+      }
     },
     methods: {},
   }
