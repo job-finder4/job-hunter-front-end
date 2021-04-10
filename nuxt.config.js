@@ -44,6 +44,7 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     // '@nuxtjs/tailwindcss',
 
+
 ['@nuxtjs/vuetify', {
   customVariables: ['~/assets/variables.scss'],
     theme:
@@ -98,6 +99,8 @@ export default {
     // '@nuxt/content',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
+    '@nuxtjs/laravel-echo',
+
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -120,6 +123,22 @@ export default {
     duration: 5000,
     keepOnHover: true,
     theme: 'outline',
+  },
+  echo: {
+    ssr:false,
+    broadcaster:'pusher',
+    host:process.env.API_URL,
+    key:process.env.PUSHER_APP_KEY,
+    cluster: 'ap2',
+    auth:{
+      headers:[]
+    },
+    // authModule: true,
+    // connectOnLogin:true,
+    // disconnectOnLogout:true,
+    // disableStats: true,
+    // authEndpoint: process.env.API_URL + '/api/broadcasting/auth',
+    plugins:['~/plugins/echo.js']
   },
 
   // Auth module configuration (https://dev.auth.nuxtjs.org/)
