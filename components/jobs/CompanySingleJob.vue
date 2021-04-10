@@ -71,6 +71,13 @@
         </v-list>
 
       </v-card-text>
+
+      <v-card-actions v-if="this.$store.getters.getUserRole==='admin'">
+        <v-btm @click="approveJob">
+          Approve this job
+        </v-btm>
+      </v-card-actions>
+
     </v-card>
   </div>
 </template>
@@ -89,7 +96,10 @@
         required: true
       }
     },
-    methods: {},
+    methods: {
+      approveJob(){
+      }
+    },
   }
 </script>
 

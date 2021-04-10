@@ -111,7 +111,16 @@
         drawer: false,
         error: '',
         items: [
-          {title: 'Profile', to: '/profile'},
+          {
+            title: 'Profile',
+            to: '/profile',
+            'active': true
+          },
+          {
+            title: 'My Applications',
+            to: '/my-applications',
+            'active': this.$store.getters.isAuthenticated
+          },
         ],
       }
     },
@@ -122,7 +131,6 @@
         await this.$auth.logout('laravelPassportPassword')
           .then(() => {
             this.$store.dispatch('logout')
-            this.$toast.success('Successfully LoggedOut')
             this.$router.push('/')
             this.$toast.success('Successfully LoggedOut')
           })
@@ -136,7 +144,6 @@
   .v-btn--active.no-active::before {
     opacity: 0 !important;
   }
-
   .b {
     border: 10px red;
   }

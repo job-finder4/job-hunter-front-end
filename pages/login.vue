@@ -117,18 +117,16 @@ export default {
           this.$axios.$get('backend/api/user').then((res) => {
             this.$store.commit('setUserData', res);
 
-            if(this.$store.getters.getUserRole==='company'){
+            if (this.$store.getters.getUserRole === 'company') {
               this.$router.push('/company')
             }
-            if(this.$store.getters.getUserRole==='jobseeker'){
+            if (this.$store.getters.getUserRole === 'jobseeker') {
               this.$router.push('/')
             }
           })
-          .catch((error)=>{
-            this.$toast.error('Error while authenticating')
-          })
         })
         .catch((e) => {
+          this.$toast.error('Something Wrong')
           this.error = 'Incorrect email or password.'
           this.isLoading = false
         })

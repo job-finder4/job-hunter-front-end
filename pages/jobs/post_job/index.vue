@@ -1,27 +1,17 @@
 <template>
   <v-row>
-    <!--    <v-col md="6">-->
-    <!--      <v-card dark>-->
-    <!--        <v-card-title class="daniel-title white&#45;&#45;text headline">-->
-    <!--          Hire. Jobot uses AI and experienced recruiters to build your team.<br>-->
-    <!--          Our Jobot Pros are experienced recruiters powered with our proprietary AI technology.-->
-    <!--        </v-card-title>-->
-    <!--      </v-card>-->
-    <!--      'expiration_date' => now()->addMonth(),-->
-    <!--      'skills' => Skill::take(2)->get(),-->
-    <!--    </v-col>-->
-
     <v-col>
       <ValidationObserver ref="obs" v-slot="{ invalid, validated, passes }">
         <v-card color="blue-grey lighten-5">
           <v-card-title>
-            A bit More Information
+            enter all required fields
           </v-card-title>
 
           <v-card-text>
             <v-row>
               <v-col md="6">
                 <v-combobox
+                  hint="the title of the job"
                   :items="jobTitles"
                   label="job title"
                   outlined
@@ -30,53 +20,20 @@
                 ></v-combobox>
 
                 <v-textarea placeholder="description" v-model="jobData.description" outlined/>
-                <v-card
-                  class="mx-auto"
-                  max-width="500"
-                >
-                  <v-sheet class="pa-4 primary lighten-2">
-                    <v-text-field
-                      v-model="search"
-                      label="Search Company Directory"
-                      dark
-                      flat
-                      solo-inverted
-                      hide-details
-                      clearable
-                      clear-icon="mdi-close-circle-outline"
-                    ></v-text-field>
-                    <v-checkbox
-                      v-model="caseSensitive"
-                      dark
-                      hide-details
-                      label="Case sensitive search"
-                    ></v-checkbox>
-                  </v-sheet>
-
-                  <v-card height="200px"  style="overflow-y: scroll">
-                    <v-treeview
-                      v-model="jobData.skills"
-                      :items="availableSkills"
-                      :search="search"
-                      :filter="filter"
-                      :open.sync="open"
-                      selectable
-                      selection-type="leaf"
-                    >
-                      <template v-slot:prepend="{ item }">
-                        <v-icon
-                          v-if="item.children"
-                          v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
-                        ></v-icon>
-                      </template>
-                    </v-treeview>
-                  </v-card>
-                </v-card>
-
               </v-col>
               <v-divider vertical></v-divider>
+
               <v-col md="6">
+                <label for="sda">Expiration Date</label>
+                <v-text-field
+                  hint="expiration date"
+                  persistent-hint="ds"
+                  @click="isShowDatePicker=true"
+                  :value="jobData.expirationDate"
+                  outlined>
+                </v-text-field>
                 <v-date-picker
+                  v-if="isShowDatePicker"
                   v-model="jobData.expirationDate"
                   color="green lighten-1"
                   header-color="primary"
@@ -149,13 +106,52 @@
               </template>
             </v-range-slider>
 
-
-
-            <v-btn color="cyan" outlined @click="postJob">
-              Post The Job
-            </v-btn>
+            <v-card>
+              <v-sheet class="pa-4 primary lighten-2">
+                <v-text-field
+                  v-model="search"
+                  label="Search Skills"
+                  dark
+                  flat
+                  solo-inverted
+                  hide-details
+                  clearable
+                  clear-icon="mdi-close-circle-outline"
+                ></v-text-field>
+                <v-checkbox
+                  v-model="caseSensitive"
+                  dark
+                  hide-details
+                  label="Case sensitive search"
+                ></v-checkbox>
+              </v-sheet>
+              <v-card height="200px"  style="overflow-y: scroll">
+                <v-treeview
+                  v-model="jobData.skills"
+                  :items="availableSkills"
+                  :search="search"
+                  :filter="filter"
+                  :open.sync="open"
+                  selectable
+                  selection-type="leaf"
+                >
+                  <template v-slot:prepend="{ item }">
+                    <v-icon
+                      v-if="item.children"
+                      v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
+                    ></v-icon>
+                  </template>
+                </v-treeview>
+              </v-card>
+            </v-card>
 
           </v-card-text>
+          <v-card-actions>
+            <v-btn right color="cyan" outlined @click="postJob">
+              Post The Job
+            </v-btn>
+          </v-card-actions>
+
         </v-card>
       </ValidationObserver>
     </v-col>
@@ -185,6 +181,7 @@
     },
     data() {
       return {
+        isShowDatePicker:false,
         open: [1, 2],
         search: null,
         caseSensitive: false,
@@ -196,7 +193,7 @@
           selectedJobType: '',
           range: [1, 100000],
           location: '',
-          expirationDate: new Date().toISOString().substr(0, 10),
+          expirationDate: new Date( new Date().getFullYear(), new Date().getMonth()+1).toISOString().substr(0, 10),
         },
         maxSalary: 100000,
         minSalary: 1,
