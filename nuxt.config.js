@@ -12,6 +12,11 @@ export default {
     link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
   },
 
+  // server: {
+  //   port: 3000, // default: 3000
+  //   host: '0.0.0.0', // default: localhost
+  // },
+
   // runtime config
   publicRuntimeConfig: {
     apiURL: process.env.API_URL,
@@ -45,49 +50,49 @@ export default {
     // '@nuxtjs/tailwindcss',
 
 
-['@nuxtjs/vuetify', {
-  customVariables: ['~/assets/variables.scss'],
-    theme:
-  {
-    dark: false,
-    daniel:true,
-      themes:
-    {
-      dark: {
-        primary: colors.blue.darken2,
-          accent:
-        colors.grey.darken3,
-          secondary:
-        colors.amber.darken3,
-          info:
-        colors.teal.lighten1,
-          warning:
-        colors.amber.base,
-          error:
-        colors.deepOrange.accent4,
-          success:
-        colors.green.accent3
-      },
-      daniel: {
-        primary: colors.grey.lighten4,
-        accent:
-        colors.grey.darken3,
-        secondary:
-        colors.amber.darken3,
-        info:
-        colors.teal.lighten1,
-        warning:
-        colors.amber.base,
-        error:
-        colors.deepOrange.accent4,
-        success:
-        colors.green.accent3
-      }
-    }
-  }
-}]
+    ['@nuxtjs/vuetify', {
+      customVariables: ['~/assets/variables.scss'],
+      theme:
+        {
+          dark: false,
+          daniel: true,
+          themes:
+            {
+              dark: {
+                primary: colors.blue.darken2,
+                accent:
+                colors.grey.darken3,
+                secondary:
+                colors.amber.darken3,
+                info:
+                colors.teal.lighten1,
+                warning:
+                colors.amber.base,
+                error:
+                colors.deepOrange.accent4,
+                success:
+                colors.green.accent3
+              },
+              daniel: {
+                primary: colors.grey.lighten4,
+                accent:
+                colors.grey.darken3,
+                secondary:
+                colors.amber.darken3,
+                info:
+                colors.teal.lighten1,
+                warning:
+                colors.amber.base,
+                error:
+                colors.deepOrange.accent4,
+                success:
+                colors.green.accent3
+              }
+            }
+        }
+    }]
 
-],
+  ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
@@ -125,20 +130,19 @@ export default {
     theme: 'outline',
   },
   echo: {
-    ssr:false,
-    broadcaster:'pusher',
-    host:process.env.API_URL,
-    key:process.env.PUSHER_APP_KEY,
+    ssr: false,
+    broadcaster: 'pusher',
+    host: process.env.API_URL,
+    key: process.env.PUSHER_APP_KEY,
     cluster: 'ap2',
-    auth:{
-      headers:[]
-    },
+    wsHost: process.env.WEBSOCKET_BASE_URL,
+    wsPort: 6001,
     // authModule: true,
     // connectOnLogin:true,
     // disconnectOnLogout:true,
     // disableStats: true,
-    // authEndpoint: process.env.API_URL + '/api/broadcasting/auth',
-    plugins:['~/plugins/echo.js']
+    authEndpoint: process.env.API_URL + '/api/broadcasting/auth',
+    plugins: ['~/plugins/echo.js']
   },
 
   // Auth module configuration (https://dev.auth.nuxtjs.org/)
@@ -153,7 +157,7 @@ export default {
         url: '/backend',
         endpoints: {
           logout: '/api/auth/logout',
-          user:false,
+          user: false,
           // user: {
           //   url: '/api/user',
           // },

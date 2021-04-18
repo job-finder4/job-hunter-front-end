@@ -42,12 +42,27 @@
         Home
       </v-btn>
 
+      <v-btn disabled v-if="this.$store.getters.isAuthenticated" text>
+        <!--        {{user.data.attributes.name}}-->
+      </v-btn>
+
       <v-btn
         text
         to="/login"
+        v-if="!this.$auth.loggedIn"
       >
         Sign In
       </v-btn>
+
+<!--      <notifications>-->
+<!--        <template v-slot:activator="{ on, attrs }">-->
+<!--          <v-btn @click="on" :attrs="attrs">-->
+<!--            <v-icon>mdi-bell</v-icon>-->
+<!--            Notifications-->
+<!--          </v-btn>-->
+<!--        </template>-->
+<!--      </notifications>-->
+
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -78,15 +93,18 @@
               Sign Out
             </v-list-item-title>
           </v-list-item>
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            :to="item.to"
-          >
-            <v-list-item-title>
-              {{ item.title }}
-            </v-list-item-title>
-          </v-list-item>
+          <template v-for="(item, index) in items">
+            <v-list-item
+              :key="item.id"
+              :to="item.to"
+              v-if="item.active"
+            >
+              <v-list-item-title>
+                {{ item.title }}
+              </v-list-item-title>
+            </v-list-item>
+          </template>
+
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -118,10 +136,20 @@
           },
           {
             title: 'My Applications',
-            to: '/my-applications',
-            'active': this.$store.getters.isAuthenticated
+            to: '/applied-jobs',
+            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'jobSeeker'
+          },
+          {
+            title: 'posted-jobs',
+            to: '/admin/posted-jobs',
+            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'admin'
           },
         ],
+      }
+    },
+    computed: {
+      user() {
+        return this.$store.getters.getUser
       }
     },
     methods: {
@@ -144,6 +172,7 @@
   .v-btn--active.no-active::before {
     opacity: 0 !important;
   }
+
   .b {
     border: 10px red;
   }

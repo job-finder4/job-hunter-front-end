@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card max-width="80%">
     <v-card-text>
       <div>
         Upload your Cv
@@ -11,12 +11,17 @@
           <p>click to browse or drag your file here</p>
         </dropzone>
       </div>
-      <v-row justify="center" align-content-md="center">
-        <v-text-field  v-model="options.params.title" placeholder="enter the title of Your cv"></v-text-field>
-      </v-row>
+      <div >
+
+      </div>
     </v-card-text>
 
     <v-card-actions>
+      <label>enter a title to your cv</label>
+      <v-text-field single-line style="width: 50%;"
+                    v-model="options.params.title"
+                    placeholder="enter the title of Your cv"
+      ></v-text-field>
       <v-btn @click="uploadDaniel">proceed upload</v-btn>
       <v-btn @click="reset">reset</v-btn>
     </v-card-actions>

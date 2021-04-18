@@ -14,11 +14,13 @@ export default {
     //jobSeeker
     APPLY_JOB(state, data) {
       let oldJob = state.jobads.find((job => job.data.id === data.attributes.jobad.data.id))
-      console.log(oldJob)
       oldJob.data.attributes.applied_at = data.attributes.applied_at
     },
     GET_ALL_JOBS(state, data) {
       state.jobads = data
+    },
+    CLEAR_JOBADS(state){
+      state.jobads=[]
     }
 
     //Company
@@ -37,9 +39,11 @@ export default {
         .catch(error => {
         })
     },
-    getJobads({commit}) {
+    getJobads({commit}, {params}) {
       return new Promise((resolve, reject) => {
-        this.$axios.get('backend/api/jobads')
+        this.$axios.get('backend/api/jobads', {
+          params: params
+        })
           .then(response => {
             commit('GET_ALL_JOBS', response.data.data)
             resolve(response)
@@ -49,6 +53,7 @@ export default {
           })
       })
     },
+
 
     //company
     postJob({commit}, {jobData}) {
@@ -74,7 +79,8 @@ export default {
       })
     },
 
-
-
+    clearJobads({commit}){
+      commit('CLEAR_JOBADS')
+    }
   },
 }

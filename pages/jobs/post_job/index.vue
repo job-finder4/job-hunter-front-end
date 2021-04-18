@@ -1,162 +1,186 @@
 <template>
-  <v-row>
-    <v-col>
-      <ValidationObserver ref="obs" v-slot="{ invalid, validated, passes }">
-        <v-card color="blue-grey lighten-5">
-          <v-card-title>
-            enter all required fields
-          </v-card-title>
+  <v-container>
+    <ValidationObserver ref="obs" v-slot="{ invalid, validated, passes }">
+      <v-stepper v-model="e1">
+        <v-stepper-header>
+          <template v-for="n in steps">
+            <v-stepper-step
+              :key="`${n}-step`"
+              :complete="e1 > n"
+              :step="n"
+              editable
+            >
+              Step {{ n }}
+            </v-stepper-step>
 
-          <v-card-text>
+            <v-divider
+              v-if="n !== steps"
+              :key="n"
+            ></v-divider>
+          </template>
+        </v-stepper-header>
+
+        <v-stepper-items>
+          <v-stepper-content step="1">
+            <v-card-text>
+              <label>Job Title</label>
+              <v-combobox
+                hint="the title of the job"
+                :items="jobTitles"
+                outlined
+                dense
+                v-model="jobData.title"
+              ></v-combobox>
+              <label>Category</label>
+              <v-autocomplete
+                outlined
+                small-chips
+                :items="availableCategories"
+                color="white"
+                item-text="name"
+                label="Job Category"
+                :filter="customFilter"
+                :value="jobData.category"
+                v-model="jobData.category"
+              >
+              </v-autocomplete>
+              <label>Description</label>
+              <v-textarea placeholder="description" v-model="jobData.description" outlined/>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn class="mr-3" @click="cancel">
+                Cancel
+              </v-btn>
+              <v-btn class="mr-3" @click="next">next</v-btn>
+            </v-card-actions>
+          </v-stepper-content>
+          <v-stepper-content step="2">
+            <label>Expiration Date</label>
+            <v-text-field
+              @click="isShowDatePicker=true"
+              :value="jobData.expirationDate"
+              outlined>
+              <template v-slot:append class="align-center">
+                <v-btn text class="align-center" @click="isShowDatePicker=true">edit</v-btn>
+              </template>
+
+            </v-text-field>
+            <v-date-picker
+              v-if="isShowDatePicker"
+              v-model="jobData.expirationDate"
+              color="green lighten-1"
+              header-color="primary"
+              @change="isShowDatePicker=false"
+            ></v-date-picker>
+            <label>Location</label>
+            <v-autocomplete
+              :items="states"
+              color="white"
+              item-text="name"
+              label="State"
+              :filter="customFilter"
+              :value="jobData.location"
+              v-model="jobData.location"
+            >
+            </v-autocomplete>
             <v-row>
               <v-col md="6">
-                <v-combobox
-                  hint="the title of the job"
-                  :items="jobTitles"
-                  label="job title"
-                  outlined
-                  dense
-                  v-model="jobData.title"
-                ></v-combobox>
-
-                <v-textarea placeholder="description" v-model="jobData.description" outlined/>
+                <v-select
+                  placeholder="JOB_time"
+                  :items="jobTimes"
+                  v-model="jobData.selectedJobTime"
+                />
               </v-col>
-              <v-divider vertical></v-divider>
-
               <v-col md="6">
-                <label for="sda">Expiration Date</label>
-                <v-text-field
-                  hint="expiration date"
-                  persistent-hint="ds"
-                  @click="isShowDatePicker=true"
-                  :value="jobData.expirationDate"
-                  outlined>
-                </v-text-field>
-                <v-date-picker
-                  v-if="isShowDatePicker"
-                  v-model="jobData.expirationDate"
-                  color="green lighten-1"
-                  header-color="primary"
-                ></v-date-picker>
-
-                <v-autocomplete
-                  :items="states"
-                  color="white"
-                  item-text="name"
-                  label="State"
-                  :filter="customFilter"
-                  :value="jobData.location"
-                  v-model="jobData.location"
-                >
-                </v-autocomplete>
-                <v-row>
-                <v-col md="6">
-                  <v-select
-                    placeholder="JOB_time"
-                    :items="jobTimes"
-                    v-model="jobData.selectedJobTime"
-                  />
-                </v-col>
-              <v-col md="6">
-                  <v-select
-                    placeholder="JOB_type"
-                    :items="jobTypes"
-                    v-model="jobData.selectedJobType"
-                  />
-                </v-col>
-                </v-row>
-
+                <v-select
+                  placeholder="JOB_type"
+                  :items="jobTypes"
+                  v-model="jobData.selectedJobType"
+                />
               </v-col>
             </v-row>
+            <v-row>
+              <v-col md="6">
+                <label>Min Salary</label>
+                <v-text-field-with-validation v-model="jobData.range[0]" rules="salary">
+                  Min Salary
+                </v-text-field-with-validation>
+              </v-col>
+              <v-col md="6">
+                <label>Max Salary</label>
+                <v-text-field-with-validation v-model="jobData.range[1]"
+                                              :rules="'salary|max_salary:'+jobData.range[1]">
+                  Max Salary
+                </v-text-field-with-validation>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+          <v-stepper-content step="3">
+            <v-card color="blue-grey lighten-5">
+              <v-card-title>
+                enter all required fields
+              </v-card-title>
 
-            <v-range-slider
-              hint="Im a hint"
-              v-model="jobData.range"
-              label="thumb-color"
-              thumb-label="always"
-              step="100"
-              color="red"
-              min="100"
-              max="100000">
+              <v-card-text>
+                <v-card>
+                  <v-sheet class="pa-4 primary lighten-2">
+                    <v-text-field
+                      v-model="search"
+                      label="Search Skills"
+                      dark
+                      flat
+                      solo-inverted
+                      hide-details
+                      clearable
+                      clear-icon="mdi-close-circle-outline"
+                    ></v-text-field>
+                    <v-checkbox
+                      v-model="caseSensitive"
+                      dark
+                      hide-details
+                      label="Case sensitive search"
+                    ></v-checkbox>
+                  </v-sheet>
+                  <v-card height="200px" style="overflow-y: scroll">
+                    <v-treeview
+                      v-model="jobData.skills"
+                      :items="availableSkills"
+                      :search="search"
+                      :filter="filter"
+                      :open.sync="open"
+                      selectable
+                      selection-type="leaf"
+                    >
+                      <template v-slot:prepend="{ item }">
+                        <v-icon
+                          v-if="item.children"
+                          v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
+                        ></v-icon>
+                      </template>
+                    </v-treeview>
+                  </v-card>
+                </v-card>
 
-              <template v-slot:prepend>
-                <v-text-field
-                  outlined
-                  :value="jobData.range[0]"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  type="number"
-                  style="width: 60px"
-                  @change="$set(jobData.range, 0, $event)"
-                ></v-text-field>
-              </template>
-
-              <template v-slot:append>
-                <v-text-field
-                  outlined
-                  :value="jobData.range[1]"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  type="number"
-                  style="width: 60px"
-                  @change="$set(jobData.range, 1, $event)"
-                ></v-text-field>
-              </template>
-            </v-range-slider>
-
-            <v-card>
-              <v-sheet class="pa-4 primary lighten-2">
-                <v-text-field
-                  v-model="search"
-                  label="Search Skills"
-                  dark
-                  flat
-                  solo-inverted
-                  hide-details
-                  clearable
-                  clear-icon="mdi-close-circle-outline"
-                ></v-text-field>
-                <v-checkbox
-                  v-model="caseSensitive"
-                  dark
-                  hide-details
-                  label="Case sensitive search"
-                ></v-checkbox>
-              </v-sheet>
-              <v-card height="200px"  style="overflow-y: scroll">
-                <v-treeview
-                  v-model="jobData.skills"
-                  :items="availableSkills"
-                  :search="search"
-                  :filter="filter"
-                  :open.sync="open"
-                  selectable
-                  selection-type="leaf"
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="indigo" outlined
+                       @click="passes(postJob)"
+                       :disabled="invalid || !validated"
+                       :loading="isLoading"
                 >
-                  <template v-slot:prepend="{ item }">
-                    <v-icon
-                      v-if="item.children"
-                      v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
-                    ></v-icon>
-                  </template>
-                </v-treeview>
-              </v-card>
+                  Publish
+                </v-btn>
+              </v-card-actions>
+
             </v-card>
 
-          </v-card-text>
-          <v-card-actions>
-            <v-btn right color="cyan" outlined @click="postJob">
-              Post The Job
-            </v-btn>
-          </v-card-actions>
-
-        </v-card>
-      </ValidationObserver>
-    </v-col>
-  </v-row>
-
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+    </ValidationObserver>
+  </v-container>
 </template>
 
 <script>
@@ -178,22 +202,35 @@
           ? (item, search, textKey) => item[textKey].indexOf(search) > -1
           : undefined
       },
+      availableSkills() {
+        return this.$store.getters.getAllSkills
+      },
+      availableCategories() {
+        return this.$store.getters.getAllCategories
+      }
     },
     data() {
       return {
-        isShowDatePicker:false,
+        //stepper data
+        e1: 1,
+        steps: 3,
+
+        isLoading: false,
+        isShowDatePicker: false,
         open: [1, 2],
         search: null,
         caseSensitive: false,
+
         jobData: {
           title: 'Senior Manager',
           description: 'hi this is new job from spectrum company',
           selectedJobTime: '',
           skills: [],
           selectedJobType: '',
-          range: [1, 100000],
+          range: [11, 100000],
           location: '',
-          expirationDate: new Date( new Date().getFullYear(), new Date().getMonth()+1).toISOString().substr(0, 10),
+          category: '',
+          expirationDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1).toISOString().substr(0, 10),
         },
         maxSalary: 100000,
         minSalary: 1,
@@ -231,10 +268,12 @@
         states: [
           'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
         ],
-        availableSkills: []
       }
     },
     methods: {
+      next() {
+        return this.e1++;
+      },
       customFilter(item, queryText, itemText) {
         const textOne = item.name.toLowerCase()
         const textTwo = item.abbr.toLowerCase()
@@ -245,19 +284,24 @@
       postJob() {
         this.$store.dispatch('postJob', {jobData: this.jobData})
           .then((response) => {
+            this.isLoading = false
             this.$router.push('/company/my-jobs')
           })
+          .catch(err => {
+            this.isLoading = false
+          })
+      },
+      nextStep(n) {
+        if (n === this.steps) {
+          this.e1 = 1
+        } else {
+          this.e1 = n + 1
+        }
       }
     },
-    async fetch() {
-     return  this.$axios.get('backend/api/skills')
-        .then((response) => {
-          console.log(response.data)
-          this.availableSkills = response.data
-        })
-        .catch((error) => {
-        })
-    }
+    fetch() {
+      return this.$store.dispatch('getAvailableSkills')
+    },
   }
 </script>
 

@@ -22,10 +22,9 @@
                 outlined
                 type="password"
                 label="Password"
-                vid="password"
                 v-model="form.password"
                 counter
-                rules="required|min:10|upCase|number"
+                rules="required"
               />
               <VTextFieldWithValidation
                 outlined
@@ -38,6 +37,17 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
+            <v-list-item>
+              already have an account
+              <v-btn
+                to="/login"
+                class="text-decoration-underline"
+                text
+                color="blue"
+              >
+                Sign in
+              </v-btn>
+            </v-list-item>
 
             <!--            <v-btn @click="clear">-->
             <!--              Clear-->
@@ -94,10 +104,13 @@ export default {
           password_confirmation: this.form.password,
         })
         .then(() => {
+          this.isLoading=false
           this.$toast.success('Your account was created successfully!')
           this.$router.push('/login')
         })
-        .catch((e) => (this.error = e.response.data.errors ?? e.response.data))
+        .catch((e) => {this.isLoading=false
+          this.$toast.error(e)
+        })
     },
   },
 }

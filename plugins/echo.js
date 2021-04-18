@@ -1,4 +1,26 @@
-export default function ({ $echo }) {
+export default function ({$echo, $auth, store},inject) {
   // Echo is available here
-  console.log($echo)
+  $echo.connector.pusher.config.auth = {
+    headers: {
+      'Authorization': $auth.strategy.token.get()
+    }
+  }
+
+  if (store.getters.isAuthenticated) {
+    $echo.private(`users.${store.getters.getUser.data.id}`)
+      .notification((notification) => {
+        console.log(notification)
+      })
+  }
+
+  inject('connectToChannels',function () {
+    if (store.getters.isAuthenticated) {
+      $echo.private(`users.${store.getters.getUser.data.id}`)
+        .notification((notification) => {
+          console.log(notification)
+        })
+    }
+  })
+
+
 }

@@ -100,8 +100,6 @@
               </a>
             </v-btn>
           </v-card-text>
-          <v-card-actions>
-          </v-card-actions>
         </v-col>
       </v-row>
 
