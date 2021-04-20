@@ -25,7 +25,7 @@
       </v-card-title>
 
       <v-divider></v-divider>
-      <div v-if="!isShowApplications">
+      <div >
         <v-card-text>
           <v-row>
             <v-col class="ml-2" md="2">
@@ -85,7 +85,7 @@
           Skills Requried For The Job
         </v-card-title>
         <v-card-text class="ml-2">
-          <v-sheet class="text-center blue-grey lighten-4" >
+          <v-sheet class="text-center  lighten-4" >
             <ul>
               <v-row v-for="(skill,index) in loadedJobad.data.attributes.skills.data">
                 <v-icon color="green">mdi-check-circle-outline</v-icon>

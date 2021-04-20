@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import JobsInformation from "~/components/jobs/JobadInformation";
+import JobadInformation from "~/components/jobs/JobadInformation";
   export default {
     name: "index",
     components:{
-      JobsInformation
+      JobadInformation
     },
     props: {
       jobad: {

@@ -9,7 +9,7 @@ export default function ({$echo, $auth, store},inject) {
   if (store.getters.isAuthenticated) {
     $echo.private(`users.${store.getters.getUser.data.id}`)
       .notification((notification) => {
-        console.log(notification)
+        store.commit('ADD_NOTIFICATION',notification)
       })
   }
 
@@ -17,7 +17,7 @@ export default function ({$echo, $auth, store},inject) {
     if (store.getters.isAuthenticated) {
       $echo.private(`users.${store.getters.getUser.data.id}`)
         .notification((notification) => {
-          console.log(notification)
+          store.commit('ADD_NOTIFICATION',notification)
         })
     }
   })

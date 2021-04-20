@@ -148,16 +148,19 @@ export default {
     },
 
     //company
-    getMyJobs({commit}, {jobStatus,page}) {
+    getMyJobs({commit}, {params}) {
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/myjobads', {
-          params: {
-            filter: jobStatus,
-            page:page
+          params:{
+            job_status:params.job_status
           }
+          // params: {
+          //   filter: jobStatus,
+          //   page:page
+          // }
         })
           .then(response => {
-            commit('GET_MY_JOBS', {myJobs: response.data.data, jobStatus: jobStatus})
+            commit('GET_MY_JOBS', {myJobs: response.data.data, jobStatus: params.job_status})
             resolve(response)
           })
           .catch(error => {
@@ -221,16 +224,15 @@ export default {
           })
       })
     },
-    getAdminJobs({commit}, {jobStatus,page}) {
+    getAdminJobs({commit}, {params}) {
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/admin-jobads', {
-          params: {
-            filter: jobStatus,
-            page:page
-          }
+            params:{
+              job_status:params.job_status
+            }
         })
           .then(response => {
-            commit('GET_MY_JOBS', {myJobs: response.data.data, jobStatus: jobStatus})
+            commit('GET_MY_JOBS', {myJobs: response.data.data, jobStatus: params.job_status})
             resolve(response)
           })
           .catch(error => {

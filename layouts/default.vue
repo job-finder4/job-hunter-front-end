@@ -43,7 +43,7 @@
       </v-btn>
 
       <v-btn disabled v-if="this.$store.getters.isAuthenticated" text>
-        <!--        {{user.data.attributes.name}}-->
+                {{user.data.attributes.name}}
       </v-btn>
 
       <v-btn
@@ -54,14 +54,14 @@
         Sign In
       </v-btn>
 
-<!--      <notifications>-->
-<!--        <template v-slot:activator="{ on, attrs }">-->
-<!--          <v-btn @click="on" :attrs="attrs">-->
-<!--            <v-icon>mdi-bell</v-icon>-->
-<!--            Notifications-->
-<!--          </v-btn>-->
-<!--        </template>-->
-<!--      </notifications>-->
+      <notifications v-if="this.$store.getters.isAuthenticated">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn @click="on" :attrs="attrs">
+            <v-icon>mdi-bell</v-icon>
+            Notifications
+          </v-btn>
+        </template>
+      </notifications>
 
 
       <v-menu offset-y>
@@ -122,7 +122,11 @@
 </template>
 
 <script>
+  // import Notifications from "~/components/Notifications";
   export default {
+    components:{
+      // Notifications
+    },
     middleware: [],
     data() {
       return {

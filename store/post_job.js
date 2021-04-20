@@ -52,6 +52,9 @@ export default {
       "name": "Travel & Hospitality"
     }, {"id": 50, "name": "Web Design"}, {"id": 51, "name": "Writing"}, {"id": 52, "name": "Youth & Children"}
     ],
+    states: [
+      'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+    ],
   },
   getters: {
     getAllSkills(state) {
@@ -60,6 +63,9 @@ export default {
     getAllCategories(state) {
       return state.categories
     },
+    getAllStates(state){
+      return state.states
+    }
   },
   mutations: {
      SET_SKILLS(state, skills) {

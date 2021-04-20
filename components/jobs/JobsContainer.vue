@@ -1,18 +1,18 @@
 <template>
   <div>
-    <template v-if="isLoading">
-      <v-card v-for="i in 3" :key="i" class="mt-3">
-        <v-skeleton-loader
-          class="mx-auto"
-          type="article, actions"
-        />
-      </v-card>
-    </template>
+        <template v-if="isLoading">
+          <v-card v-for="i in 3" :key="i" class="mt-3">
+            <v-skeleton-loader
+              class="mx-auto"
+              type="article, actions"
+            />
+          </v-card>
+        </template>
 
     <v-divider/>
 
     <template v-if="jobs.length>0" v-for="(jobad,index) in jobs">
-      <component :is="(userRole==='company')?'company-single-job':'admin-single-job'"
+      <component class="mt-3" :is="(userRole==='company')?'company-single-job':'admin-single-job'"
                  :jobad="jobad" :key="jobad.data.id" :job-status="jobStatus"
       />
     </template>
@@ -111,7 +111,7 @@
     },
     async fetch() {
       const action = (this.$store.getters.getUserRole === 'company') ? 'getMyJobs' : 'getAdminJobs'
-      return this.$store.dispatch(action, {jobStatus: this.jobStatus})
+      return this.$store.dispatch(action, {params: {job_status: this.jobStatus}})
         .then((response) => {
           this.isLoading = false
         })

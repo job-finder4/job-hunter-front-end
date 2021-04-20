@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-card flat color="grey-blue lighten-4">
       <v-row v-if="isLoading">
         <template v-for="i in 3" >
           <v-col md="4" sm="12" :key="i">
@@ -15,24 +15,37 @@
           </v-col>
         </template>
       </v-row>
-
     <v-row class="my-2 mb-2 mx-auto">
 
       <v-row justify="center">
       <v-sheet class="text-center" >
 
-        <p v-if="jobApplications.length>0">
-          hi,{{userName}} ,here are your applied jobs
-        </p>
+        <div v-if="jobApplications.length>0">
+          <p v-if="userRole==='jobSeeker'">
+            hi,{{userName}} ,here are your applied jobs
+          </p>
+          <p v-if="userRole==='company'">
+            applications For This job
+          </p>
+        </div>
+
 
         <template v-if="jobApplications.length===0&&!isLoading">
         <v-avatar>
           <v-icon x-large>mdi-briefcase</v-icon>
         </v-avatar>
-        <p class="text-subtitle-2 text-md-h6">
+        <p class="text-subtitle-2 text-md-h6" v-if="userRole==='jobSeeker'">
           You haven't applied to any jobs
         </p>
-        Come back here to keep track of the jobs you've applied to
+          <p class="text-subtitle-2 text-md-h6" v-if="userRole==='company'">
+            there are no applications to this job Yet.
+          </p>
+          <p v-if="userRole==='company'">
+            Come back here to keep track  applications to your jobs.
+          </p>
+          <p v-if="userRole==='jobSeeker'">
+            Come back here to keep track of the jobs you've applied to
+          </p>
         </template>
       </v-sheet>
       </v-row>
@@ -45,8 +58,7 @@
         </v-col>
       </template>
     </v-row>
-
-  </div>
+  </v-card>
 </template>
 
 <script>

@@ -39,7 +39,7 @@
                 color="white"
                 item-text="name"
                 label="Job Category"
-                :filter="customFilter"
+                :filter="filter"
                 :value="jobData.category"
                 v-model="jobData.category"
               >
@@ -50,7 +50,7 @@
 
             <v-card-actions>
               <v-spacer/>
-              <v-btn class="mr-3" @click="cancel">
+              <v-btn class="mr-3">
                 Cancel
               </v-btn>
               <v-btn class="mr-3" @click="next">next</v-btn>
@@ -116,7 +116,15 @@
                 </v-text-field-with-validation>
               </v-col>
             </v-row>
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn class="mr-3">
+                Back
+              </v-btn>
+              <v-btn class="mr-3" @click="next">next</v-btn>
+            </v-card-actions>
           </v-stepper-content>
+
           <v-stepper-content step="3">
             <v-card color="blue-grey lighten-5">
               <v-card-title>
@@ -143,7 +151,7 @@
                       label="Case sensitive search"
                     ></v-checkbox>
                   </v-sheet>
-                  <v-card height="200px" style="overflow-y: scroll">
+                  <v-card height="100vh" style="overflow-y: scroll">
                     <v-treeview
                       v-model="jobData.skills"
                       :items="availableSkills"
@@ -153,21 +161,27 @@
                       selectable
                       selection-type="leaf"
                     >
-                      <template v-slot:prepend="{ item }">
-                        <v-icon
-                          v-if="item.children"
-                          v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
-                        ></v-icon>
-                      </template>
                     </v-treeview>
                   </v-card>
                 </v-card>
 
               </v-card-text>
+
+
               <v-card-actions>
+                <v-spacer/>
+                <v-btn class="mr-3">
+                  Back
+                </v-btn>
+<!--                <v-btn color="indigo" outlined-->
+<!--                       @click="passes(postJob)"-->
+<!--                       :disabled="invalid || !validated"-->
+<!--                       :loading="isLoading"-->
+<!--                >-->
+<!--                  Publish-->
+<!--                </v-btn>-->
                 <v-btn color="indigo" outlined
-                       @click="passes(postJob)"
-                       :disabled="invalid || !validated"
+                       @click="postJob"
                        :loading="isLoading"
                 >
                   Publish

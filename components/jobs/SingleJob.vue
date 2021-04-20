@@ -1,12 +1,18 @@
 <template>
-  <div class="mt-5">
+  <div >
     <v-card rounded elevation="2" >
       <v-card-title class="font-weight-medium">
-          <v-list-item :disabled="!jobad.data.attributes.approved_at" :to="'/jobs/'+jobad.data.id">
-            <v-list-item-title class="blue--text headline">
+          <v-list-item  dense :disabled="!jobad.data.attributes.approved_at" :to="'/jobs/'+jobad.data.id">
+            <v-list-item-title class="blue--text text-body-1">
               {{jobad.data.attributes.title}}
             </v-list-item-title>
           </v-list-item>
+
+        <v-list-item dense>
+          <v-list-item-title class="text-body-2">
+            {{jobad.data.attributes.company.data.attributes.name}}
+          </v-list-item-title>
+        </v-list-item>
       </v-card-title>
       <v-divider/>
 
@@ -46,17 +52,16 @@
               {{jobad.data.attributes.description}}
             </p>
         </v-list>
+        <MainApply v-if="applyDialog" @cancel4="applyDialog=false" :jobad="jobad" :dialog="applyDialog"/>
       </v-card-text>
 
-        <MainApply v-if="applyDialog" @cancel4="applyDialog=false" :jobad="jobad" :dialog="applyDialog"/>
-
-      <v-card-actions>
-        <div v-if="this.$auth.loggedIn&&this.$store.getters.getUserRole!=='company'">
-          <v-btn color="blue" rounded outlined>Save</v-btn>
-          <v-btn v-if="!jobad.data.attributes.applied_at" @click="applyDialog=true" color="blue" rounded outlined>Apply</v-btn>
-          <v-btn v-if="jobad.data.attributes.applied_at"  color="blue" text rounded outlined disabled>Already Applied</v-btn>
-        </div>
-      </v-card-actions>
+<!--      <v-card-actions>-->
+<!--        <div v-if="this.$auth.loggedIn&&this.$store.getters.getUserRole!=='company'">-->
+<!--          <v-btn small color="blue" rounded outlined>Save</v-btn>-->
+<!--          <v-btn small v-if="!jobad.data.attributes.applied_at" @click="applyDialog=true" color="blue" rounded outlined>Apply</v-btn>-->
+<!--          <v-btn small v-if="jobad.data.attributes.applied_at"  color="blue" text rounded outlined disabled>Already Applied</v-btn>-->
+<!--        </div>-->
+<!--      </v-card-actions>-->
     </v-card>
   </div>
 </template>
