@@ -1,15 +1,18 @@
 <template>
-  <p>
-    hi,JobSeeker ,here are your applied jobs
-
-  </p>
+  <div style="height: 90vh;" >
+    <applications-container application-status="approved"/>
+  </div>
 </template>
 
 <script>
-    export default {
-      middleware: ['auth','should-jobSeeker'],
-      layout: 'default',
+  import ApplicationsContainer from "~/components/Applications/ApplicationsContainer";
+  export default {
+    middleware: ['auth', 'should-jobSeeker'],
+    layout: 'default',
+    components:{
+      ApplicationsContainer
     }
+  }
 </script>
 
 <style scoped>

@@ -20,7 +20,12 @@
             this.job=e.name
             console.log(e.name);
           });
-        console.log(this.$echo)
+
+        this.$echo.private('my-approved-jobs.'+42)
+          .listen('.TestJobEvent', (e) => {
+            this.job=e.name
+            alert(e)
+          })
       }
     }
   }

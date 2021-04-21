@@ -3,7 +3,7 @@
     <v-row class="d-flex justify-center">
       <v-col cols="10" md="7">
         <v-card flat>
-          <div style="font-family: Chango" class="indigo text-center white--text py-3 headline">
+          <div  class="indigo text-center white--text py-3 headline">
             Login
           </div>
           <v-card-text class="px-8 px-md-12">
@@ -115,12 +115,13 @@ export default {
 
           this.$axios.defaults.headers.common["Authorization"] = this.$auth.strategy.token.get()
           this.$axios.$get('backend/api/user').then((res) => {
-            this.$store.commit('setUserData', res);
+            this.$store.commit('SET_USER_DATA', res)
+            this.$connectToChannels()
 
             if (this.$store.getters.getUserRole === 'company') {
               this.$router.push('/company')
             }
-            if (this.$store.getters.getUserRole === 'jobseeker') {
+            else{
               this.$router.push('/')
             }
           })
@@ -134,6 +135,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

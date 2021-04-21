@@ -2,15 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import userData from './userData'
 import jobads from './jobads'
-import Cookie from "js-cookie";
-
+import post_job from './post_job'
+import notifications from './notifications'
+import userInformation from './userInformation'
 
 const vuexStore = () => {
   return new Vuex.Store({
     state: {
       token: null,
       user: null,
-      jobSeeker: null,
     },
     getters: {
       isAuthenticated(state) {
@@ -25,10 +25,7 @@ const vuexStore = () => {
         return state.token
       },
       getUser(state) {
-        if (state.user) {
           return state.user
-        }
-        return null
       },
       getUserRole(state) {
         if (state.user) {
@@ -39,17 +36,17 @@ const vuexStore = () => {
 
     },
     mutations: {
-      setToken(state, token) {
+      SET_TOKEN(state, token) {
         state.token = token;
       },
-      setUserData(state, user) {
+      SET_USER_DATA(state, user) {
         state.user = user
       },
       LOGOUT(state) {
         state.user = null
         state.myCvs = null
         state.token = null
-      },
+      }
     },
     actions: {
       nuxtServerInit(vuexContext, context) {
@@ -58,7 +55,7 @@ const vuexStore = () => {
         if(context.$auth.strategy.token.get()){
           context.$axios.defaults.headers.common["Authorization"] = context.$auth.strategy.token.get()
           return context.$axios.get('backend/api/user').then((res) => {
-            vuexContext.commit('setUserData', res.data);
+            vuexContext.commit('SET_USER_DATA', res.data);
           });
         }
 
@@ -102,7 +99,7 @@ const vuexStore = () => {
       //   vuexContext.commit("setToken", token);
       // },
     },
-    modules: {userData, jobads}
+    modules: {userData, jobads,post_job,notifications,userInformation}
   })
 }
 

@@ -38,6 +38,17 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
+            <v-list-item>
+              already have an account
+              <v-btn
+                to="/login"
+                class="text-decoration-underline"
+                text
+                color="blue"
+              >
+                Sign in
+              </v-btn>
+            </v-list-item>
 
             <!--            <v-btn @click="clear">-->
             <!--              Clear-->

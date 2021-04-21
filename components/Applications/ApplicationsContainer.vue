@@ -16,12 +16,32 @@
         </template>
       </v-row>
 
-
-    <v-divider/>
     <v-row class="my-2 mb-2 mx-auto">
+
+      <v-row justify="center">
+      <v-sheet class="text-center" >
+
+        <p v-if="jobApplications.length>0">
+          hi,{{userName}} ,here are your applied jobs
+        </p>
+
+        <template v-if="jobApplications.length===0&&!isLoading">
+        <v-avatar>
+          <v-icon x-large>mdi-briefcase</v-icon>
+        </v-avatar>
+        <p class="text-subtitle-2 text-md-h6">
+          You haven't applied to any jobs
+        </p>
+        Come back here to keep track of the jobs you've applied to
+        </template>
+      </v-sheet>
+      </v-row>
+
       <template v-for="(application,index) in jobApplications">
         <v-col md="4" sm="12" :key="application.data.id">
-          <single-application :application="application"/>
+          <component :is="(userRole==='company')?'single-application':'job-seeker-application'"
+                     :application="application"/>
+
         </v-col>
       </template>
     </v-row>
@@ -31,11 +51,11 @@
 
 <script>
   import SingleApplication from "~/components/Applications/SingleApplication";
-
+  import JobSeekerApplication from "~/components/Applications/JobSeekerApplication";
   export default {
     name: "JobsContainer",
     components: {
-      SingleApplication
+      SingleApplication,JobSeekerApplication
     },
     props: {
       applicationStatus: {
@@ -44,10 +64,12 @@
       },
       jobId: {
         type: Number,
-        required: true
       },
     },
     computed: {
+      userName(){
+        return this.$store.getters.getUser.data.attributes.name
+      },
       jobApplications() {
         if (this.applicationStatus === 'approved') {
           return this.$store.getters.getApprovedJobApplications
@@ -58,7 +80,9 @@
         if (this.applicationStatus === 'rejected') {
           return this.$store.getters.getRejectedJobApplications
         }
-
+      },
+      userRole(){
+        return this.$store.getters.getUserRole
       }
     },
     data() {
@@ -67,10 +91,19 @@
       }
     },
     fetch() {
-      return this.$store.dispatch('getJobApplications', {applicationStatus: this.applicationStatus, jobId: this.jobId})
-        .then((res) => {
-          this.isLoading = false
-        })
+      if(this.$store.getters.getUserRole==='company'){
+        return this.$store.dispatch('getJobApplications', {applicationStatus: this.applicationStatus, jobId: this.jobId})
+          .then((res) => {
+            this.isLoading = false
+          })
+      }
+      else {
+        return this.$store.dispatch('getJobSeekerApplications', {applicationStatus: this.applicationStatus})
+          .then((res) => {
+            this.isLoading = false
+          })
+      }
+
     },
     destroyed() {
       this.$store.dispatch('clearJobApplications')

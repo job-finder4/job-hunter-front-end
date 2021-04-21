@@ -1,6 +1,24 @@
 import {extend} from "vee-validate";
 import {required, email, max} from "vee-validate/dist/rules";
 
+
+extend('salary', {
+  message: "salary must be number and above 10",
+  validate(value, args) {
+    if (value.match(/[0-9]/g) !== null) {
+      return value > 10
+    }
+    return false
+  },
+})
+extend('max_salary', {
+  message: "max salary must be greater than min",
+  validate(value, args) {
+    return value >= args.min_salary;
+  },
+  params: ['password'],
+})
+
 extend("name", {
   validate(value, args) {
     //let startsWith=value.match;

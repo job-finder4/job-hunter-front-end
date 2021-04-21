@@ -65,78 +65,129 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
+
         </v-expand-transition>
         <v-card-actions>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-col>
-<v-col md="5">
-  <v-img src=""></v-img>
-</v-col>
+    <v-col md="5">
+      <v-img src=""></v-img>
+    </v-col>
     <v-row>
-      <p>popular searches</p>
+      <v-timeline
+        align-top
+        :dense="$vuetify.breakpoint.smAndDown"
+      >
+        <v-timeline-item
+          v-for="(item, i) in timelineItems"
+          :key="i"
+          :color="item.color"
+          :icon="item.icon"
+          fill-dot
+        >
+          <v-card
+            :color="item.color"
+            dark
+          >
+            <v-card-title class="title">
+              Lorem Ipsum Dolor
+            </v-card-title>
+            <v-card-text class="white text--primary">
+              <p>Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod
+                convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an
+                salutandi sententiae.</p>
+              <v-btn
+                :color="item.color"
+                class="mx-0"
+                outlined
+              >
+                Button
+              </v-btn>
+            </v-card-text>
+          </v-card>
+        </v-timeline-item>
+      </v-timeline>
     </v-row>
   </v-row>
 
 </template>
 
 <script>
-    export default {
-      middleware:['should-not-company'],
-        data: () => ({
-            descriptionLimit: 60,
-            entries: [],
-            isLoading: false,
-            model: null,
-            search: null,
-        }),
-
-        computed: {
-            fields() {
-                if (!this.model) return []
-
-                return Object.keys(this.model).map(key => {
-                    return {
-                        key,
-                        value: this.model[key] || 'n/a',
-                    }
-                })
-            },
-            items() {
-                return this.entries.map(entry => {
-                    const Description = entry.Description.length > this.descriptionLimit
-                        ? entry.Description.slice(0, this.descriptionLimit) + '...'
-                        : entry.Description
-
-                    return Object.assign({}, entry, {Description})
-                })
-            },
+  export default {
+    middleware: ['should-not-company'],
+    data: () => ({
+      descriptionLimit: 60,
+      entries: [],
+      isLoading: false,
+      model: null,
+      search: null,
+      timelineItems: [
+        {
+          color: 'red lighten-2',
+          icon: 'mdi-star',
         },
-
-        watch: {
-            search(val) {
-                // Items have already been loaded
-                if (this.items.length > 0) return
-
-                // Items have already been requested
-                if (this.isLoading) return
-
-                this.isLoading = true
-
-                // Lazily load input items
-                fetch('https://api.publicapis.org/entries')
-                    .then(res => res.json())
-                    .then(res => {
-                        const {count, entries} = res
-                        this.count = count
-                        this.entries = entries
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                    .finally(() => (this.isLoading = false))
-            },
+        {
+          color: 'purple darken-1',
+          icon: 'mdi-book-variant',
         },
-    }
+        {
+          color: 'green lighten-1',
+          icon: 'mdi-airballoon',
+        },
+        {
+          color: 'indigo',
+          icon: 'mdi-buffer',
+        },
+      ],
+    }),
+
+    computed: {
+      fields() {
+        if (!this.model) return []
+
+        return Object.keys(this.model).map(key => {
+          return {
+            key,
+            value: this.model[key] || 'n/a',
+          }
+        })
+      },
+      items() {
+        return this.entries.map(entry => {
+          const Description = entry.Description.length > this.descriptionLimit
+            ? entry.Description.slice(0, this.descriptionLimit) + '...'
+            : entry.Description
+
+          return Object.assign({}, entry, {Description})
+        })
+      },
+    },
+
+    watch: {
+      search(val) {
+        // Items have already been loaded
+        if (this.items.length > 0) return
+
+        // Items have already been requested
+        if (this.isLoading) return
+
+        this.isLoading = true
+
+        // Lazily load input items
+        fetch('https://api.publicapis.org/entries')
+          .then(res => res.json())
+          .then(res => {
+            const {count, entries} = res
+            this.count = count
+            this.entries = entries
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally(() => (this.isLoading = false))
+      },
+    },
+  }
 </script>

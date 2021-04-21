@@ -1,6 +1,5 @@
-export default function ({
-                           $axios, store, redirect
-                         }) {
+export default function ({$axios, store, redirect}) {
+
   $axios.interceptors.request.use((config) => {
     // console.log(config)
     if (process.server) {

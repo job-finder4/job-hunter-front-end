@@ -1,16 +1,14 @@
 <template>
-  <div>
+  <div class="mt-5">
     <v-card rounded elevation="2" >
       <v-card-title class="font-weight-medium">
-        <v-list>
           <v-list-item :disabled="!jobad.data.attributes.approved_at" :to="'/jobs/'+jobad.data.id">
             <v-list-item-title class="blue--text headline">
               {{jobad.data.attributes.title}}
             </v-list-item-title>
           </v-list-item>
-        </v-list>
       </v-card-title>
-      <v-divider>s</v-divider>
+      <v-divider/>
 
       <v-card-text class="subtitle">
         <v-list>
@@ -44,18 +42,13 @@
             </p>
           </v-list-item>
 
-          <v-card-text>
-            Description
             <p class="border-left ml-md-5 mt-md-2 font-weight-light">
               {{jobad.data.attributes.description}}
             </p>
-          </v-card-text>
         </v-list>
       </v-card-text>
 
-      <v-card-text>
         <MainApply v-if="applyDialog" @cancel4="applyDialog=false" :jobad="jobad" :dialog="applyDialog"/>
-      </v-card-text>
 
       <v-card-actions>
         <div v-if="this.$auth.loggedIn&&this.$store.getters.getUserRole!=='company'">
@@ -85,11 +78,6 @@
         data() {
             return {
                 applyDialog: false
-            }
-        },
-        methods: {
-            apply() {
-
             }
         },
 

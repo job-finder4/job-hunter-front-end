@@ -1,13 +1,129 @@
 <template>
-    $END$
+  <v-card
+    class="mx-auto"
+    color="blue-grey lighten-5"
+    max-width="400px"
+    max-height="400px"
+  >
+    <v-card-title>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="teal lighten-4"
+            v-bind="attrs"
+            v-on="on"
+            v-show="application.data.attributes.status===1"
+          >
+            <v-icon>mdi-checkbox-marked-circle-outline </v-icon>
+            approved
+          </v-btn>
+          <v-btn
+            color="red lighten-4"
+            v-bind="attrs"
+            v-on="on"
+            v-show="application.data.attributes.status===-1"
+          >
+            <v-icon>mdi-account-off </v-icon>
+            rejected
+          </v-btn>
+          <v-btn
+            color="orange lighten-4"
+            v-bind="attrs"
+            v-on="on"
+            v-show="application.data.attributes.status===0"
+          >
+            <v-icon>mdi-clock-time-eight-outline</v-icon>
+            waiting
+          </v-btn>
+        </template>
+        <span>Application Status</span>
+      </v-tooltip>
+
+
+      <v-row justify="end">
+        <v-menu
+          transition="slide-y-transition"
+          bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-account-cog-outline </v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item>
+              <v-icon color="green">mdi-check-bold</v-icon>
+              <v-btn text>edit</v-btn>
+            </v-list-item>
+            <v-list-item>
+              <v-icon color="red">mdi-cancel</v-icon>
+              <v-btn text>cancel application</v-btn>
+            </v-list-item>
+          </v-list>
+
+        </v-menu>
+      </v-row>
+    </v-card-title>
+
+    <v-row>
+        <v-card-title class="headline">
+        </v-card-title>
+
+        <v-card-text class="text-body-1">
+          <p> <v-icon>mdi-email</v-icon>{{application.data.attributes.user.data.attributes.email}}</p>
+          <p><v-icon>mdi-map-marker</v-icon>Latakia</p>
+
+          <p>
+          <strong><v-icon>mdi-briefcase</v-icon>job</strong>
+          <v-btn text :to="'/jobs/'+application.data.attributes.jobad.data.id">
+            {{application.data.attributes.jobad.data.attributes.title}}
+          </v-btn>
+          </p>
+          <strong>
+            <v-icon>mdi-file-account</v-icon>Cv</strong>
+          <v-btn x-small text color="blue-grey">
+            {{application.data.attributes.cv.data.attributes.title}}
+            <a target="_blank"
+               :href="'/backend'+application.data.attributes.cv.data.attributes.download_link">
+              <v-icon>mdi-download</v-icon>
+            </a>
+          </v-btn>
+        </v-card-text>
+    </v-row>
+
+  </v-card>
 </template>
 
 <script>
-    export default {
-        name: "JobSeekerApplication"
-    }
+  export default {
+    name: "SingleApplication",
+    props: {
+      application: {
+        type: Object,
+        required: true
+      },
+    },
+    data() {
+      return {
+        editDialog: false
+      }
+    },
+    methods: {
+      edit(){
+        this.editDialog=true
+      }
+    },
+  }
 </script>
 
 <style scoped>
-
+  .v-btn--active.no-active::before {
+    opacity: 0 !important;
+  }
 </style>

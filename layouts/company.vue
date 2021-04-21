@@ -27,9 +27,6 @@
 
       <v-spacer/>
 
-      <v-btn text to="/">
-        Home,Yo Company
-      </v-btn>
 
       <v-btn disabled v-if="this.$store.getters.isAuthenticated" text>
         {{this.$store.getters.getUser.data.attributes.name}}

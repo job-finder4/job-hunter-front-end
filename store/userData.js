@@ -130,18 +130,30 @@ export default {
           commit('GET_MY_CVS', response.data.data)
         })
     },
-    getMyAppliedJobs({commit}){
-      this.$axios.get('backend/api/')
+    getJobSeekerApplications({state,commit,rootState },{applicationStatus }){
+      return new Promise((resolve, reject) => {
+      this.$axios.get('backend/api/users/' +rootState.user.data.id+ '/applications',{
+        params:{
+          filter:applicationStatus
+        }
+      })
         .then(response => {
+          resolve(response)
+          commit('GET_JOB_APPLICATIONS', {applicationStatus:applicationStatus, applications: response.data.data})
         })
+        .catch(err=>{
+          reject(err)
+        })
+      })
     },
 
     //company
-    getMyJobs({commit}, {jobStatus}) {
+    getMyJobs({commit}, {jobStatus,page}) {
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/myjobads', {
           params: {
-            filter: jobStatus
+            filter: jobStatus,
+            page:page
           }
         })
           .then(response => {
@@ -163,7 +175,7 @@ export default {
           .then(response => {
             console.log('jobId')
             console.log(jobId)
-            commit('GET_JOB_APPLICATIONS', {applicationStatus:applicationStatus,jobId: jobId, applications: response.data.data})
+            commit('GET_JOB_APPLICATIONS', {applicationStatus:applicationStatus, applications: response.data.data})
             resolve(response)
           })
           .catch(error => {
@@ -209,11 +221,12 @@ export default {
           })
       })
     },
-    getAdminJobs({commit}, {jobStatus}) {
+    getAdminJobs({commit}, {jobStatus,page}) {
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/admin-jobads', {
           params: {
-            filter: jobStatus
+            filter: jobStatus,
+            page:page
           }
         })
           .then(response => {
