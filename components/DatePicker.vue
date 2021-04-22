@@ -36,33 +36,33 @@
 </template>
 
 <script>
-export default {
-  name: "DatePicker",
-  props: {
-    date: {
-      type: String,
-      default: null
+  export default {
+    name: "DatePicker",
+    props: {
+      date: {
+        type: String,
+        default: null
+      },
     },
-  },
-  data() {
-    return {
-      menu: false
-    }
-  },
-  watch: {
-    menu(val) {
-      val && setTimeout(() => {
-        this.$refs.picker.activePicker = 'YEAR'
-      })
+    data() {
+      return {
+        menu: false
+      }
     },
-  },
-  methods: {
-    save(date) {
-      this.$emit('update:date', date)
-      this.$refs.menu.save(date)
-    }
-  },
-}
+    watch: {
+      menu(val) {
+        val && setTimeout(() => {
+          this.$refs.picker.activePicker = 'YEAR'
+        })
+      },
+    },
+    methods: {
+      save(date) {
+        this.$emit('update:date', date)
+        this.$refs.menu.save(date)
+      }
+    },
+  }
 </script>
 
 <style scoped>

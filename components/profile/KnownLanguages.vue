@@ -1,15 +1,18 @@
 <template>
   <div>
     <v-card flat class="my-4">
+      <v-overlay absolute :value="requestUnderProcess">
+        <v-progress-circular indeterminate size="64"/>
+      </v-overlay>
       <v-card-title class="text-h5">
         Known Languages
       </v-card-title>
       <v-divider/>
       <v-card-text>
 
-        <div class="d-flex mb-4">
+        <div v-if="controlleable" class="d-flex mb-4">
           <v-spacer/>
-          <v-btn right text @click="toggleEdit" color="primary">
+          <v-btn text @click="toggleEdit" color="primary">
             {{ editButtonLabel }}
           </v-btn>
         </div>
@@ -31,7 +34,7 @@
         <v-chip
           v-for="language in selectedLanguages"
           :key="language"
-          :close="editMode"
+          :close="editMode && controlleable"
           @click:close="removeLanguage(language)"
           color="primary"
           class="ma-2"
@@ -54,6 +57,12 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "KnownLanguages",
+  props: {
+    controlleable: {
+      type: Boolean,
+      default: true
+    },
+  },
   computed: {
     ...mapGetters(["userLanguages", 'allLanguages']),
     unSelectedLanguages() {

@@ -14,7 +14,6 @@
                       v-model="edu.study_field"
         />
 
-
         <v-text-field name="degree" label="Degree Type (B.A. , M.S. , ph.D.)" type="string"
                       v-model="edu.degree" :rules="[required]"
         />

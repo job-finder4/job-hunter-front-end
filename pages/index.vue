@@ -6,7 +6,7 @@
       >
         <v-card-title class="headline blue-grey--text">
           Search for your next job<br>
-          Find the right fit.
+          Find the right fit36.
         </v-card-title>
 
         <v-card-text>

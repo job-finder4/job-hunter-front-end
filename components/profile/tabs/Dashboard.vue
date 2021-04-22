@@ -12,7 +12,7 @@
         <v-col cols="9">
           <v-tabs-items v-model="tab">
             <v-tab-item v-for="(item,index) in items" :key="index">
-              <component :is="item.component"/>
+              <component :controlleable="controlleable" :is="item.component"/>
             </v-tab-item>
           </v-tabs-items>
         </v-col>
@@ -27,6 +27,12 @@ import Educations from "@/components/profile/tabs/Educations";
 
 export default {
   name: "Dashboard",
+  props: {
+    controlleable: {
+      type: Boolean,
+      default: true
+    },
+  },
   data() {
     return {
       tab: null,

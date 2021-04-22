@@ -56,8 +56,17 @@ export default {
     required(value) {
       return !!value || 'this field is required'
     },
-    submitForm() {
+    async submitForm() {
       if (!this.$refs.form.validate()) return
+      await this.$store.dispatch('updateProfile', {
+        details: {
+          location: {
+            country: this.loc.country,
+            city: this.loc.city,
+          },
+        }
+      })
+      this.cancel()
     },
     cancel() {
       this.loc = Object.assign({}, this.defaultLoc)

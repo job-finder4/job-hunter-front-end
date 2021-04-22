@@ -35,7 +35,7 @@
           For JobSeeker
           <ul>
             <li><a href="/" >Search Jobs</a></li>
-            <li><a href="/jobs" >Browse Jobs</a></li>
+            <li><a href="/jobs-listing" >Browse Jobs</a></li>
             <li><a href="/register" >Create Free Account</a></li>
             <li><a href="" >Job Seeker Support</a></li>
           </ul>

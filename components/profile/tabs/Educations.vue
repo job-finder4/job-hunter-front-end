@@ -15,16 +15,18 @@
               graduated at {{ education.graduation_year }}
             </v-list-item-subtitle>
           </v-list-item-content>
-          <v-list-item-avatar>
-            <v-btn @click="editEducation(education)" style="background-color: white" rounded color="indigo" icon>
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-          </v-list-item-avatar>
-          <v-list-item-avatar>
-            <v-btn @click="showDeleteDialog(education)" style="background-color: white" rounded color="red" icon>
-              <v-icon>mdi-trash-can-outline</v-icon>
-            </v-btn>
-          </v-list-item-avatar>
+          <template v-if="controlleable">
+            <v-list-item-avatar>
+              <v-btn @click="editEducation(education)" style="background-color: white" rounded color="indigo" icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </v-list-item-avatar>
+            <v-list-item-avatar>
+              <v-btn @click="showDeleteDialog(education)" style="background-color: white" rounded color="red" icon>
+                <v-icon>mdi-trash-can-outline</v-icon>
+              </v-btn>
+            </v-list-item-avatar>
+          </template>
         </v-list-item>
       </v-list>
     </div>
@@ -35,40 +37,46 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+  import {mapGetters} from 'vuex';
 
-export default {
-  name: "Educations",
-  computed: mapGetters(['userEducations']),
-  methods: {
-    editEducation(education) {
-      this.$nuxt.$emit('openDialog', {
-        componentName: 'appEduCredential',
-        details: education,
-      })
+  export default {
+    name: "Educations",
+    props: {
+      controlleable: {
+        type: Boolean,
+        default: true
+      },
     },
-    showDeleteDialog($education) {
-      this.$nuxt.$emit('showDeleteDialog', {
-        title: 'Delete Education',
-        body: 'Are you sure to delete this item !',
-        fn: this.deleteEdu,
-        args: $education
-      })
+    computed: mapGetters(['userEducations']),
+    methods: {
+      editEducation(education) {
+        this.$nuxt.$emit('openDialog', {
+          componentName: 'appEduCredential',
+          details: education,
+        })
+      },
+      showDeleteDialog($education) {
+        this.$nuxt.$emit('showDeleteDialog', {
+          title: 'Delete Education',
+          body: 'Are you sure to delete this item !',
+          fn: this.deleteEdu,
+          args: $education
+        })
+      },
+      async deleteEdu($education) {
+
+        await this.$store.dispatch('deleteFromProfile', {
+          details: {
+            educations: [
+              $education
+            ]
+          }
+        })
+
+      }
+
     },
-    async deleteEdu($education) {
-
-      await this.$store.dispatch('deleteFromProfile', {
-        details: {
-          educations: [
-            $education
-          ]
-        }
-      })
-
-    }
-
-  },
-}
+  }
 </script>
 
 <style scoped>

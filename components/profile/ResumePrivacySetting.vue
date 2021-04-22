@@ -1,5 +1,8 @@
 <template>
   <v-card flat>
+    <v-overlay absolute :value="requestUnderProcess">
+      <v-progress-circular indeterminate size="64"/>
+    </v-overlay>
     <v-card-title>
       Resume Privacy Setting
     </v-card-title>
@@ -20,16 +23,23 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "ResumePrivacySetting",
+  data() {
+    return {
+      requestUnderProcess: false
+    }
+  },
   computed:{
     ...mapGetters(["resumeVisibility"]),
     resumePrivacy : {
       get(){
         return this.resumeVisibility
       },
-      set(value){
-        this.$store.dispatch('updateProfile',{
+      async set(value){
+        this.requestUnderProcess = true
+        await this.$store.dispatch('updateProfile',{
           visible: value
         })
+        this.requestUnderProcess = false
       }
     }
   },

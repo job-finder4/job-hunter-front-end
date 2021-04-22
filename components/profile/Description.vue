@@ -1,13 +1,16 @@
 <template>
-  <div class="d-flex align-center"
-       style="word-break: break-all;">
+  <v-card flat class="d-flex align-center"
+          style="word-break: break-all;">
+    <v-overlay absolute :value="requestUnderProcess">
+      <v-progress-circular indeterminate size="64"/>
+    </v-overlay>
     <div class="mx-3">
-      <v-avatar left size="85" class="mx-4" color="grey darken-2">
-        <v-img v-if="profileOwner.hasOwnProperty('image')" :src="profileOwner.image"/>
-        <span v-else class="white--text" style="font-family:'Tibetan Machine Uni';font-size: 200%;">
-          {{ profileOwner.name.charAt(0).toUpperCase() }}
-        </span>
-      </v-avatar>
+      <UploaderImage
+        :controlleable="controlleable"
+        :image-url="profileOwner.image"
+        :target-url="`/backend/api/users/${$store.getters.userProfile.data.id}/image`"
+        @imageUploaded="$store.commit('UPDATE_PROFILE_IMAGE',$event)"
+      />
     </div>
 
     <div class="d-flex flex-wrap align-center">
@@ -59,64 +62,76 @@
               Add phone number
               <v-icon dense right>mdi-plus-circle-outline</v-icon>
             </v-btn>
-
           </template>
 
         </div>
       </div>
     </div>
-    <v-spacer/>
-    <v-btn @click="editMode = true" icon color="primary" v-if="!editMode">
-      <v-icon>mdi-pencil</v-icon>
-    </v-btn>
-    <v-btn v-if="editMode" @click="edit" icon color="primary">
-      <v-icon>mdi-check-outline</v-icon>
-    </v-btn>
-    <v-btn @click="editMode=false" v-if="editMode" icon color="red">
-      <v-icon>mdi-close</v-icon>
-    </v-btn>
-  </div>
+    <template v-if="controlleable">
+      <v-spacer/>
+      <v-btn @click="editMode = true" icon color="primary" v-if="!editMode">
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+      <v-btn v-if="editMode" @click="edit" icon color="primary">
+        <v-icon>mdi-check-outline</v-icon>
+      </v-btn>
+      <v-btn @click="editMode=false" v-if="editMode" icon color="red">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </template>
+  </v-card>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+  import {mapGetters} from 'vuex'
+  import UploaderImage from "~/components/profile/ImageUploader";
 
-export default {
-  name: "Description",
-  computed: {
-    ...mapGetters(['profileDetails', 'profileOwner']),
-  },
-  data() {
-    return {
-      editMode: false,
-      country: this.$store.getters.profileDetails.location.split(', ')[0],
-      city: this.$store.getters.profileDetails.location.split(', ')[1],
-      phoneNumber: this.$store.getters.profileDetails.phone_number
-    }
-  },
-  watch: {
-    profileDetails(newVal, oldVal) {
-      this.country = newVal.location.split(', ')[0]
-      this.city = newVal.location.split(', ')[1]
-      this.phoneNumber = newVal.phone_number
-    }
-  },
-  methods: {
-    async edit() {
-      await this.$store.dispatch('updateProfile', {
-        details: {
-          location: {
-            country: this.country,
-            city: this.city,
-          },
-          phone_number: this.phoneNumber,
-        }
-      })
-      this.editMode = false
-    }
-  },
+  export default {
+    name: "Description",
+    props: {
+      controlleable: {
+        type: Boolean,
+        default: true
+      },
+    },
+    components: {UploaderImage},
+    computed: {
+      ...mapGetters(['profileDetails', 'profileOwner']),
+    },
+    data() {
+      return {
+        requestUnderProcess: false,
+        editMode: false,
+        country: this.$store.getters.profileDetails.location.split(', ')[0],
+        city: this.$store.getters.profileDetails.location.split(', ')[1],
+        phoneNumber: this.$store.getters.profileDetails.phone_number
+      }
+    },
+    watch: {
+      profileDetails(newVal, oldVal) {
+        this.country = newVal.location.split(', ')[0]
+        this.city = newVal.location.split(', ')[1]
+        this.phoneNumber = newVal.phone_number
+      }
+    },
+    methods: {
+      async edit() {
+        this.requestUnderProcess = true
+        await this.$store.dispatch('updateProfile', {
+          details: {
+            location: {
+              country: this.country,
+              city: this.city,
+            },
+            phone_number: this.phoneNumber,
+          }
+        })
+        this.requestUnderProcess = false
+        this.editMode = false
+      }
+    },
 
-}
+  }
 </script>
 
 <style scoped>

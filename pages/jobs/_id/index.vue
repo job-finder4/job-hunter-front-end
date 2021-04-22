@@ -139,8 +139,10 @@
       }
     },
     async fetch() {
+      this.isLoading=true
       return this.$axios.get('backend/api/jobads/' + this.$route.params.id)
         .then((res) => {
+          this.isLoading=false
           this.loadedJobad = res.data
         })
     }

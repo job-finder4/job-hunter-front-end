@@ -5,6 +5,9 @@
             @click:outside="closeDialog"
   >
     <v-card flat>
+      <v-overlay absolute :value="requestUnderProcess">
+        <v-progress-circular indeterminate size="64"/>
+      </v-overlay>
       <v-card-title class="pa-2 pb-0">
         <v-spacer/>
         <v-btn text color="red" icon outlined small @click="closeDialog">x</v-btn>
@@ -23,9 +26,9 @@
 </template>
 
 <script>
-import LocCredential from "@/components/profile/LocCredential";
-import EduCredential from "@/components/profile/EduCredential";
-import EmpCredential from "@/components/profile/EmpCredential";
+import LocCredential from "~/components/profile/LocCredential";
+import EduCredential from "~/components/profile/EduCredential";
+import EmpCredential from "~/components/profile/EmpCredential";
 import AddJobPreference from "~/components/profile/AddJobPreference";
 
 export default {
@@ -40,7 +43,8 @@ export default {
     return {
       componentName: '',
       details: {},
-      dialog:false
+      dialog:false,
+      requestUnderProcess:false
     }
   },
   methods: {

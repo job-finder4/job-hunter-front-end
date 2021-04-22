@@ -106,40 +106,46 @@
 </template>
 
 <script>
-export default {
-  name: "AddJobPreference",
-  data() {
-    return {
-      currentStep: 1,
-      stepsHeader: [
-        'Job Title', 'Job Category', 'Location', 'Salary', 'Work Type'
-      ],
-      jobPreference: Object.assign(
-        {
-          job_title: '',
-          job_category: '',
-          location: '',
-          salary: '',
-          work_type: ''
-        }, this.$store.getters.jobPreference)
-    }
-  },
-  methods: {
-    async nextStep($event) {
-      if (this.currentStep < this.stepsHeader.length) {
-        this.currentStep++
-        return
+  export default {
+    name: "AddJobPreference",
+    props: {
+      details: {
+        type: Object,
+        default: null
+      },
+    },
+    data() {
+      return {
+        currentStep: 1,
+        stepsHeader: [
+          'Job Title', 'Job Category', 'Location', 'Salary', 'Work Type'
+        ],
+        jobPreference: Object.assign(
+          {
+            job_title: '',
+            job_category: '',
+            location: '',
+            salary: '',
+            work_type: ''
+          }, this.details)
       }
+    },
+    methods: {
+      async nextStep($event) {
+        if (this.currentStep < this.stepsHeader.length) {
+          this.currentStep++
+          return
+        }
 
-      let action = (!!this.$store.getters.jobPreference) ? 'updateJobPreference'
-        : 'createJobPreference'
+        let action = (!!this.$store.getters.jobPreference) ? 'updateJobPreference'
+          : 'createJobPreference'
 
-      await this.$store.dispatch(action, this.jobPreference)
+        await this.$store.dispatch(action, this.jobPreference)
 
-      this.$emit('cancel')
-    }
-  },
-}
+        this.$emit('cancel')
+      }
+    },
+  }
 </script>
 
 <style scoped>

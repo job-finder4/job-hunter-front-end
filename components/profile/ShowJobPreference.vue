@@ -3,13 +3,14 @@
     <v-card-title class="pb-0">
       <span>My Preference Job:</span>
       <v-spacer/>
-
-      <v-btn @click="editJobPreference" style="background-color: white" rounded color="indigo" icon>
-        <v-icon dense>mdi-pencil</v-icon>
-      </v-btn>
-      <v-btn @click="showDeleteDialog" style="background-color: white" rounded color="red" icon>
-        <v-icon dense>mdi-trash-can-outline</v-icon>
-      </v-btn>
+      <div v-if="controlleable">
+        <v-btn @click="editJobPreference" style="background-color: white" rounded color="indigo" icon>
+          <v-icon dense>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn @click="showDeleteDialog" style="background-color: white" rounded color="red" icon>
+          <v-icon dense>mdi-trash-can-outline</v-icon>
+        </v-btn>
+      </div>
     </v-card-title>
     <v-card-text>
       <v-row class="text-body-1 justify-space-around text-capitalize job-preference">
@@ -51,40 +52,47 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+  import {mapGetters} from 'vuex';
 
-export default {
-  name: "ShowJobPreference",
-  computed: {
-    ...mapGetters(['jobPreference'])
-  },
-  methods: {
-    showDeleteDialog() {
-      this.$nuxt.$emit('showDeleteDialog', {
-        title: 'Delete Job Preference',
-        body: 'Are you sure to delete this item !',
-        fn: this.deleteJobPreference,
-        args: ''
-      })
+  export default {
+    name: "ShowJobPreference",
+    props: {
+      controlleable: {
+        type: Boolean,
+        default: true
+      },
     },
-    async deleteJobPreference() {
-      await this.$store.dispatch('deleteJobPreference')
+    computed: {
+      ...mapGetters(['jobPreference'])
     },
-    editJobPreference() {
-      this.$nuxt.$emit('openDialog', {
-        componentName:'appAddJobPreference'
-      })
+    methods: {
+      showDeleteDialog() {
+        this.$nuxt.$emit('showDeleteDialog', {
+          title: 'Delete Job Preference',
+          body: 'Are you sure to delete this item !',
+          fn: this.deleteJobPreference,
+          args: ''
+        })
+      },
+      async deleteJobPreference() {
+        await this.$store.dispatch('deleteMyJobPreference')
+      },
+      editJobPreference() {
+        this.$nuxt.$emit('openDialog', {
+          componentName: 'appAddJobPreference',
+          details: this.jobPreference
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.job-preference div {
-  margin-top: 20px;
-}
+  .job-preference div {
+    margin-top: 20px;
+  }
 
-.job-preference strong {
-  color: #008282;
-}
+  .job-preference strong {
+    color: #008282;
+  }
 </style>

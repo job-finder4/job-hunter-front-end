@@ -10,7 +10,7 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              <v-btn color="primary" text @click="openDialog(btn.component)">
+              <v-btn color="primary" text @click="openDialog(btn.component,btn.details)">
                 {{ btn.btnLabel }}
               </v-btn>
             </v-list-item-title>
@@ -25,38 +25,50 @@
 
 <script>
 
-import {mapGetters} from "vuex";
+  import {mapGetters} from "vuex";
 
-export default {
-  name: "AddCredentials",
-  computed: {
-    ...mapGetters(['jobPreference']),
-    controlButtons() {
-      return [
-        {
-          icon: 'mdi-briefcase-outline',
-          component: 'appEmpCredential',
-          btnLabel: 'Add Employment Credentials',
-        },
-        {icon: 'mdi-school-outline', component: 'appEduCredential', btnLabel: 'Add Education Credentials'},
-        {icon: 'mdi-map-marker', component: 'appLocCredential', btnLabel: 'Add location Credentials'},
-        {
-          icon: 'mdi-map-marker',
-          component: 'appAddJobPreference',
-          btnLabel: !!this.$store.getters.jobPreference ? 'Edit My Preference Job' : 'Add My Preference Job'
-        },
-      ]
+  export default {
+    name: "AddCredentials",
+    computed: {
+      ...mapGetters(['jobPreference', 'userLocationObject', 'jobPreference']),
+      controlButtons() {
+        return [
+          {
+            icon: 'mdi-briefcase-outline',
+            component: 'appEmpCredential',
+            btnLabel: 'Add Employment Credentials',
+            details: ''
+          },
+          {
+            icon: 'mdi-school-outline',
+            component: 'appEduCredential',
+            btnLabel: 'Add Education Credentials',
+            details: ''
+          },
+          {
+            icon: 'mdi-map-marker',
+            component: 'appLocCredential',
+            btnLabel: !!this.userLocationObject.country && !!this.userLocationObject.country ? 'Edit location Credentials' : 'Add location Credentials',
+            details: this.userLocationObject
+          },
+          {
+            icon: 'mdi-map-marker',
+            component: 'appAddJobPreference',
+            btnLabel: !!this.jobPreference ? 'Edit My Preference Job' : 'Add My Preference Job',
+            details: this.jobPreference
+          },
+        ]
+      }
+    },
+    methods: {
+      openDialog(componentName, details) {
+        this.$nuxt.$emit('openDialog', {
+          componentName, details
+        })
+      }
     }
-  },
-  methods: {
-    openDialog(componentName) {
-      this.$nuxt.$emit('openDialog', {
-        componentName,
-      })
-    }
+    ,
   }
-  ,
-}
 
 </script>
 
