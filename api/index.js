@@ -1,7 +1,6 @@
 const express = require("express");
 import PDFDocument from 'pdfkit'
 
-const blobStream = require('blob-stream')
 const router = express.Router();
 const {Base64Encode} = require('base64-stream');
 

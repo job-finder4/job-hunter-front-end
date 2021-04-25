@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+
 const bodyParser = require('body-parser')
 
 export default {
@@ -136,20 +137,9 @@ export default {
     /*
 ** You can extend webpack config here
 */
-    extend(config, ctx) {
-      // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          // loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
   },
   serverMiddleware: [
-    bodyParser.json(),
+    {path: '/api', handler: bodyParser.json()},
     '~/api'
   ]
 }
