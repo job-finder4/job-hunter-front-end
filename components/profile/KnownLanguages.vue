@@ -53,59 +53,72 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+  import {mapGetters} from "vuex";
 
-export default {
-  name: "KnownLanguages",
-  props: {
-    controlleable: {
-      type: Boolean,
-      default: true
+  export default {
+    name: "KnownLanguages",
+    props: {
+      is_cv_page: {
+        type: Boolean,
+        default: false
+      },
+      controlleable: {
+        type: Boolean,
+        default: true
+      },
     },
-  },
-  computed: {
-    ...mapGetters(["userLanguages", 'allLanguages']),
-    unSelectedLanguages() {
-      return this.allLanguages.filter(
-        item => !this.selectedLanguages.find(selectedItem => selectedItem == item)
-      )
-    }
-  },
-  data() {
-    return {
-      editMode: false,
-      editButtonLabel: 'edit or add language',
-      selectedLanguages: Array.from(this.$store.getters.userLanguages),
-      newLanguage: '',
-      requestUnderProcess: false,
-    }
-  },
-  methods: {
-    toggleEdit() {
-      this.editMode = !this.editMode
-      this.editButtonLabel = this.editMode ? 'cancel' : 'edit or add language'
-      !this.editMode ? this.selectedLanguages = Array.from(this.userLanguages) : ''
+    computed: {
+      ...mapGetters(["userLanguages", 'allLanguages']),
+      unSelectedLanguages() {
+        return this.allLanguages.filter(
+          item => !this.selectedLanguages.find(selectedItem => selectedItem == item)
+        )
+      }
     },
-    removeLanguage(language) {
-      this.selectedLanguages = this.selectedLanguages.filter(item => item != language)
+    data() {
+      return {
+        editMode: false,
+        editButtonLabel: 'edit or add language',
+        selectedLanguages: (this.is_cv_page) ? Array.from(this.$store.getters.getCvLanguages) : Array.from(this.$store.getters.userLanguages),
+        newLanguage: '',
+        requestUnderProcess: false,
+      }
     },
-    addLanguage() {
-      this.selectedLanguages.push(this.newLanguage)
-      this.newLanguage = ''
-    },
-    async changeLanguages() {
-      this.requestUnderProcess = true
-      await this.$store.dispatch('updateProfile', {
-        details: {
-          languages: this.selectedLanguages
+    methods: {
+      toggleEdit() {
+        this.editMode = !this.editMode
+        this.editButtonLabel = this.editMode ? 'cancel' : 'edit or add language'
+        !this.editMode ? this.selectedLanguages = Array.from(this.userLanguages) : ''
+        if (this.is_cv_page) {
+          !this.editMode ? this.selectedLanguages = Array.from(this.$store.getters.getCvLanguages) : ''
         }
-      });
-      this.toggleEdit()
-      this.requestUnderProcess = false
-    }
-  },
+      },
+      removeLanguage(language) {
+        this.selectedLanguages = this.selectedLanguages.filter(item => item != language)
+      },
+      addLanguage() {
+        this.selectedLanguages.push(this.newLanguage)
+        this.newLanguage = ''
+      },
+      async changeLanguages() {
+        this.requestUnderProcess = true
 
-}
+        if (!this.is_cv_page) {
+          await this.$store.dispatch('updateProfile', {
+            details: {
+              languages: this.selectedLanguages
+            }
+          });
+        } else {
+          this.$emit('languagesAdded', {languages: this.selectedLanguages})
+        }
+
+        this.toggleEdit()
+        this.requestUnderProcess = false
+      }
+    },
+
+  }
 </script>
 
 <style scoped>

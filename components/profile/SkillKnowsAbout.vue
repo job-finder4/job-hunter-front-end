@@ -32,7 +32,6 @@
         />
       </v-slide-y-transition>
 
-
       <v-chip v-for="skill in selectedSkills"
               :key="skill.data.id"
               :close="editMode && controlleable"
@@ -45,6 +44,7 @@
         {{ skill.data.attributes.name }}
       </v-chip>
     </v-card-text>
+
     <v-card-actions class="justify-center mt-4" v-if="editMode">
       <v-btn color="primary" large rounded :disabled="requestUnderProcess" @click="editSkills">Done</v-btn>
     </v-card-actions>
@@ -57,6 +57,10 @@
 
   export default {
     props: {
+      is_cv_page: {
+        type: Boolean,
+        default: false
+      },
       controlleable: {
         type: Boolean,
         default: true
@@ -75,7 +79,7 @@
       return {
         editMode: false,
         editButtonLabel: 'edit or add skill',
-        selectedSkills: Array.from(this.$store.getters.userSkills),
+        selectedSkills: (this.is_cv_page) ? Array.from(this.$store.getters.getCvSkills) : Array.from(this.$store.getters.userSkills),
         newSkill: '',
         requestUnderProcess: false
       }
@@ -85,6 +89,9 @@
         this.editMode = !this.editMode
         this.editButtonLabel = this.editMode ? 'cancel' : 'edit or add skill'
         !this.editMode ? this.selectedSkills = Array.from(this.userSkills) : ''
+        if (this.is_cv_page) {
+          !this.editMode ? this.selectedSkills = Array.from(this.$store.getters.getCvSkills) : ''
+        }
       },
       removeSkill(skillId) {
         this.selectedSkills = this.selectedSkills.filter(item => item.data.id != skillId)
@@ -96,9 +103,14 @@
       async editSkills() {
         this.requestUnderProcess = true
 
-        await this.$store.dispatch('updateProfile', {
-          skills: this.selectedSkills.map(item => item.data.id)
-        });
+        if (!this.is_cv_page) {
+          await this.$store.dispatch('updateProfile', {
+            skills: this.selectedSkills.map(item => item.data.id)
+          });
+        } else {
+          this.$emit('skillsAdded', {skills: this.selectedSkills})
+        }
+
         this.toggleEdit()
         this.requestUnderProcess = false
       }
@@ -107,5 +119,3 @@
   }
 </script>
 
-<style scoped>
-</style>

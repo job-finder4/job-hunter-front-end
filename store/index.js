@@ -5,7 +5,8 @@ import jobads from './jobads'
 import post_job from './post_job'
 import notifications from './notifications'
 import Cookie from "js-cookie";
-
+import userInformation from './userInformation'
+import cv_details from './cv_details'
 
 const vuexStore = () => {
   return new Vuex.Store({
@@ -100,7 +101,7 @@ const vuexStore = () => {
       //   vuexContext.commit("setToken", token);
       // },
     },
-    modules: {userData, jobads,post_job,notifications}
+    modules: {userData, jobads,post_job,notifications,userInformation,cv_details}
   })
 }
 

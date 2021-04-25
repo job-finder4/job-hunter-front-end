@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+const bodyParser = require('body-parser')
 
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -35,7 +36,6 @@ export default {
   plugins: [
     "~/plugins/vee-validate.js",
     "~/plugins/axiosD.js",
-    { src: '~/plugins/vue-html-pdf.js', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -133,5 +133,23 @@ export default {
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     transpile: ["vee-validate/dist/rules"],
+    /*
+** You can extend webpack config here
+*/
+    extend(config, ctx) {
+      // Run ESLint on save
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          // loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    }
   },
+  serverMiddleware: [
+    bodyParser.json(),
+    '~/api'
+  ]
 }

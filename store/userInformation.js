@@ -47,7 +47,7 @@ export default {
     },
     allLanguages(state) {
       return [
-        'english', 'arabic', 'germany', 'russian', 'parisian', 'chinese', 'indian'
+        'english', 'arabic', 'germany', 'russian', 'persian', 'chinese', 'indian'
       ]
     },
     userProfile(state) {

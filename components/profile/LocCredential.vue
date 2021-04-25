@@ -73,7 +73,6 @@ export default {
       this.$refs.form.reset()
       this.$emit('cancel')
     }
-
   },
 }
 </script>

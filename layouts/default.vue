@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire" class="light-blue lighten-4">
+  <v-app  id="inspire" class="light-blue lighten-4">
     <v-navigation-drawer v-if="drawer" v-model="drawer" fixed app light
     >
       <v-list dense>
@@ -22,6 +22,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
+      id="appBar"
       fixed
       color="blue-grey lighten-5" app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
@@ -111,21 +112,26 @@
     <v-main>
       <v-container fill-height>
         <v-layout justify-center align-center>
-          <v-flex class="light">
+          <v-flex class="light" id="appD">
             <nuxt/>
           </v-flex>
         </v-layout>
       </v-container>
     </v-main>
     <PageFooter/>
+    <delete-dialog/>
+    <add-or-update-dialog/>
   </v-app>
 </template>
 
 <script>
-  // import Notifications from "~/components/Notifications";
+  import Notifications from "~/components/Notifications";
+  import DeleteDialog from "~/components/DeleteDialog";
+  import AddOrUpdateDialog from "~/components/AddOrUpdateDialog";
+
   export default {
     components:{
-      // Notifications
+      Notifications,DeleteDialog,AddOrUpdateDialog
     },
     middleware: [],
     data() {

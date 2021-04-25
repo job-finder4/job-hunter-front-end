@@ -101,11 +101,5 @@ export default {
       this.$emit('cancel')
     }
   },
-
 }
-
 </script>
-
-<style scoped>
-
-</style>

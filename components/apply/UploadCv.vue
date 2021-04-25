@@ -66,10 +66,8 @@
           comp.dropzoneError = {'code': xhr.status, 'message': xhr.statusText}
         }
       });
-      c.on("success", function (cv) {
-        console.log(JSON.parse(cv.xhr.response))
-        console.log(cv.xhr.response)
-        comp.$emit('fileUploaded',{cvId:JSON.parse(cv.xhr.response).data.id})
+      c.on("success", function (cv,response) {
+        comp.$emit('fileUploaded',{cvId:response.data.id})
       });
     },
     methods: {
