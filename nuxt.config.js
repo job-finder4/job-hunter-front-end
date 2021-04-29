@@ -66,7 +66,7 @@ export default {
     // '@nuxt/content',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
-    // '@nuxtjs/laravel-echo',
+    '@nuxtjs/laravel-echo',
 
   ],
 
@@ -91,21 +91,21 @@ export default {
     keepOnHover: true,
     theme: 'outline',
   },
-  // echo: {
-  //   ssr: false,
-  //   broadcaster: 'pusher',
-  //   host: process.env.API_URL,
-  //   key: process.env.PUSHER_APP_KEY,
-  //   cluster: 'ap2',
-  //   wsHost: process.env.WEBSOCKET_BASE_URL,
-  //   wsPort: 6001,
-  //   // authModule: true,
-  //   // connectOnLogin:true,
-  //   // disconnectOnLogout:true,
-  //   // disableStats: true,
-  //   authEndpoint: process.env.API_URL + '/api/broadcasting/auth',
-  //   plugins: ['~/plugins/echo.js']
-  // },
+  echo: {
+    ssr: false,
+    broadcaster: 'pusher',
+    host: process.env.API_URL,
+    key: process.env.PUSHER_APP_KEY,
+    cluster: 'ap2',
+    wsHost: process.env.WEBSOCKET_BASE_URL,
+    wsPort: 6001,
+    // authModule: true,
+    // connectOnLogin:true,
+    // disconnectOnLogout:true,
+    // disableStats: true,
+    authEndpoint: process.env.API_URL + '/api/broadcasting/auth',
+    plugins: ['~/plugins/echo.js']
+  },
 
   // Auth module configuration (https://dev.auth.nuxtjs.org/)
   auth: {

@@ -84,10 +84,10 @@
     },
     methods: {
       onFilterChange({filters}) {
-        if (this.isFilterFirstCreated) {
-          this.isFilterFirstCreated = false
-          return;
-        }
+        // if (this.isFilterFirstCreated) {
+        //   this.isFilterFirstCreated = false
+        //   return;
+        // }
         this.filters = filters
         this.resetPaginationData()
         this.isLoading = true
@@ -140,6 +140,7 @@
         .catch(err => {
           this.isLoading = false
         })
-    }
+    },
+
   }
 </script>

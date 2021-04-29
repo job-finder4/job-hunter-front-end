@@ -12,6 +12,10 @@
           <v-list-item-title class="text-body-2">
             {{jobad.data.attributes.company.data.attributes.name}}
           </v-list-item-title>
+          <v-list-item class="font-weight-light text-sm-body-1">
+<!--            Category-->
+<!--            {{ jobad.data.attributes.category.data.attributes.name }}-->
+          </v-list-item>
         </v-list-item>
       </v-card-title>
       <v-divider/>

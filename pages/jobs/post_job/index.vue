@@ -80,7 +80,6 @@
               color="white"
               item-text="name"
               label="State"
-              :filter="customFilter"
               :value="jobData.location"
               v-model="jobData.location"
             >

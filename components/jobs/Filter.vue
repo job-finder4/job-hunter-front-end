@@ -91,7 +91,7 @@
 
       <v-list-item-group @change="getFilteredJobs" class="v-list-group-- v-list-group--no-action"
                          v-model="filter.location">
-        <v-list-item dense class="cyan--text" :value="state" v-for="state in states" link>
+        <v-list-item   dense class="cyan--text" :value="state" v-for="state in states" link>
           <v-list-item-title>{{state}}</v-list-item-title>
         </v-list-item>
       </v-list-item-group>

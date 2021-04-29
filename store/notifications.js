@@ -5,6 +5,9 @@ export default {
   getters: {
     notifications(state) {
       return state.notifications
+    },
+    getUnreadedNotifications(state) {
+      return state.notifications.filter(item => item.read_at==null);
     }
   },
   mutations: {

@@ -79,13 +79,9 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-      <v-container fill-height>
-        <v-layout justify-center align-center>
           <v-flex class="light">
             <nuxt/>
           </v-flex>
-        </v-layout>
-      </v-container>
     </v-main>
     <PageFooter/>
   </v-app>

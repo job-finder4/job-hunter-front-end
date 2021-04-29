@@ -1,6 +1,7 @@
 export default {
   state: {
-    jobads: []
+    jobads: [],
+    search:null,
   },
   getters: {
     //jobSeeker
@@ -21,6 +22,12 @@ export default {
     },
     CLEAR_JOBADS(state){
       state.jobads=[]
+    },
+    SET_SEARCH_PARAMS(state,search){
+      state.search = search
+    },
+    CLEAR_SEARCH_ATTRIBUTE(state,search){
+      state.search = search
     }
 
     //Company
@@ -39,7 +46,11 @@ export default {
         .catch(error => {
         })
     },
-    getJobads({commit}, {params}) {
+    getJobads({commit, state}, {params}) {
+
+      if (!!state.search)
+        params.search = state.search
+
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/jobads', {
           params: params

@@ -39,7 +39,7 @@ router.post("/pdf", (req, res) => {
 //
 //   // Fit the image in the dimensions, and center it both horizontally and vertically
 //   // doc.image('assets/a.jpg', 430, 15, {fit: [100, 100], align: 'justify', valign: 'center'})
-//   // doc.image('assets/a.jpg', 0, 15, {width: 150,height:150})
+  // doc.image('assets/a.jpg', 0, 15, {width: 150,height:150})
 //   // doc.image(data.img, 430, 100, {fit:[100,100],width: 150,height:150})
 //   // doc.image('assets/a.jpg', 430, 100, {fit:[100,100],width: 150,height:150})
 //

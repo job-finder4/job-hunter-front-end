@@ -110,13 +110,7 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-      <v-container fill-height>
-        <v-layout justify-center align-center>
-          <v-flex class="light" id="appD">
             <nuxt/>
-          </v-flex>
-        </v-layout>
-      </v-container>
     </v-main>
     <PageFooter/>
     <delete-dialog/>
@@ -148,6 +142,11 @@
             title: 'My Applications',
             to: '/applied-jobs',
             'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'jobSeeker'
+          },
+          {
+            title: 'Dashboard',
+            to: '/admin/dashboard',
+            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'admin'
           },
           {
             title: 'posted-jobs',

@@ -5,7 +5,8 @@ import {required, email, max} from "vee-validate/dist/rules";
 extend('salary', {
   message: "salary must be number and above 10",
   validate(value, args) {
-    if (value.match(/[0-9]/g) !== null) {
+    const format='/[0-9]/g'
+    if (format.test(value) !== null) {
       return value > 10
     }
     return false
