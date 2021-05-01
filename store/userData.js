@@ -6,6 +6,8 @@ export default {
     activeJobs: [],
     pendingJobs: [],
     expiredJobs: [],
+    refusedJobs: [],
+
     pendingJobApplications: [],
     approvedJobApplications: [],
     rejectedJobApplications: [],
@@ -28,6 +30,9 @@ export default {
     },
     getMyExpiredJobs(state){
       return state.expiredJobs
+    },
+    getMyRefusedJobs(state){
+      return state.refusedJobs
     },
 
     //job applications
@@ -62,6 +67,9 @@ export default {
       }
       if (jobStatus === 'active') {
         state.activeJobs = myJobs
+      }
+      if (jobStatus === 'refused') {
+        state.refusedJobs = myJobs
       }
     },
 
@@ -210,12 +218,25 @@ export default {
 
 
     //Admin
-    evaluateJob({commit},{jobId,evaluationStatus}){
+    approveJob({commit},{jobId}){
       return new Promise((resolve, reject) => {
-        const evaluation=(evaluationStatus===1)?'approve':'reject'
-        this.$axios.put('backend/api/jobads/' + jobId + '/'+evaluation)
+        this.$axios.put('backend/api/jobads/' + jobId + '/approve')
           .then(response => {
             console.log(response.data)
+            commit('CHANGE_JOB_STATUS', {jobWithStatus:response.data})
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    refuseJob({commit},{jobId,description}){
+      return new Promise((resolve, reject) => {
+        this.$axios.put('backend/api/jobads/' + jobId + '/refuse',{
+          description:description
+        })
+          .then(response => {
             commit('CHANGE_JOB_STATUS', {jobWithStatus:response.data})
             resolve(response)
           })

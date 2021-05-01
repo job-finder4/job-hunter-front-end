@@ -5,6 +5,7 @@ import {required, email, max} from "vee-validate/dist/rules";
 extend('salary', {
   message: "salary must be number and above 10",
   validate(value, args) {
+    return  true
     const format='/[0-9]/g'
     if (format.test(value) !== null) {
       return value > 10
@@ -15,6 +16,7 @@ extend('salary', {
 extend('max_salary', {
   message: "max salary must be greater than min",
   validate(value, args) {
+    return  true
     return value >= args.min_salary;
   },
   params: ['password'],

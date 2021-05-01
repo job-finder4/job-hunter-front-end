@@ -35,6 +35,14 @@
       <v-btn v-if="!this.$auth.loggedIn" text to="/login">
         Sign In
       </v-btn>
+      <notifications v-if="this.$store.getters.isAuthenticated">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn @click="on" :attrs="attrs">
+            <v-icon>mdi-bell</v-icon>
+            Notifications
+          </v-btn>
+        </template>
+      </notifications>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -79,17 +87,26 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-          <v-flex class="light">
-            <nuxt/>
-          </v-flex>
+      <v-flex class="light">
+        <nuxt/>
+      </v-flex>
     </v-main>
     <PageFooter/>
+    <delete-dialog/>
+    <add-or-update-dialog/>
   </v-app>
 </template>
 
 <script>
+  import Notifications from "~/components/Notifications";
+  import DeleteDialog from "~/components/DeleteDialog";
+  import AddOrUpdateDialog from "~/components/AddOrUpdateDialog";
+
   export default {
-    middleware: [ 'should-company'],
+    middleware: ['should-company'],
+    components: {
+      Notifications, DeleteDialog, AddOrUpdateDialog
+    },
     data() {
       return {
         drawer: false,

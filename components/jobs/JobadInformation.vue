@@ -1,9 +1,8 @@
 <template>
   <v-card rounded elevation="2">
     <v-card-title class="font-weight-medium">
-
       <v-list>
-        <v-list-item :disabled="!jobad.data.attributes.approved_at" :to="'my-jobs/'+jobad.data.id">
+        <v-list-item  :to="(userRole==='company')?`my-jobs/${jobad.data.id}`:`/jobs/${jobad.data.id}`">
           <v-list-item-title class="blue--text headline">
             {{jobad.data.attributes.title}}
           </v-list-item-title>
@@ -14,7 +13,11 @@
           <v-row
             justify="center"
           >
-            <v-btn class="apporval-btn" x-small color="orange" text v-if="!jobad.data.attributes.approved_at">Waiting For
+            <v-btn class="apporval-btn" x-small color="red" :to="(userRole==='company')?`my-jobs/${jobad.data.id}`:`/jobs/${jobad.data.id}`"
+                   text v-if="jobad.data.attributes.refusal_report">
+              Refused, click To see refusal details
+            </v-btn>
+            <v-btn class="apporval-btn" x-small color="orange" text v-if="!jobad.data.attributes.approved_at&&!jobad.data.attributes.refusal_report">Waiting For
               Approval
             </v-btn>
             <template v-if="jobad.data.attributes.approved_at">

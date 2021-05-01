@@ -65,6 +65,9 @@
         if (this.jobStatus === 'pending') {
           return this.$store.getters.getMyPendingJobs
         }
+        if (this.jobStatus === 'refused') {
+          return this.$store.getters.getMyRefusedJobs
+        }
         return []
       },
       page() {

@@ -48,7 +48,11 @@
             'type': 'pending'
           },
           {
-            id: 3, 'title': 'Expired Jobs', 'description': 'active in the past,but expired now',
+            id: 3, 'title': 'Refused Jobs', 'description': 'needs modification',
+            'type': 'refused'
+          },
+          {
+            id: 4, 'title': 'Expired Jobs', 'description': 'active in the past,but expired now',
             'type': 'expired'
           }
         ],

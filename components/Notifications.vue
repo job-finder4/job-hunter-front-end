@@ -96,6 +96,7 @@
         const ApplicationApproved ="App\\Notifications\\ApplicationApproved"
         const RecommendedJob ="App\\Notifications\\RecommendedJob"
         const JobadEvaluationStatus ="App\\Notifications\\JobadEvaluationStatus"
+        const JobadRefused ="App\\Notifications\\JobadRefused"
 
         if(inputText === ApplicationApproved){
           reply = {
@@ -107,6 +108,12 @@
           reply = {
             title: 'we have recommendation to you :',
             subtitle:notification.data.jobad_title
+          }
+        }
+        if(inputText === JobadRefused){
+          reply = {
+            title: 'your job needs some modification to be published :',
+            subtitle:notification.data.refusal_reason
           }
         }
 

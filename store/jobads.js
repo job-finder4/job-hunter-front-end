@@ -79,9 +79,32 @@ export default {
           description: jobData.description,
           job_type: jobData.selectedJobType,
           skills: jobData.skills,
+          category_id:jobData.category
         })
           .then(response => {
             // commit('POST_JOB', response.data.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    editJob({commit}, {jobData,jobId}) {
+      return new Promise((resolve, reject) => {
+        this.$axios.put('backend/api/jobads/' + jobId, {
+          title: jobData.title,
+          min_salary: jobData.range[0],
+          max_salary: jobData.range[1],
+          job_time: jobData.selectedJobTime,
+          location: jobData.location,
+          expiration_date: jobData.expirationDate,
+          description: jobData.description,
+          job_type: jobData.selectedJobType,
+          skills: jobData.skills,
+          category_id: jobData.category
+        })
+          .then(response => {
             resolve(response)
           })
           .catch(error => {

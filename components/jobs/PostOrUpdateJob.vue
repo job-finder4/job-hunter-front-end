@@ -155,6 +155,7 @@
                   <v-card height="100vh" style="overflow-y: scroll">
                     <v-treeview
                       v-model="jobData.skills"
+                      :value="jobData.skills"
                       :items="availableSkills"
                       :search="search"
                       :filter="filter"
@@ -174,18 +175,24 @@
                 <v-btn class="mr-3">
                   Back
                 </v-btn>
-<!--                <v-btn color="indigo" outlined-->
-<!--                       @click="passes(postJob)"-->
-<!--                       :disabled="invalid || !validated"-->
-<!--                       :loading="isLoading"-->
-<!--                >-->
-<!--                  Publish-->
-<!--                </v-btn>-->
-                <v-btn color="indigo" outlined
+                <!--                <v-btn color="indigo" outlined-->
+                <!--                       @click="passes(postJob)"-->
+                <!--                       :disabled="invalid || !validated"-->
+                <!--                       :loading="isLoading"-->
+                <!--                >-->
+                <!--                  Publish-->
+                <!--                </v-btn>-->
+                <v-btn v-if="!isUpdate" color="indigo" outlined
                        @click="postJob"
                        :loading="isLoading"
                 >
                   Publish
+                </v-btn>
+                <v-btn v-if="isUpdate" color="indigo" outlined
+                       @click="editJob"
+                       :loading="isLoading"
+                >
+                  Update
                 </v-btn>
               </v-card-actions>
 
@@ -211,6 +218,12 @@
       ValidationProvider,
       VTextFieldWithValidation,
     },
+    props: {
+      details: {
+        type: Object,
+        required: false
+      },
+    },
     computed: {
       filter() {
         return this.caseSensitive
@@ -222,6 +235,12 @@
       },
       availableCategories() {
         return this.$store.getters.getAllCategories
+      },
+      isUpdate() {
+        if (this.details) {
+          return true
+        }
+        return false
       }
     },
     data() {
@@ -229,7 +248,6 @@
         //stepper data
         e1: 1,
         steps: 3,
-
         isLoading: false,
         isShowDatePicker: false,
         open: [1, 2],
@@ -296,6 +314,16 @@
 
         return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText)
       },
+      editJob(){
+        this.$store.dispatch('editJob', {jobData: this.jobData,jobId:this.details.data.id})
+          .then((response) => {
+            this.isLoading = false
+            this.$router.push('/company/my-jobs')
+          })
+          .catch(err => {
+            this.isLoading = false
+          })
+      },
       postJob() {
         this.$store.dispatch('postJob', {jobData: this.jobData})
           .then((response) => {
@@ -317,11 +345,20 @@
     fetch() {
       return this.$store.dispatch('getAvailableSkills')
     },
+    created() {
+      if (this.details) {
+        this.jobData.skills=this.details.data.attributes.skills.data.map(item=>item.data.id)
+        this.jobData.expirationDate=new Date(this.details.data.attributes.exact_expiration_date).toISOString().substr(0, 10)
+        this.jobData.description = this.details.data.attributes.description
+        this.jobData.title = this.details.data.attributes.title
+        this.jobData.location = this.details.data.attributes.location
+        this.jobData.category = this.details.data.attributes.category.data.id
+        this.jobData.selectedJobType = this.details.data.attributes.job_type
+        this.jobData.selectedJobTime = this.details.data.attributes.job_time
+        this.jobData.range[0] = this.details.data.attributes.min_salary
+        this.jobData.range[1] = this.details.data.attributes.max_salary
+      }
+    }
   }
 </script>
 
-<style scoped>
-  .daniel-title {
-    font-family: Nunito;
-  }
-</style>
