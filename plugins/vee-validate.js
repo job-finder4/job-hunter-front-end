@@ -1,5 +1,5 @@
 import {extend} from "vee-validate";
-import {required, email, max} from "vee-validate/dist/rules";
+import {required, email, max, numeric, max_value} from "vee-validate/dist/rules";
 
 
 extend('salary', {
@@ -38,10 +38,26 @@ extend("name2", {
   message: "The name should not contain special characters"
 });
 
-
 extend("required", {
   ...required,
   message: "This {_field_} field is required"
+});
+
+extend("numeric", {
+  ...numeric,
+  message: "{_field_} field must be a numeric"
+});
+
+extend("max_value", {
+  ...max_value,
+  message: "{_field_} field must be smaller than {max}"
+});
+
+extend("positive_number", {
+  validate(value, args) {
+    return value > 0;
+  },
+  message: "{_field_} field must be positive"
 });
 
 extend("max", {
@@ -53,6 +69,7 @@ extend("email", {
   ...email,
   message: "This {_field_} field must be a valid email"
 });
+
 extend("confirmed", {
   validate(value, args) {
     return value === args.password;
@@ -60,6 +77,7 @@ extend("confirmed", {
   params: ['password'],
   message: "This {_field_} field confirmation does not match"
 });
+
 extend('min', {
   validate(value, args) {
     const length = value.length;
@@ -75,7 +93,7 @@ extend('upCase', {
   message: "password must contain capital letter"
 })
 extend('number', {
-  message: "password must contain number",
+  message: "{_field_} must contain number",
   validate: value => value.match(/[0-9]/g) !== null
 })
 

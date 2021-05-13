@@ -1,193 +1,159 @@
 <template>
-  <v-row>
-    <v-col md="7">
-      <v-card
-        flat
-      >
-        <v-card-title class="headline blue-grey--text">
-          Search for your next job<br>
-          Find the right fit.
-        </v-card-title>
+  <div>
+    <v-card
+      flat class="bg d-flex align-center flex-column" height="600px"
+    >
+      <v-card-title class="text-h3 flex-column mb-12 font-weight-bold pt-12 white--text">
+        <div class="mx-auto">Search for your next job</div>
+        <div class="mx-auto">Find the right fit.</div>
+      </v-card-title>
 
-        <v-card-text>
-          <v-row width="80%" class="d-flex justify-start">
-            <v-autocomplete
-              v-model="model"
-              :items="items"
-              :loading="isLoading"
-              :search-input.sync="search"
-              hide-no-data
-              hide-selected
-              item-text="Description"
-              item-value="API"
-              label="Location"
-              placeholder="Start typing to Search"
-              prepend-icon="mdi-map-marker"
-              return-object
-              menu-props="false"
-              color="purple lighten-5"
-            ></v-autocomplete>
+      <div style="width: 70%" class="d-flex flex-wrap align-center pt-12 justify-center">
 
-            <v-autocomplete
-              v-model="model"
-              :items="items"
-              :loading="isLoading"
-              :search-input.sync="search"
-              color="white"
-              hide-no-data
-              hide-selected
-              item-text="Description"
-              item-value="API"
-              label="Job title, keywords, or company"
-              placeholder="Start typing to Search"
-              prepend-icon="mdi-magnify"
-              return-object
-            ></v-autocomplete>
-            <div class="d-flex align-center">
-              <v-btn rounded outlined color="purple">Search</v-btn>
-            </div>
-          </v-row>
-        </v-card-text>
+        <v-combobox
+          v-model="location"
+          :items="suggestedLocations"
+          :loading="isLoading"
+          label="Location"
+          placeholder="Start typing to Search"
+          prepend-icon="mdi-map-marker"
+          hide-no-data
+          no-data-text="there is no location"
+          solo
+          outlined
+          background-color="white"
+          class="flex-grow-0"
+          style="min-width: 30%"
+        />
 
-        <v-divider></v-divider>
-        <v-expand-transition>
-          <v-list
-            v-if="model"
-            class="red lighten-3"
+        <v-combobox
+          v-model="term"
+          :items="suggestedTerms"
+          label="Job title, keywords, or skills"
+          hide-no-data
+          multiple
+          placeholder="Start typing to Search"
+          prepend-icon="mdi-magnify"
+          solo outlined background-color="white"
+          class="flex-grow-0 mx-4"
+          style="min-width: 30%"
+        />
+
+        <div>
+          <v-btn
+            class="mb-8 mx-2"
+            x-large
+            color="indigo darken-2 white--text"
+            @click="search"
           >
-            <v-list-item
-              v-for="(field, i) in fields"
-              :key="i"
+            Search
+          </v-btn>
+          <v-btn
+            class="mb-8 mx-2 px-3"
+            outlined
+            style="background-color: white"
+            x-large
+            color="indigo darken-1"
+          >
+            Advanced<br>Search
+          </v-btn>
+
+        </div>
+      </div>
+    </v-card>
+
+    <v-tabs class="mt-n12" v-model="tab" centered background-color="transparent" dark>
+      <v-tab key="0">Jobs By Categories</v-tab>
+      <v-tab key="1">Trended Search</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab" class="py-6">
+      <v-tab-item :key="0">
+        <div style="width: 80%" class="mx-auto">
+          <v-row class="justify-center">
+            <v-col
+              cols="6"  md="4" lg="3" xl="2"
+              v-for="category in allCategories"
+              :key="category.id"
+              class="text-center"
             >
-              <v-list-item-content>
-                <v-list-item-title v-text="field.value"></v-list-item-title>
-                <v-list-item-subtitle v-text="field.key"></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-
-        </v-expand-transition>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-    <v-col md="5">
-      <v-img src=""></v-img>
-    </v-col>
-    <v-row>
-      <v-timeline
-        align-top
-        :dense="$vuetify.breakpoint.smAndDown"
-      >
-        <v-timeline-item
-          v-for="(item, i) in timelineItems"
-          :key="i"
-          :color="item.color"
-          :icon="item.icon"
-          fill-dot
-        >
-          <v-card
-            :color="item.color"
-            dark
-          >
-            <v-card-title class="title">
-              Lorem Ipsum Dolor
-            </v-card-title>
-            <v-card-text class="white text--primary">
-              <p>Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod
-                convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an
-                salutandi sententiae.</p>
-              <v-btn
-                :color="item.color"
-                class="mx-0"
-                outlined
+              <v-btn text
+                     dark
+                     @click="$router.push({name:'jobs',params:{category_id:category.id}})"
               >
-                Button
+                {{category.name}} <span class="indigo--text">(2885)</span>
               </v-btn>
-            </v-card-text>
-          </v-card>
-        </v-timeline-item>
-      </v-timeline>
-    </v-row>
-  </v-row>
 
+            </v-col>
+          </v-row>
+        </div>
+
+      </v-tab-item>
+
+      <v-tab-item :key="1">
+        <div class="d-flex justify-center align-center flex-wrap mx-auto" style="max-width: 70%">
+          <v-chip class="ma-2"
+                  large
+                  outlined
+                  dark
+                  link
+                  v-for="(i,index) in 10"
+                  :key="index"
+
+          >
+            software development
+          </v-chip>
+        </div>
+      </v-tab-item>
+    </v-tabs-items>
+
+  </div>
 </template>
 
 <script>
+  import locations from '~/static/locations.json'
+  import categories from '~/static/categories.json'
+  import skills from '~/static/skills.json'
+  import jobsTitle from '~/static/jobsTitle.json'
+
   export default {
-    middleware: ['should-not-company'],
-    data: () => ({
-      descriptionLimit: 60,
-      entries: [],
-      isLoading: false,
-      model: null,
-      search: null,
-      timelineItems: [
-        {
-          color: 'red lighten-2',
-          icon: 'mdi-star',
-        },
-        {
-          color: 'purple darken-1',
-          icon: 'mdi-book-variant',
-        },
-        {
-          color: 'green lighten-1',
-          icon: 'mdi-airballoon',
-        },
-        {
-          color: 'indigo',
-          icon: 'mdi-buffer',
-        },
-      ],
-    }),
-
-    computed: {
-      fields() {
-        if (!this.model) return []
-
-        return Object.keys(this.model).map(key => {
-          return {
-            key,
-            value: this.model[key] || 'n/a',
-          }
-        })
-      },
-      items() {
-        return this.entries.map(entry => {
-          const Description = entry.Description.length > this.descriptionLimit
-            ? entry.Description.slice(0, this.descriptionLimit) + '...'
-            : entry.Description
-
-          return Object.assign({}, entry, {Description})
-        })
-      },
+    data() {
+      return {
+        tab: 0,
+        isLoading: false,
+        location: '',
+        term: [],
+        suggestedLocations: locations,
+        suggestedTerms: categories.map(item => item.name).concat(skills.map(item => item.name), jobsTitle),
+        allCategories: categories.slice(0,16)
+      }
     },
-
-    watch: {
-      search(val) {
-        // Items have already been loaded
-        if (this.items.length > 0) return
-
-        // Items have already been requested
-        if (this.isLoading) return
-
-        this.isLoading = true
-
-        // Lazily load input items
-        fetch('https://api.publicapis.org/entries')
-          .then(res => res.json())
-          .then(res => {
-            const {count, entries} = res
-            this.count = count
-            this.entries = entries
-          })
-          .catch(err => {
-            console.log(err)
-          })
-          .finally(() => (this.isLoading = false))
+    methods: {
+       search() {
+        this.$store.commit('SET_SEARCH_PARAMS', {
+          location: this.location,
+          term: this.term
+        })
+        this.$router.push('/jobs');
       },
     },
   }
 </script>
+
+<style scope>
+  .bg {
+    background-image: url("~assets/h.png");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+  }
+
+  .v-tab {
+    background-color: rgba(19, 55, 82, 0.73);
+  }
+
+  .v-tabs-items {
+    background-color: #133752 !important;
+    color: white;
+  }
+</style>

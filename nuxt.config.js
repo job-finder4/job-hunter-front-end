@@ -34,7 +34,6 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    "~/plugins/RegisterGlobalComponent.js",
     "~/plugins/vee-validate.js",
     "~/plugins/axiosD.js",
   ],
@@ -106,8 +105,7 @@ export default {
     // '@nuxt/content',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
-    // '@nuxtjs/laravel-echo',
-
+    '@nuxtjs/laravel-echo',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

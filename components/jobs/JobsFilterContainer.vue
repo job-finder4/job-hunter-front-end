@@ -2,17 +2,10 @@
   <v-row>
     <v-col>
       <div v-if="jobads.length===0" class="text-body-1">
-        There are No jobs in this category
+        There are No jobs Matching this criteria
       </div>
       <div v-if="jobads.length!==0">
-        <single-job v-for="(jobad,index) in jobads" :key="jobad.data.id" :jobad="jobad"/>
-      </div>
-      <div class="text-center" v-if="pagination.length>1">
-        <v-pagination
-          v-model="pagination.page"
-          :length="pagination.length"
-          :total-visible="4"
-        ></v-pagination>
+        <single-job class="mt-2" v-for="(jobad,index) in jobads" :key="jobad.data.id" :jobad="jobad"/>
       </div>
     </v-col>
   </v-row>
@@ -38,12 +31,6 @@
       data() {
         return {
           isLoading:true,
-          pagination: {
-            page: 1,
-            total: 1,
-            per_page: 5,
-            length: 1
-          }
         }
       },
       destroyed() {

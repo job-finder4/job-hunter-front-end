@@ -30,6 +30,7 @@ import LocCredential from "~/components/profile/LocCredential";
 import EduCredential from "~/components/profile/EduCredential";
 import EmpCredential from "~/components/profile/EmpCredential";
 import AddJobPreference from "~/components/profile/AddJobPreference";
+import createWorkHours from '~/components/interview/createWorkHours';
 
 export default {
   name: "AddOrUpdateDialog",
@@ -38,6 +39,7 @@ export default {
     appEduCredential: EduCredential,
     appEmpCredential: EmpCredential,
     appAddJobPreference: AddJobPreference,
+    appCreateWorkHours: createWorkHours,
   },
   data() {
     return {

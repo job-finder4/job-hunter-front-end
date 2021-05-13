@@ -5,6 +5,10 @@ import jobads from './jobads'
 import post_job from './post_job'
 import notifications from './notifications'
 import userInformation from './userInformation'
+import jobSearch from './jobSearch'
+import createInterview from './createInterview'
+import jobadInterviews from './jobadInterviews'
+import myInterviews from './myInterviews'
 
 const vuexStore = () => {
   return new Vuex.Store({
@@ -99,7 +103,8 @@ const vuexStore = () => {
       //   vuexContext.commit("setToken", token);
       // },
     },
-    modules: {userData, jobads,post_job,notifications,userInformation}
+    modules: {userData, jobads,post_job,notifications,userInformation
+      ,jobSearch,createInterview,jobadInterviews,myInterviews}
   })
 }
 
