@@ -35,6 +35,7 @@
       },
       destroyed() {
           this.$store.dispatch('clearJobads')
+          this.$store.commit('CLEAR_SEARCH_ATTRIBUTE')
       }
     }
 </script>

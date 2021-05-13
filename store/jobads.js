@@ -2,6 +2,7 @@ export default {
   state: {
     jobads: [],
     search:null,
+    advancedSearch:null,
   },
   getters: {
     //jobSeeker
@@ -26,9 +27,14 @@ export default {
     SET_SEARCH_PARAMS(state,search){
       state.search = search
     },
-    CLEAR_SEARCH_ATTRIBUTE(state,search){
-      state.search = search
-    }
+    SET_ADVANCED_SEARCH_PARAMS(state,advancedSearch){
+      state.advancedSearch = advancedSearch
+    },
+    CLEAR_SEARCH_ATTRIBUTE(state){
+      state.search = null
+      state.advancedSearch = null
+    },
+
 
     //Company
 
@@ -50,6 +56,9 @@ export default {
 
       if (!!state.search)
         params.search = state.search
+
+      if (!!state.advancedSearch)
+        params.advancedSearch = state.advancedSearch
 
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/jobads', {

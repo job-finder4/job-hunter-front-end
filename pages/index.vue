@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-card
       flat class="bg d-flex align-center flex-column" height="600px"
     >
@@ -123,7 +124,6 @@
     },
     methods: {
       async search() {
-
         this.$store.commit('SET_SEARCH_PARAMS', {
           location: this.location,
           term: this.term

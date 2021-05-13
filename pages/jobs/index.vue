@@ -6,6 +6,7 @@
     </v-col>
     <v-col md="9">
       <v-card min-height="90%">
+        Your search returned {{pagination.total}} jobs
         <v-sheet v-if="isLoading">
           <v-card-title class="mb-8">
             <v-list-item class="display-1">

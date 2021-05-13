@@ -11,6 +11,7 @@ export default function ({$echo, $auth, store},inject) {
       .notification((notification) => {
         store.commit('ADD_NOTIFICATION',notification)
       })
+    console.log($echo)
   }
 
   inject('connectToChannels',function () {
@@ -20,6 +21,7 @@ export default function ({$echo, $auth, store},inject) {
           store.commit('ADD_NOTIFICATION',notification)
         })
     }
+
   })
 
 
