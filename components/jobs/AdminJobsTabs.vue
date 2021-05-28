@@ -45,9 +45,9 @@
           {
             id: 2, 'title': 'Pending Jobs', 'type': 'pending'
           },
-          {
-            id: 3, 'title': 'Rejected Jobs', 'type': 'rejected'
-          },
+          // {
+          //   id: 3, 'title': 'Rejected Jobs', 'type': 'rejected'
+          // },
           {
             id: 4, 'title': 'Expired Jobs', 'type': 'expired'
           }

@@ -5,6 +5,9 @@ export default {
   getters: {
     notifications(state) {
       return state.notifications
+    },
+    getUnreadedNotifications(state) {
+      return state.notifications.filter(item => item.read_at==null);
     }
   },
   mutations: {
@@ -13,6 +16,10 @@ export default {
     },
     MARK_NOTIFICATION_AS_READ(state, notificationId) {
       state.notifications.find(item => item.id === notificationId).read_at = new Date()
+
+    },
+    ADD_NOTIFICATION(state, notification) {
+      state.notifications.unshift(notification)
     }
   },
   actions: {

@@ -6,6 +6,8 @@
     </v-col>
     <v-col md="9">
       <v-card min-height="90%">
+
+        Your search returned {{pagination.total}} jobs
         <v-sheet v-if="isLoading">
           <v-card-title class="mb-8">
             <v-list-item class="display-1">
@@ -56,7 +58,7 @@
     data() {
       return {
         applyDialog: false,
-        isLoading: false,
+        isLoading: true,
         filters: {},
         isFilterFirstCreated: false,
         pagination: {
@@ -64,6 +66,7 @@
           total: 1,
           per_page: 5,
           length: 1
+
         }
       }
     },
@@ -84,10 +87,10 @@
     },
     methods: {
       onFilterChange({filters}) {
-        if (this.isFilterFirstCreated) {
-          this.isFilterFirstCreated = false
-          return;
-        }
+        // if (this.isFilterFirstCreated) {
+        //   this.isFilterFirstCreated = false
+        //   return;
+        // }
         this.filters = filters
         this.resetPaginationData()
         this.isLoading = true
@@ -95,7 +98,8 @@
           .then(res => {
             this.setPaginationDetails({paginationDetails: res.data.meta})
           })
-          .catch(err => {
+
+          .catch(errr => {
             this.$toast.error(err)
           })
       },
@@ -123,26 +127,25 @@
         this.pagination.length = 1
       }
     },
-      async fetch() {
-        let tmpFilters = {}
-        if (this.$route.params.categoryId) {
-          tmpFilters.category = this.$route.params.categoryId
-          this.filters.category = this.$route.params.categoryId
-        }
 
-        if (this.$route.params.location) {
-          tmpFilters.location = this.$route.params.location
-          this.filters.location = this.$route.params.location
-        }
-
-        return this.$store.dispatch('getJobads', {params: {...tmpFilters, page: this.pagination.page}})
-          .then(res => {
-          this.isLoading = false
-          this.setPaginationDetails({paginationDetails: res.data.meta})
-        })
-          .catch(err => {
-            this.isLoading = false
-          })
+    async fetch() {
+      let tmpFilters = {}
+      if (this.$route.params.categoryId) {
+        tmpFilters.category = this.$route.params.categoryId
+        this.filters.category = this.$route.params.categoryId
       }
+      if (this.$route.params.location) {
+        tmpFilters.location = this.$route.params.location
+        this.filters.location = this.$route.params.location
+      }
+      return this.$store.dispatch('getJobads', {params: {...tmpFilters, page: this.pagination.page}}).then(res => {
+        this.isLoading = false
+        this.setPaginationDetails({paginationDetails: res.data.meta})
+      })
+        .catch(err => {
+          this.isLoading = false
+        })
+    },
+
   }
 </script>

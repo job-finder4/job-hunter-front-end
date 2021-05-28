@@ -15,7 +15,7 @@
     import SingleJob from "~/components/jobs/SingleJob";
 
     export default {
-        name: "JobsFilterContainer",
+      name: "JobsFilterContainer",
       middleware: ['should-not-company'],
       components: {
         SingleJob
@@ -35,6 +35,7 @@
       },
       destroyed() {
           this.$store.dispatch('clearJobads')
+          this.$store.commit('CLEAR_SEARCH_ATTRIBUTE')
       }
     }
 </script>

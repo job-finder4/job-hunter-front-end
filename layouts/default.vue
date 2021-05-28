@@ -22,6 +22,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
+      id="appBar"
       fixed
       color="blue-grey lighten-5" app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
@@ -43,7 +44,9 @@
       </v-btn>
 
       <v-btn disabled v-if="this.$store.getters.isAuthenticated" text>
-        <!--        {{user.data.attributes.name}}-->
+
+        {{user.data.attributes.name}}
+
       </v-btn>
 
       <v-btn
@@ -53,6 +56,16 @@
       >
         Sign In
       </v-btn>
+
+      <notifications v-if="this.$store.getters.isAuthenticated">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn @click="on" :attrs="attrs">
+            <v-icon>mdi-bell</v-icon>
+            Notifications
+          </v-btn>
+        </template>
+      </notifications>
+
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -99,10 +112,10 @@
       </v-menu>
     </v-app-bar>
     <v-main>
+
       <nuxt/>
     </v-main>
     <PageFooter/>
-
     <delete-dialog/>
     <add-or-update-dialog/>
 
@@ -111,11 +124,17 @@
 
 <script>
 
+  import Notifications from "~/components/Notifications";
+
   import DeleteDialog from "~/components/DeleteDialog";
   import AddOrUpdateDialog from "~/components/AddOrUpdateDialog";
 
   export default {
-    components: {AddOrUpdateDialog, DeleteDialog},
+    components:
+      {
+        Notifications, DeleteDialog, AddOrUpdateDialog
+      }
+    ,
     middleware: [],
     data() {
       return {
@@ -133,18 +152,28 @@
             'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'jobSeeker'
           },
           {
+
+            title: 'Dashboard',
+            to: '/admin/dashboard',
+            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'admin'
+          },
+          {
+
             title: 'posted-jobs',
             to: '/admin/posted-jobs',
             'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'admin'
-          },
+          }
+          ,
         ],
       }
-    },
+    }
+    ,
     computed: {
       user() {
         return this.$store.getters.getUser
       }
-    },
+    }
+    ,
     methods: {
       async logout() {
         this.error = null
@@ -156,8 +185,10 @@
             this.$toast.success('Successfully LoggedOut')
           })
           .catch((e) => (this.$toast.error('Error while authenticating')))
-      },
-    },
+      }
+      ,
+    }
+    ,
   }
 </script>
 

@@ -25,7 +25,9 @@
       </v-card-title>
 
       <v-divider></v-divider>
-      <div >
+
+      <div>
+
         <v-card-text>
           <v-row>
             <v-col class="ml-2" md="2">
@@ -77,15 +79,16 @@
               </v-row>
             </v-col>
           </v-row>
-
         </v-card-text>
         <v-divider></v-divider>
 
         <v-card-title>
           Skills Requried For The Job
         </v-card-title>
+
         <v-card-text class="ml-2">
-          <v-sheet class="text-center  lighten-4" >
+          <v-sheet class="text-center  lighten-4">
+
             <ul>
               <v-row v-for="(skill,index) in loadedJobad.data.attributes.skills.data">
                 <v-icon color="green">mdi-check-circle-outline</v-icon>
@@ -102,15 +105,28 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="orange" text>
-          Save
-        </v-btn>
-        <v-btn v-if="!loadedJobad.data.attributes.applied_at" color="orange" text @click="dialog=true">
-          Apply
-        </v-btn>
-        <v-btn v-if="loadedJobad.data.attributes.applied_at" color="blue" text rounded outlined disabled>Already
-          Applied
-        </v-btn>
+        <div v-if="userRole==='jobSeeker'">
+          <v-btn color="orange" text>
+            Save
+          </v-btn>
+          <v-btn v-if="!loadedJobad.data.attributes.applied_at" color="orange" text @click="dialog=true">
+            Apply
+          </v-btn>
+          <v-btn v-if="loadedJobad.data.attributes.applied_at" color="blue" text rounded outlined disabled>Already
+            Applied
+          </v-btn>
+        </div>
+        <div v-if="userRole==='admin'&&!isEvaluated">
+          <v-btn v-if="!loadedJobad.data.attributes.approved_at" color="blue" text rounded outlined
+                 @click="evaluateJob(1)">
+            approve
+          </v-btn>
+          <v-btn v-if="!loadedJobad.data.attributes.approved_at" color="blue" text rounded outlined
+                 @click="evaluateJob(-1)">
+            refuse
+          </v-btn>
+        </div>
+
       </v-card-actions>
 
     </v-card>
@@ -125,24 +141,61 @@
     components: {
       MainApply
     },
-    data() {
-      return {
-        loadedJobad: null,
-        dialog: false,
-        applied: false
+    computed: {
+      userRole() {
+        return this.$store.getters.getUserRole
+      },
+      isEvaluated(){
+        return this.loadedJobad.data.attributes.refusal_report||this.refused||this.approved
       }
     },
-    methods: {},
+    data() {
+      return {
+        isRefuse: false,
+        loadedJobad: null,
+        dialog: false,
+        applied: false,
+        refused: false,
+        approved:false,
+      }
+    },
+    methods: {
+      evaluateJob(evaluationStatus) {
+        if (evaluationStatus === -1) {
+          this.$nuxt.$emit('openDialog', {
+            componentName: 'appRefuseJobad', details: {
+              jobad: this.loadedJobad
+            }
+          })
+          this.$nuxt.$on('jobRefused', this.refuseJob)
+        }
+        else if(evaluationStatus===1){
+          this.$store.dispatch('approveJob', {jobId: this.loadedJobad.data.id})
+        }
+      },
+      refuseJob(content) {
+        this.$store.dispatch('refuseJob', {
+          jobId: this.loadedJobad.data.id,
+          description: content.description
+        })
+        .then(res=>{
+          this.refused=true
+        })
+      }
+    },
+
     watch: {
       applied(oldVal, newVal) {
         this.loadedJobad.data.attributes.applied_at = new Date()
       }
     },
     async fetch() {
-      this.isLoading=true
+
+      this.isLoading = true
       return this.$axios.get('backend/api/jobads/' + this.$route.params.id)
         .then((res) => {
-          this.isLoading=false
+          this.isLoading = false
+
           this.loadedJobad = res.data
         })
     }

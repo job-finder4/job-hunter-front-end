@@ -11,6 +11,8 @@
 
       <template v-slot:activator="{on,attrs}">
         <v-text-field
+          outlined
+          dense
           :value="date"
           label="picker in menu"
           prepend-icon="mdi-calender"

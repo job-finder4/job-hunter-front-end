@@ -1,7 +1,8 @@
 export default {
   state: {
     jobads: [],
-    search: null
+    search:null,
+    advancedSearch:null,
   },
   getters: {
     //jobSeeker
@@ -20,14 +21,22 @@ export default {
     GET_ALL_JOBS(state, data) {
       state.jobads = data
     },
-    CLEAR_JOBADS(state) {
-      state.jobads = []
+    CLEAR_JOBADS(state){
+      state.jobads=[]
     },
     SET_SEARCH_PARAMS(state,search){
       state.search = search
-    }
-    //Company
+    },
+    SET_ADVANCED_SEARCH_PARAMS(state,advancedSearch){
+      state.advancedSearch = advancedSearch
+    },
+    CLEAR_SEARCH_ATTRIBUTE(state){
+      state.search = null
+      state.advancedSearch = null
+    },
 
+
+    //Company
   },
   actions: {
     //jobSeeker
@@ -47,7 +56,8 @@ export default {
       if (!!state.search)
         params.search = state.search
 
-      console.log(params)
+      if (!!state.advancedSearch)
+        params.advancedSearch = state.advancedSearch
 
       return new Promise((resolve, reject) => {
         this.$axios.get('backend/api/jobads', {
@@ -63,7 +73,6 @@ export default {
       })
     },
 
-
     //company
     postJob({commit}, {jobData}) {
       return new Promise((resolve, reject) => {
@@ -77,6 +86,7 @@ export default {
           description: jobData.description,
           job_type: jobData.selectedJobType,
           skills: jobData.skills,
+          category_id:jobData.category
         })
           .then(response => {
             // commit('POST_JOB', response.data.data)
@@ -87,7 +97,28 @@ export default {
           })
       })
     },
-
+    editJob({commit}, {jobData,jobId}) {
+      return new Promise((resolve, reject) => {
+        this.$axios.put('backend/api/jobads/' + jobId, {
+          title: jobData.title,
+          min_salary: jobData.range[0],
+          max_salary: jobData.range[1],
+          job_time: jobData.selectedJobTime,
+          location: jobData.location,
+          expiration_date: jobData.expirationDate,
+          description: jobData.description,
+          job_type: jobData.selectedJobType,
+          skills: jobData.skills,
+          category_id: jobData.category
+        })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
     clearJobads({commit}) {
       commit('CLEAR_JOBADS')
     }

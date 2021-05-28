@@ -20,21 +20,8 @@
         </v-list-item>
       </v-card-title>
 
-      <v-divider/>
-      <v-card  v-if="loadedJobad.data.attributes.refusal_report">
-        <v-card-title class="font-weight-bold red--text">
-          Your Job is Refused due to some incorrect fields,see admin notes below:
-        </v-card-title>
-        <v-card-text>
-          <p class=" v-alert__border--left" >{{loadedJobad.data.attributes.refusal_report.data.attributes.description}}</p>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="blue" @click="editJobad">Lets Fix it</v-btn>
-        </v-card-actions>
-      </v-card>
-
-
-      <div v-if="!isShowApplications">
+      <v-divider></v-divider>
+      <div>
         <v-card-text>
           <v-row>
             <v-col class="ml-2" md="2">
@@ -101,67 +88,25 @@
           </ul>
         </v-card-text>
       </div>
-      <v-divider/>
-
-
-
-
-
-
-
       <v-divider class="mt-5"/>
 
-      <v-card-actions >
-        <v-row  align="center" class="ma-2" v-if="loadedJobad.data.attributes.approved_at">
-          <v-btn @click="scheduleAppointments">Schedule Appointments</v-btn>
-          <v-spacer/>
-          <v-btn v-if="!isShowApplications"  @click="isShowApplications=true">See Applicants for this Job</v-btn>
-          <v-btn v-else  @click="isShowApplications=false">hide</v-btn>
-        </v-row>
-      </v-card-actions>
-
-      <company-job-applications-tabs :job-id="parseInt(this.$route.params.id)" v-if="isShowApplications"/>
     </v-card>
 
   </v-container>
-
 </template>
 
 <script>
-  import CompanyJobApplicationsTabs from "~/components/Applications/CompanyJobApplicationsTabs";
-
   export default {
-    layout: 'company',
-    components: {
-      CompanyJobApplicationsTabs
-    },
-    data() {
-      return {
-        loadedJobad: null,
-        dialog: false,
-        applied: false,
-        isLoading: true,
-        isShowApplications: false
-      }
-    },
-    methods: {
-      editJobad(){
-        this.$nuxt.$emit('openDialog',{componentName:'appPostOrUpdateJob',details:this.loadedJobad})
+    name: "FullDetailedJob",
+    props: {
+      jobad: {
+        type: Object,
+        required: true
       },
-      scheduleAppointments() {
-        if(this.$store.getters.getPendingJobApplications.length>0){
-          this.$toast.error('You Should evalutate All pending Jobs')
-          return
-        }
-      }
     },
-    async fetch() {
-      return this.$axios.get('backend/api/jobads/' + this.$route.params.id)
-        .then((response) => {
-          this.loadedJobad = response.data
-          this.isLoading = false
-        })
-    }
   }
 </script>
 
+<style scoped>
+
+</style>

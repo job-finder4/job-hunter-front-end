@@ -127,6 +127,7 @@ export default {
           })
         })
         .catch((e) => {
+          console.log(e)
           this.$toast.error('Something Wrong')
           this.error = 'Incorrect email or password.'
           this.isLoading = false

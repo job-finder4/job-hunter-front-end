@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+const bodyParser = require('body-parser')
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -17,6 +19,11 @@ export default {
   //   port: 3000, // default: 3000
   //   host: '0.0.0.0', // default: localhost
   // },
+
+  server: {
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
 
   // runtime config
   publicRuntimeConfig: {
@@ -49,7 +56,6 @@ export default {
     // '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/tailwindcss
     // '@nuxtjs/tailwindcss',
-
 
     ['@nuxtjs/vuetify', {
       customVariables: ['~/assets/variables.scss'],
@@ -92,7 +98,6 @@ export default {
             }
         }
     }]
-
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -130,43 +135,53 @@ export default {
     theme: 'outline',
   },
   echo: {
-    broadcaster:'pusher',
-    key:process.env.PUSHER_APP_KEY,
+    broadcaster: 'pusher',
+    key: process.env.PUSHER_APP_KEY,
     wsHost: '127.0.0.1',
     wsPort: 6001,
-    forceTLS:false,
-    disableStats:true,
+    forceTLS: false,
+    disableStats: true,
     authEndpoint: 'http://127.0.0.7:80/api/broadcasting/auth',
     plugins: ['~/plugins/echo.js'],
     ssr: false,
   },
 
-  // Auth module configuration (https://dev.auth.nuxtjs.org/)
+// Auth module configuration (https://dev.auth.nuxtjs.org/)
   auth: {
     redirect: {
       home: '/',
-    },
+    }
+    ,
     strategies: {
       laravelPassportPasswordGrant: {
         name: 'laravelPassportPassword',
         provider: 'laravel/passport',
         url: '/backend',
-        endpoints: {
-          logout: '/api/auth/logout',
-          user: false,
-          // user: {
-          //   url: '/api/user',
-          // },
-        },
+        endpoints:
+          {
+            logout: '/api/auth/logout',
+            user: false,
+          }
+        ,
         clientId: process.env.PASSPORT_CLIENT_ID,
         clientSecret: process.env.PASSPORT_CLIENT_SECRET,
         grantType: 'password',
-      },
-    },
-  },
-  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
+      }
+      ,
+    }
+    ,
+  }
+  ,
+// Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+// Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     transpile: ["vee-validate/dist/rules"],
+    /*
+  ** You can extend webpack config here
+  */
   },
+  serverMiddleware: [
+    {path: '/api', handler: bodyParser.json()},
+    '~/api'
+  ]
 }

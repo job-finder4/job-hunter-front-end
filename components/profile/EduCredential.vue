@@ -23,7 +23,6 @@
                   v-model=edu.graduation_year :rules="[required]"
         />
 
-
         <v-divider class="mt-12 mt-md-6 mb-4"></v-divider>
         <div class="d-flex">
           <v-spacer></v-spacer>

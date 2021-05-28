@@ -1,4 +1,4 @@
-export default function ({$echo, $auth, store},inject) {
+export default function ({$echo, $auth, store}, inject) {
   // Echo is available here
   $echo.connector.pusher.config.auth = {
     headers: {
@@ -6,7 +6,7 @@ export default function ({$echo, $auth, store},inject) {
     }
   }
 
-  let setChannelListener = ()=>{
+  let setChannelListener = () => {
     if (store.getters.isAuthenticated) {
       $echo.private(`users.${store.getters.getUser.data.id}`)
         .notification((notification) => {
@@ -17,6 +17,5 @@ export default function ({$echo, $auth, store},inject) {
 
   setChannelListener()
 
-  inject('connectToChannels',setChannelListener)
-
+  inject('connectToChannels', setChannelListener)
 }

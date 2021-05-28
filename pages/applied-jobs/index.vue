@@ -1,5 +1,7 @@
 <template>
-  <div style="height: 90vh;" >
+
+  <div style="height: 90vh; overflow-y: scroll" >
+
     <applications-container application-status="approved"/>
   </div>
 </template>

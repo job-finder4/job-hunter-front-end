@@ -14,12 +14,12 @@
     return-object
     menu-props="false"
     color="purple lighten-5"
-  ></v-autocomplete>
+  />
 </template>
 
 <script>
   export default {
-    // middleware:['should-not-company'],
+    middleware:['should-not-company'],
     data: () => ({
       descriptionLimit: 60,
       entries: [],

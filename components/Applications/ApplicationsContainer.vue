@@ -1,9 +1,38 @@
 <template>
-  <div>
+  <v-card >
+    <v-card-title class="display-1 d-flex justify-center">
+      <div v-if="jobApplications.length>0">
+        <p v-if="userRole==='jobSeeker'">
+          hi,{{userName}} ,here are your applied jobs
+        </p>
+        <p v-if="userRole==='company'">
+          applications For This job
+        </p>
+      </div>
+      <template v-if="jobApplications.length===0&&!isLoading">
+        <v-avatar>
+          <v-icon x-large>mdi-briefcase</v-icon>
+        </v-avatar>
+        <p class="text-subtitle-2 text-md-h6" v-if="userRole==='jobSeeker'">
+          You haven't applied to any jobs
+        </p>
+        <p class="text-subtitle-2 text-md-h6" v-if="userRole==='company'">
+          there are no applications to this job Yet.
+        </p>
+        <p v-if="userRole==='company'">
+          Come back here to keep track applications to your jobs.
+        </p>
+        <p v-if="userRole==='jobSeeker'">
+          Come back here to keep track of the jobs you've applied to
+        </p>
+      </template>
+
+    </v-card-title>
+    <v-card-text>
       <v-row v-if="isLoading">
-        <template v-for="i in 3" >
+        <template v-for="i in 3">
           <v-col md="4" sm="12" :key="i">
-            <v-card >
+            <v-card>
               <v-skeleton-loader
                 type="avatar,article, actions"
                 class="mx-auto"
@@ -16,46 +45,27 @@
         </template>
       </v-row>
 
-    <v-row class="my-2 mb-2 mx-auto">
+        <template v-for="(application,index) in jobApplications">
+          <v-col md="4" sm="12" :key="application.data.id">
+            <component :is="(userRole==='company')?'single-application':'job-seeker-application'"
+                       :application="application"/>
 
-      <v-row justify="center">
-      <v-sheet class="text-center" >
-
-        <p v-if="jobApplications.length>0">
-          hi,{{userName}} ,here are your applied jobs
-        </p>
-
-        <template v-if="jobApplications.length===0&&!isLoading">
-        <v-avatar>
-          <v-icon x-large>mdi-briefcase</v-icon>
-        </v-avatar>
-        <p class="text-subtitle-2 text-md-h6">
-          You haven't applied to any jobs
-        </p>
-        Come back here to keep track of the jobs you've applied to
+          </v-col>
         </template>
-      </v-sheet>
-      </v-row>
 
-      <template v-for="(application,index) in jobApplications">
-        <v-col md="4" sm="12" :key="application.data.id">
-          <component :is="(userRole==='company')?'single-application':'job-seeker-application'"
-                     :application="application"/>
+    </v-card-text>
 
-        </v-col>
-      </template>
-    </v-row>
-
-  </div>
+  </v-card>
 </template>
 
 <script>
-  import SingleApplication from "~/components/Applications/SingleApplication";
+  import  SingleApplication from "~/components/Applications/SingleApplication";
   import JobSeekerApplication from "~/components/Applications/JobSeekerApplication";
+
   export default {
     name: "JobsContainer",
     components: {
-      SingleApplication,JobSeekerApplication
+      SingleApplication, JobSeekerApplication
     },
     props: {
       applicationStatus: {
@@ -67,7 +77,7 @@
       },
     },
     computed: {
-      userName(){
+      userName() {
         return this.$store.getters.getUser.data.attributes.name
       },
       jobApplications() {
@@ -81,7 +91,7 @@
           return this.$store.getters.getRejectedJobApplications
         }
       },
-      userRole(){
+      userRole() {
         return this.$store.getters.getUserRole
       }
     },
@@ -91,13 +101,16 @@
       }
     },
     fetch() {
-      if(this.$store.getters.getUserRole==='company'){
-        return this.$store.dispatch('getJobApplications', {applicationStatus: this.applicationStatus, jobId: this.jobId})
+      if (this.$store.getters.getUserRole === 'company') {
+        return this.$store.dispatch('getJobApplications', {
+          applicationStatus: this.applicationStatus,
+          jobId: this.jobId
+        })
           .then((res) => {
             this.isLoading = false
           })
-      }
-      else {
+      } else {
+
         return this.$store.dispatch('getJobSeekerApplications', {applicationStatus: this.applicationStatus})
           .then((res) => {
             this.isLoading = false

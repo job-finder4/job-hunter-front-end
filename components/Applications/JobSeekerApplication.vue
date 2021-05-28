@@ -33,7 +33,7 @@
             v-show="application.data.attributes.status===0"
           >
             <v-icon>mdi-clock-time-eight-outline</v-icon>
-            waiting
+            Pending
           </v-btn>
         </template>
         <span>Application Status</span>

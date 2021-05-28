@@ -4,11 +4,13 @@ import userData from './userData'
 import jobads from './jobads'
 import post_job from './post_job'
 import notifications from './notifications'
+import Cookie from "js-cookie";
 import userInformation from './userInformation'
-import jobSearch from './jobSearch'
-import createInterview from './createInterview'
-import jobadInterviews from './jobadInterviews'
-import myInterviews from './myInterviews'
+import cv_details from './cv_details'
+import createInterview from "~/store/createInterview";
+import jobadInterviews from "~/store/jobadInterviews";
+import myInterviews from "~/store/myInterviews";
+
 
 const vuexStore = () => {
   return new Vuex.Store({
@@ -19,7 +21,7 @@ const vuexStore = () => {
     getters: {
       isAuthenticated(state) {
         if (process.server) {
-          return state.user!=null
+          return state.user != null
         }
         if (process.client) {
           return state.auth.loggedIn
@@ -29,7 +31,7 @@ const vuexStore = () => {
         return state.token
       },
       getUser(state) {
-          return state.user
+        return state.user
       },
       getUserRole(state) {
         if (state.user) {
@@ -37,7 +39,6 @@ const vuexStore = () => {
         }
         return null
       },
-
     },
     mutations: {
       SET_TOKEN(state, token) {
@@ -56,7 +57,7 @@ const vuexStore = () => {
       nuxtServerInit(vuexContext, context) {
         console.log('inside nuxtServerInit')
 
-        if(context.$auth.strategy.token.get()){
+        if (context.$auth.strategy.token.get()) {
           context.$axios.defaults.headers.common["Authorization"] = context.$auth.strategy.token.get()
           return context.$axios.get('backend/api/user').then((res) => {
             vuexContext.commit('SET_USER_DATA', res.data);
@@ -103,8 +104,10 @@ const vuexStore = () => {
       //   vuexContext.commit("setToken", token);
       // },
     },
-    modules: {userData, jobads,post_job,notifications,userInformation
-      ,jobSearch,createInterview,jobadInterviews,myInterviews}
+    modules: {
+      userData, jobads, post_job, notifications, userInformation, cv_details
+      ,createInterview, jobadInterviews, myInterviews
+    }
   })
 }
 

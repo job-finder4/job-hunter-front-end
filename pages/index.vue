@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-card
       flat class="bg d-flex align-center flex-column" height="600px"
     >
@@ -72,7 +73,7 @@
         <div style="width: 80%" class="mx-auto">
           <v-row class="justify-center">
             <v-col
-              cols="6"  md="4" lg="3" xl="2"
+              cols="6" md="4" lg="3" xl="2"
               v-for="category in allCategories"
               :key="category.id"
               class="text-center"
@@ -111,6 +112,7 @@
 </template>
 
 <script>
+
   import locations from '~/static/locations.json'
   import categories from '~/static/categories.json'
   import skills from '~/static/skills.json'
@@ -125,17 +127,18 @@
         term: [],
         suggestedLocations: locations,
         suggestedTerms: categories.map(item => item.name).concat(skills.map(item => item.name), jobsTitle),
-        allCategories: categories.slice(0,16)
+        allCategories: categories.slice(0, 16)
       }
     },
     methods: {
-       search() {
+      search() {
         this.$store.commit('SET_SEARCH_PARAMS', {
           location: this.location,
           term: this.term
         })
         this.$router.push('/jobs');
       },
+
     },
   }
 </script>
