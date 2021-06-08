@@ -24,6 +24,7 @@
         </v-list-item>
       </v-card-title>
 
+
       <v-divider></v-divider>
 
       <div>
@@ -83,7 +84,7 @@
         <v-divider></v-divider>
 
         <v-card-title>
-          Skills Requried For The Job
+          Skills Required For The Job
         </v-card-title>
 
         <v-card-text class="ml-2">
@@ -104,8 +105,8 @@
                    :dialog="dialog"/>
       </v-card-text>
 
-      <v-card-actions>
-        <div v-if="userRole==='jobSeeker'">
+      <v-card-actions >
+        <div v-if="userRole==='jobSeeker'&&!isExpired">
           <v-btn color="orange" text>
             Save
           </v-btn>
@@ -116,6 +117,7 @@
             Applied
           </v-btn>
         </div>
+
         <div v-if="userRole==='admin'&&!isEvaluated">
           <v-btn v-if="!loadedJobad.data.attributes.approved_at" color="blue" text rounded outlined
                  @click="evaluateJob(1)">
@@ -142,6 +144,9 @@
       MainApply
     },
     computed: {
+      isExpired(){
+        return ((new Date(this.loadedJobad.data.attributes.exact_expiration_date))<(new Date()));
+      },
       userRole() {
         return this.$store.getters.getUserRole
       },
@@ -171,6 +176,9 @@
         }
         else if(evaluationStatus===1){
           this.$store.dispatch('approveJob', {jobId: this.loadedJobad.data.id})
+          .then(()=>{
+            this.$router.push('/admin/posted-jobs')
+          })
         }
       },
       refuseJob(content) {
@@ -198,7 +206,8 @@
 
           this.loadedJobad = res.data
         })
-    }
+    },
+
   }
 </script>
 

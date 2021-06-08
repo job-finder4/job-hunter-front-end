@@ -24,12 +24,26 @@ export default {
   },
   actions: {
     async fetchJobadInterviews({state, commit}, jobadId) {
-      let {data} = await this.$axios.get(`backend/api/jobads/${jobadId}/interviews`)
-      commit('SET_JOBAD_INTERVIEWS', data.data)
+      try {
+        let {data} = await this.$axios.get(`backend/api/jobads/${jobadId}/interviews`)
+        commit('SET_JOBAD_INTERVIEWS', data.data)
+      }catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
+
     },
     async reserveInterview({state, commit}, interview) {
-      let {data} = await this.$axios.put(`backend/api/jobads/${interview.jobad_id}/interviews/${interview.id}/reserve`)
-      commit('RESERVE_INTERVIEW', data)
+      try {
+        let {data} = await this.$axios.put(`backend/api/jobads/${interview.jobad_id}/interviews/${interview.id}/reserve`)
+        commit('RESERVE_INTERVIEW', data)
+        this.$toast.success('reserved successfully')
+      }
+      catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
+
     }
   },
 }

@@ -36,28 +36,23 @@
       </v-toolbar-title>
 
       <v-spacer/>
-      <v-btn
-        text
-        to="/"
-      >
+      <v-btn text to="/">
         Home
       </v-btn>
 
-      <v-btn disabled v-if="this.$store.getters.isAuthenticated" text>
-
-        {{user.data.attributes.name}}
-
+      <v-btn disabled v-if="isAuth" text>
+        {{userName}}
       </v-btn>
 
       <v-btn
         text
         to="/login"
-        v-if="!this.$auth.loggedIn"
+        v-if="!isAuth"
       >
         Sign In
       </v-btn>
 
-      <notifications v-if="this.$store.getters.isAuthenticated">
+      <notifications v-if="isAuth">
         <template v-slot:activator="{ on, attrs }">
           <v-btn @click="on" :attrs="attrs">
             <v-icon>mdi-bell</v-icon>
@@ -81,14 +76,14 @@
             <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
-        <v-list v-if="!this.$auth.loggedIn">
+        <v-list v-if="!isAuth">
           <v-list-item>
             <v-list-item-title>
               You Are loggedOf, No Options
             </v-list-item-title>
           </v-list-item>
         </v-list>
-        <v-list v-if="this.$auth.loggedIn">
+        <v-list v-if="isAuth">
           <v-list-item
             @click="logout"
           >
@@ -97,15 +92,18 @@
             </v-list-item-title>
           </v-list-item>
           <template v-for="(item, index) in items">
-            <v-list-item
-              :key="item.id"
-              :to="item.to"
-              v-if="item.active"
-            >
-              <v-list-item-title>
-                {{ item.title }}
-              </v-list-item-title>
-            </v-list-item>
+              <template
+                v-if="item.active"
+              >
+                <v-list-item
+                  :key="item.id"
+                  :to="item.to"
+                >
+                <v-list-item-title>
+                  {{ item.title }}
+                </v-list-item-title>
+                </v-list-item>
+              </template>
           </template>
 
         </v-list>
@@ -125,7 +123,6 @@
 <script>
 
   import Notifications from "~/components/Notifications";
-
   import DeleteDialog from "~/components/DeleteDialog";
   import AddOrUpdateDialog from "~/components/AddOrUpdateDialog";
 
@@ -133,50 +130,61 @@
     components:
       {
         Notifications, DeleteDialog, AddOrUpdateDialog
+      },
+    computed: {
+      items(){
+        return [
+          {
+            id:1,
+            title: 'Profile',
+            to: '/profile',
+            active: true
+          },
+          {
+            id:2,
+            title: 'My Applications',
+            to: '/applied-jobs',
+            active: (this.isAuth && this.userRole === 'jobSeeker')
+          },
+          {
+            id:3,
+            title: 'Dashboard',
+            to: '/admin/dashboard',
+            active: this.isAuth && this.userRole === 'admin'
+          },
+          {
+            id:4,
+            title: 'posted-jobs',
+            to: '/admin/posted-jobs',
+            active: (this.isAuth && this.userRole === 'admin')
+          },
+          {id:5,title: 'my interviews', to: '/my-interviews',active:(this.isAuth && this.userRole === 'jobSeeker')},
+          {id:6,title: 'Cv Generator', to: '/cv_generator',active:(this.isAuth && this.userRole === 'jobSeeker')},
+        ];
+      },
+      isAuth() {
+        return this.$store.getters.isAuthenticated
+      },
+      userName() {
+        if(this.user){
+          return this.$store.getters.getUser.data.attributes.name
+        }
+        return ""
+      },
+      user() {
+        return this.$store.getters.getUser
+      },
+      userRole(){
+        return this.$store.getters.getUserRole
       }
-    ,
-    middleware: [],
+    },
     data() {
       return {
         drawer: false,
-        error: '',
-        items: [
-          {
-            title: 'Profile',
-            to: '/profile',
-            'active': true
-          },
-          {
-            title: 'My Applications',
-            to: '/applied-jobs',
-            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'jobSeeker'
-          },
-          {
-
-            title: 'Dashboard',
-            to: '/admin/dashboard',
-            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'admin'
-          },
-          {
-
-            title: 'posted-jobs',
-            to: '/admin/posted-jobs',
-            'active': this.$store.getters.isAuthenticated && this.$store.getters.getUserRole === 'admin'
-          }
-          ,
-        ],
       }
-    }
-    ,
-    computed: {
-      user() {
-        return this.$store.getters.getUser
-      }
-    }
-    ,
+    },
     methods: {
       async logout() {
-        this.error = null
 
         await this.$auth.logout('laravelPassportPassword')
           .then(() => {
@@ -187,8 +195,7 @@
           .catch((e) => (this.$toast.error('Error while authenticating')))
       }
       ,
-    }
-    ,
+    },
   }
 </script>
 

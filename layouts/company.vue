@@ -114,6 +114,8 @@
         items: [
           {title: 'profile', to: '/company/profile'},
           {title: 'my jobs', to: '/company/my-jobs'},
+          {title: 'my interviews', to: '/my-interviews'},
+          {title: 'post new job', to: '/jobs/post_job'},
         ],
       }
     },

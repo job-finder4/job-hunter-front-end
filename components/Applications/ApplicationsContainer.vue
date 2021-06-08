@@ -1,5 +1,5 @@
 <template>
-  <v-card >
+  <v-card>
     <v-card-title class="display-1 d-flex justify-center">
       <div v-if="jobApplications.length>0">
         <p v-if="userRole==='jobSeeker'">
@@ -9,6 +9,7 @@
           applications For This job
         </p>
       </div>
+
       <template v-if="jobApplications.length===0&&!isLoading">
         <v-avatar>
           <v-icon x-large>mdi-briefcase</v-icon>
@@ -28,8 +29,10 @@
       </template>
 
     </v-card-title>
-    <v-card-text>
-      <v-row v-if="isLoading">
+
+    <v-card-text >
+
+      <v-row v-if="isLoading" style="height: 100%">
         <template v-for="i in 3">
           <v-col md="4" sm="12" :key="i">
             <v-card>
@@ -45,13 +48,15 @@
         </template>
       </v-row>
 
+      <v-row>
         <template v-for="(application,index) in jobApplications">
-          <v-col md="4" sm="12" :key="application.data.id">
-            <component :is="(userRole==='company')?'single-application':'job-seeker-application'"
+          <v-col  sm="12" md="4"  :key="application.data.id">
+            <component :is="(userRole==='company')?'SingleApplication':'job-seeker-application'"
                        :application="application"/>
-
           </v-col>
         </template>
+      </v-row>
+
 
     </v-card-text>
 
@@ -59,7 +64,7 @@
 </template>
 
 <script>
-  import  SingleApplication from "~/components/Applications/SingleApplication";
+  import SingleApplication from "~/components/Applications/SingleApplication";
   import JobSeekerApplication from "~/components/Applications/JobSeekerApplication";
 
   export default {

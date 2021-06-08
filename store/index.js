@@ -20,6 +20,8 @@ const vuexStore = () => {
     },
     getters: {
       isAuthenticated(state) {
+        // return state.user != null
+
         if (process.server) {
           return state.user != null
         }
@@ -37,7 +39,7 @@ const vuexStore = () => {
         if (state.user) {
           return state.user.data.attributes.role
         }
-        return null
+        return ""
       },
     },
     mutations: {
@@ -69,6 +71,12 @@ const vuexStore = () => {
         commit('LOGOUT')
         dispatch('clearUserCvs')
       },
+      // setUserData({commit, dispatch},userData){
+      //   return new Promise((resolve, reject) => {
+      //     this.$store.commit('SET_USER_DATA', userData)
+      //     resolve(userData);
+      //   });
+      // }
       // initAuth(vuexContext, req) {
       //   let token;
       //   let expirationDate;

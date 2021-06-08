@@ -159,7 +159,12 @@
   import {mapGetters} from 'vuex'
 
   export default {
+    layout:'company',
     name: "jobInterviews",
+    middleware:['auth'],
+    layout(context) {
+      return context.store.getters.getUserRole == 'company'?'company':'default'
+    },
     data() {
       return {
         focus: '',

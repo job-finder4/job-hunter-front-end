@@ -1,15 +1,15 @@
-export default async function ({store, params, error, $axios,redirect}) {
+export default async function ({store, params, error, $axios, redirect, app}) {
   console.log("[Middleware] ShouldInterviewAbleJob");
   try {
-    let {data} = await $axios.get(`api/jobads/${params.id}/check-interview-able`)
+    let {data} = await $axios.get(`backend/api/jobads/${params.id}/check-interview-able`)
     store.commit('SET_INTERVIEWERS_COUNT', data)
   } catch (e) {
-    error(e.response.data.errors.description)
-    if (process.client){
-      setTimeout(()=>{
-        redirect('/')
-      },10,redirect)
+    if (process.client) {
+      app.$toast.error(e.response.data.errors.description)
+      redirect('/')
+    } else {
+      error(e.response.data.errors.description)
     }
-
   }
+
 }

@@ -1,6 +1,5 @@
 <template>
   <div>
-
         <template v-if="isLoading">
           <v-card v-for="i in 3" :key="i" class="mt-3">
             <v-skeleton-loader
@@ -9,14 +8,10 @@
             />
           </v-card>
         </template>
-
-
     <v-divider/>
 
     <template v-if="jobs.length>0" v-for="(jobad,index) in jobs">
-
-      <component class="mt-3" :is="(userRole==='company')?'company-single-job':'admin-single-job'"
-
+      <component class="mt-3" :is="(userRole==='company')?'company-single-job':'JobadInformation'"
                  :jobad="jobad" :key="jobad.data.id" :job-status="jobStatus"
       />
     </template>
@@ -44,13 +39,14 @@
 </template>
 
 <script>
+  import JobadInformation from "~/components/jobs/JobadInformation"
   import AdminSingleJob from "~/components/admin/AdminSingleJob";
   import CompanySingleJob from "~/components/jobs/CompanySingleJob";
 
   export default {
     name: "JobsContainer",
     components: {
-      AdminSingleJob, CompanySingleJob
+      JobadInformation, CompanySingleJob
     },
     props: {
       jobStatus: {

@@ -2,16 +2,16 @@
   <div>
     <v-card rounded elevation="2">
       <jobad-information :jobad="jobad" :job-status="jobStatus"/>
-      <v-card-actions>
-        <v-btn v-if="!jobad.data.attributes.approved_at" color="blue" text rounded outlined
-               @click="evaluateJob(1)">
-          approve
-        </v-btn>
-        <v-btn v-if="!jobad.data.attributes.approved_at" color="blue" text rounded outlined
-               @click="evaluateJob(-1)">
-          reject
-        </v-btn>
-      </v-card-actions>
+<!--      <v-card-actions>-->
+<!--        <v-btn v-if="!jobad.data.attributes.approved_at" color="blue" text rounded outlined-->
+<!--               @click="evaluateJob(1)">-->
+<!--          approve-->
+<!--        </v-btn>-->
+<!--        <v-btn v-if="!jobad.data.attributes.approved_at" color="blue" text rounded outlined-->
+<!--               @click="evaluateJob(-1)">-->
+<!--          reject-->
+<!--        </v-btn>-->
+<!--      </v-card-actions>-->
     </v-card>
   </div>
 </template>
@@ -19,6 +19,7 @@
 <script>
 
 import JobadInformation from "~/components/jobs/JobadInformation";
+
   export default {
     name: "index",
     components:{
@@ -36,9 +37,14 @@ import JobadInformation from "~/components/jobs/JobadInformation";
       }
     },
     methods: {
-      evaluateJob(evaluationStatus) {
-        this.$store.dispatch('evaluateJob', {jobId:this.jobad.data.id,evaluationStatus: evaluationStatus})
-      }
+      // evaluateJob(evaluationStatus) {
+      //   if(evaluationStatus===1){
+      //     this.$store.dispatch('evaluateJob', {jobId:this.jobad.data.id})
+      //   }
+      //   else if(evaluationStatus===-1){
+      //
+      //   }
+      // }
     },
   }
 </script>

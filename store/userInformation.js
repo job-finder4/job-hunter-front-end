@@ -31,7 +31,8 @@ export default {
       return state.profile.attributes.details.languages
     },
     profileDetails(state) {
-      return state.profile.attributes.details
+
+      return !!state.profile ? state.profile.attributes.details : null
     },
     userEducations(state) {
       return state.profile.attributes.details.educations
@@ -67,8 +68,8 @@ export default {
     RESET_JOB_PREFERENCE(state, newJobPreference) {
       state.jobPreference = newJobPreference
     },
-    setAllSkills(state, allskills) {
-      state.allSkills = allskills.data
+    setAllSkills(state, allSkills) {
+      state.allSkills = allSkills.data
     },
     CREATE_JOB_PREFERENCE(state, jobPreference) {
       state.jobPreference = jobPreference.data
@@ -85,37 +86,80 @@ export default {
   },
   actions: {
     async retrieveProfile({commit}, userId) {
-      let {data} = await this.$axios.get(`backend/api/users/${userId}/profile`)
-      commit('SET_PROFILE', data)
+      try {
+        let {data} = await this.$axios.get(`backend/api/users/${userId}/profile`)
+        commit('SET_PROFILE', data)
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
     async updateProfile({commit, getters}, editedItems) {
-      let {data} = await this.$axios.put(`backend/api/users/${getters.getUser.data.id}/profile`, editedItems)
-      commit('SET_PROFILE', data)
+      try {
+        let {data} = await this.$axios.put(`backend/api/users/${getters.getUser.data.id}/profile`, editedItems)
+        commit('SET_PROFILE', data)
+        this.$toast.success('updated successfully')
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
     async addDetails({commit, getters}, newItems) {
-      let {data} = await this.$axios.post(`backend/api/users/${getters.getUser.data.id}/profile`, newItems)
-      commit('RESET_PROFILE', data)
+      try {
+        let {data} = await this.$axios.post(`backend/api/users/${getters.getUser.data.id}/profile`, newItems)
+        commit('RESET_PROFILE', data)
+        this.$toast.success('added successfully')
+
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
+
     },
     async deleteFromProfile({commit, getters}, items) {
-      let {data} = await this.$axios.put(`backend/api/users/${getters.getUser.data.id}/profile/delete-details`, items)
-      commit('RESET_PROFILE', data)
+      try {
+        let {data} = await this.$axios.put(`backend/api/users/${getters.getUser.data.id}/profile/delete-details`, items)
+        commit('RESET_PROFILE', data)
+        this.$toast.success('deleted successfully')
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
 
     async createJobPreference({commit, getters}, jobPreference) {
-      let {data} = await this.$axios.post(`backend/api/users/${getters.getUser.data.id}/job-preference`, jobPreference)
-      commit('CREATE_JOB_PREFERENCE', data)
+      try {
+        let {data} = await this.$axios.post(`backend/api/users/${getters.getUser.data.id}/job-preference`, jobPreference)
+        commit('CREATE_JOB_PREFERENCE', data)
+        this.$toast.success('job preference created successfully')
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
     async updateJobPreference({commit, getters}, jobPreference) {
-      let {data} =
-        await this.$axios.put(
-          `backend/api/users/${getters.getUser.data.id}/job-preference`,
-          jobPreference
-        )
-      commit('UPDATE_JOB_PREFERENCE', data)
+      try {
+        let {data} =
+          await this.$axios.put(
+            `backend/api/users/${getters.getUser.data.id}/job-preference`,
+            jobPreference
+          )
+        commit('UPDATE_JOB_PREFERENCE', data)
+        this.$toast.success('job preference updated successfully')
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
     async deleteMyJobPreference({commit, getters}) {
-      await this.$axios.delete(`backend/api/users/${getters.getUser.data.id}/job-preference`)
-      commit('DELETE_JOB_PREFERENCE')
+      try {
+        await this.$axios.delete(`backend/api/users/${getters.getUser.data.id}/job-preference`)
+        commit('DELETE_JOB_PREFERENCE')
+        this.$toast.success('job preference deleted successfully')
+      } catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
   },
 }

@@ -57,7 +57,6 @@
 
   export default {
     props: {
-
       is_cv_page: {
         type: Boolean,
         default: false
@@ -79,7 +78,7 @@
     data() {
       return {
         editMode: false,
-        editButtonLabel: 'edit or add skill',
+        editButtonLabel: 'Edit or add skill',
         selectedSkills: (this.is_cv_page) ? Array.from(this.$store.getters.getCvSkills) : Array.from(this.$store.getters.userSkills),
         newSkill: '',
         requestUnderProcess: false

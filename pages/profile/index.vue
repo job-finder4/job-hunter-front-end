@@ -1,5 +1,5 @@
 <template>
-  <app-show-profile/>
+  <app-show-profile v-if="!!$store.getters.profileDetails"/>
 </template>
 
 <script>

@@ -25,7 +25,6 @@
     </v-card-text>
 
   </v-card>
-
 </template>
 
 <script>
@@ -37,7 +36,7 @@
     },
     data() {
       return {
-        tab: null,
+        tab: 0,
         items: [
           {
             id: 1, 'title': 'Active Jobs', 'description': 'approved & Unexpired',

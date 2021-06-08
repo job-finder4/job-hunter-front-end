@@ -112,13 +112,13 @@
 </template>
 
 <script>
-
   import locations from '~/static/locations.json'
   import categories from '~/static/categories.json'
   import skills from '~/static/skills.json'
   import jobsTitle from '~/static/jobsTitle.json'
 
   export default {
+    middleware:['should-not-company'],
     data() {
       return {
         tab: 0,

@@ -1,23 +1,39 @@
 <template>
   <div >
     <v-card rounded elevation="2" >
-      <v-card-title class="font-weight-medium">
-          <v-list-item  dense :disabled="!jobad.data.attributes.approved_at" :to="'/jobs/'+jobad.data.id">
-            <v-list-item-title class="blue--text text-body-1">
-              {{jobad.data.attributes.title}}
-            </v-list-item-title>
-          </v-list-item>
+<!--      <v-card-title class="font-weight-medium">-->
+<!--          <v-list-item  dense :disabled="!jobad.data.attributes.approved_at" :to="'/jobs/'+jobad.data.id">-->
+<!--            <v-list-item-title class="blue&#45;&#45;text text-body-1">-->
+<!--              {{jobad.data.attributes.title}}-->
+<!--            </v-list-item-title>-->
+<!--          </v-list-item>-->
 
-        <v-list-item dense>
-          <v-list-item-title class="text-body-2">
-            {{jobad.data.attributes.company.data.attributes.name}}
-          </v-list-item-title>
-          <v-list-item class="font-weight-light text-sm-body-1">
+<!--        <v-list-item dense>-->
+<!--          <v-list-item-title class="text-body-2">-->
+<!--            {{jobad.data.attributes.company.data.attributes.name}}-->
+<!--          </v-list-item-title>-->
+<!--          <v-list-item class="font-weight-light text-sm-body-1">-->
 <!--            Category-->
 <!--            {{ jobad.data.attributes.category.data.attributes.name }}-->
-          </v-list-item>
+<!--          </v-list-item>-->
+<!--        </v-list-item>-->
+<!--      </v-card-title>-->
+
+      <v-card-title>
+        <v-list-item dense :disabled="!jobad.data.attributes.approved_at" :to="'/jobs/'+jobad.data.id">
+          <v-list-item-title class="blue--text headline bold--text">
+            {{ jobad.data.attributes.title }}
+          </v-list-item-title>
+        </v-list-item>
+        <v-list-item class="font-weight-light text-sm-body-1" to="/company/profile">
+          {{ jobad.data.attributes.company.data.attributes.name }}
+        </v-list-item>
+        <v-list-item class="font-weight-light text-sm-body-1">
+          Category
+          {{ jobad.data.attributes.category.data.attributes.name }}
         </v-list-item>
       </v-card-title>
+
       <v-divider/>
 
       <v-card-text class="subtitle">

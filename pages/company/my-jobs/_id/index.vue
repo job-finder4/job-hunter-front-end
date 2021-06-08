@@ -20,6 +20,7 @@
         </v-list-item>
       </v-card-title>
 
+
       <v-divider/>
       <v-card  v-if="loadedJobad.data.attributes.refusal_report">
         <v-card-title class="font-weight-bold red--text">
@@ -103,17 +104,11 @@
       </div>
       <v-divider/>
 
-
-
-
-
-
-
       <v-divider class="mt-5"/>
 
       <v-card-actions >
         <v-row  align="center" class="ma-2" v-if="loadedJobad.data.attributes.approved_at">
-          <v-btn @click="scheduleAppointments">Schedule Appointments</v-btn>
+          <v-btn v-if="(new Date()>new Date(loadedJobad.data.attributes.exact_expiration_date))" @click="scheduleAppointments">Schedule Appointments</v-btn>
           <v-spacer/>
           <v-btn v-if="!isShowApplications"  @click="isShowApplications=true">See Applicants for this Job</v-btn>
           <v-btn v-else  @click="isShowApplications=false">hide</v-btn>
@@ -153,6 +148,7 @@
           this.$toast.error('You Should evalutate All pending Jobs')
           return
         }
+        this.$router.push(`/jobs/${this.$route.params.id}/interviews/schedule`)
       }
     },
     async fetch() {

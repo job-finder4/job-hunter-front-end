@@ -14,8 +14,13 @@ export default {
   },
   actions: {
     async fetchMyInterviews({commit}) {
-      let {data} = await this.$axios.get(`backend/api/my-interviews`)
-      commit('SET_MY_INTERVIEWS', data.data)
+      try {
+        let {data} = await this.$axios.get(`backend/api/my-interviews`)
+        commit('SET_MY_INTERVIEWS', data.data)
+      }catch (e) {
+        this.$toast.error('an error occurred')
+        console.log(e);
+      }
     },
   },
 }

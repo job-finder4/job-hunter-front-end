@@ -11,11 +11,12 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-badge
-          v-if="unreadedNotifications.length>0"
+          v-show="unreadedNotifications.length>0"
           color="blue"
           offset-x="16"
           offset-y="20"
           bordered :content="unreadedNotifications.length">
+
           <v-btn
             small
             color="blue-grey"
@@ -28,8 +29,9 @@
             <v-icon>mdi-bell</v-icon>
           </v-btn>
         </v-badge>
+
         <v-btn
-          v-if="unreadedNotifications.length===0"
+          v-show="unreadedNotifications.length===0"
           small
           color="blue-grey"
           class="ma-2 white--text"
@@ -54,8 +56,7 @@
           v-for="(item) in notifications"
           :key="item.id"
           selectable
-          :class="item.read_at == null?'cyan lighten-5':''"
-          class="mt-1"
+          :class="item.read_at == null?'cyan lighten-5 mt-1':'mt-1'"
           :nuxt="item.action"
           @click="markAsRead(item)"
         >
@@ -67,7 +68,6 @@
               {{notificationReply(item).subtitle}}
             </v-list-item-subtitle>
           </v-list-item-content>
-
         </v-list-item>
       </v-list>
     </v-menu>
@@ -116,6 +116,13 @@
             subtitle:notification.data.refusal_reason
           }
         }
+        if(inputText === JobadEvaluationStatus){
+          reply = {
+            title: 'your job is officially published :',
+            subtitle:notification.data.jobad_title
+          }
+        }
+
 
         return reply
       },

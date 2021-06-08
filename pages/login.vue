@@ -114,8 +114,8 @@ export default {
           this.$toast.success('Successfully authenticated')
 
           this.$axios.defaults.headers.common["Authorization"] = this.$auth.strategy.token.get()
-          this.$axios.$get('backend/api/user').then((res) => {
-            this.$store.commit('SET_USER_DATA', res)
+          this.$axios.get('backend/api/user').then((res) => {
+            this.$store.commit('SET_USER_DATA', res.data)
             this.$connectToChannels()
 
             if (this.$store.getters.getUserRole === 'company') {

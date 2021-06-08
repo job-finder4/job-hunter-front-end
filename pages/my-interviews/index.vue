@@ -175,6 +175,10 @@
 
   export default {
     name: "my-interviews",
+    middleware:['auth'],
+    layout(context) {
+      return context.store.getters.getUserRole == 'company'?'company':'default'
+    },
     data() {
       return {
         focus: '',
