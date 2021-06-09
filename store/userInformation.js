@@ -31,7 +31,6 @@ export default {
       return state.profile.attributes.details.languages
     },
     profileDetails(state) {
-
       return !!state.profile ? state.profile.attributes.details : null
     },
     userEducations(state) {

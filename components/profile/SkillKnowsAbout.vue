@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="my-6">
+  <v-card flat :class="(is_cv_page)?'mx-5 my-2':'my-6'">
     <v-overlay absolute :value="requestUnderProcess">
       <v-progress-circular indeterminate size="64"/>
     </v-overlay>

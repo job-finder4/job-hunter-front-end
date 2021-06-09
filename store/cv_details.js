@@ -23,8 +23,21 @@ export default {
     getPreviewCvVariable(state) {
       return state.previewing
     },
+    getPersonalInfo(state){
+      return state.personalInfo
+    }
   },
   mutations: {
+    CLEAR_CV_DATA(state){
+      state.cv_data= {
+        skills: [],
+          edu: [],
+          emp: [],
+          languages: [],
+          isPreview: false,
+          personalInfo: {},
+      }
+    },
     TOGGLE_PREVIEWING(state){
       state.previewing = !state.previewing
     },
@@ -50,11 +63,17 @@ export default {
     },
     ADD_CV_EDU(state, singleEdu) {
       state.cv_data.edu.push(singleEdu)
+    },
+    ADD_CV_PERSONAL_INFO(state, info){
+      state.cv_data.personalInfo=info
     }
   },
   actions: {
     togglePreviewing({commit}){
       commit('TOGGLE_PREVIEWING')
+    },
+    clear_cv_data({commit}){
+      commit('CLEAR_CV_DATA')
     }
   },
 }

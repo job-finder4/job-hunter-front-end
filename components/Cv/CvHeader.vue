@@ -1,11 +1,8 @@
 <template>
   <v-card flat>
-    <v-row justify="center">
-      <v-card-title class="font-weight-bold">
-          personal info
-      </v-card-title>
+    <v-row>
       <v-card-text >
-        <h3>{{personalInfo.name}}</h3>
+        <h3><v-icon>mdi-person </v-icon>{{personalInfo.name}}</h3>
         <v-icon>mdi-home-flood </v-icon>{{personalInfo.city}} {{personalInfo.state}}
         <br>
         <v-icon>mdi-phone</v-icon>{{personalInfo.phone}}
